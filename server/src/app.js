@@ -1,27 +1,15 @@
-import express from "express";
-import db from "./config/db.js";
+const express = require("express");
+const publicRoutes = require("./routes/public.routes");
+const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("API EuroAsia funcionando");
-});
+app.use(express.json());
 
-// ---- TEST DE CONEXIÓN MYSQL ----
-app.get("/test-db", async (req, res) => {
-  try {
-    const [rows] = await db.query("SELECT 1 + 1 AS resultado");
-    res.json({
-      conexion: "OK",
-      resultado: rows[0].resultado
-    });
-  } catch (err) {
-    res.status(500).json({
-      conexion: "ERROR",
-      mensaje: err.message
-    });
-  }
-});
+// Rutas API
+app.use("/api", publicRoutes);
 
-export default app;
+// Middleware de errores
+app.use(errorHandler);
 
+module.exports = app;

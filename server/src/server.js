@@ -1,10 +1,8 @@
-import dotenv from "dotenv";
-import app from "./app.js";
-
-dotenv.config();
+const app = require("./app");
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 API EuroAsia escuchando en puerto ${PORT}`);
+  console.log("Servidor iniciado en puerto", PORT);
 });
+
