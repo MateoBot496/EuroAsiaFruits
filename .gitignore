@@ -1,1 +1,23 @@
+# --- GLOBAL ---
+.DS_Store
+
+# --- NODE ---
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# --- ENV FILES ---
+.env
+.env.local
+.env.*.local
+
+# --- SERVER ---
+server/node_modules/
+server/.env
+server/logs/
+
+# --- CLIENT ---
 cliente/node_modules/
+cliente/dist/
+cliente/.env
