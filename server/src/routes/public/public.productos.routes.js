@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const PublicController = require("../controllers/public.controller");
+const PublicController = require("../../controllers/public/public.productos.controller");
 
 // GET /api/productos
 router.get("/productos", PublicController.getTodosProductos);
