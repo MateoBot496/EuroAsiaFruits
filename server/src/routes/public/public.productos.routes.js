@@ -3,10 +3,10 @@ const router = express.Router();
 
 const PublicController = require("../../controllers/public/public.productos.controller");
 
-// GET /api/productos
+// GET /api/public/productos
 router.get("/productos", PublicController.getTodosProductos);
 
-// GET /api/productos/:id
+// GET /api/public/productos/:id
 router.get("/productos/:id", PublicController.getProductoById);
 
 module.exports = router;
