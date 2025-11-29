@@ -1,13 +1,16 @@
 const express = require("express");
-const publicRoutes = require("./routes/public.routes");
+const app = express();
 const errorHandler = require("./middlewares/errorHandler");
 
-const app = express();
 
+// Middlewares
 app.use(express.json());
 
-// Rutas API
-app.use("/api", publicRoutes);
+// PUBLIC ROUTES
+app.use(
+  "/api/public",
+  require("./routes/public/public.productos.routes")
+);
 
 // Middleware de errores
 app.use(errorHandler);
