@@ -29,7 +29,7 @@ export default function useProductos() {
     },[]);
 
     useEffect(() => {
-        console.log(productos);
+        //console.log(productos);
     }, [productos]);
 
     return { productos, loading };
