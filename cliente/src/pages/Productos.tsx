@@ -12,6 +12,9 @@ function Productos(): JSX.Element {
                 
                 <h1 className="text-3xl font-bold underline "> Hola mundillo desde Productos </h1>
                 <div className="productos-content">
+
+                    
+
                     {productos.map((producto) => (
                         <ProductoCard key={producto.id_producto} producto={producto} />
                         )

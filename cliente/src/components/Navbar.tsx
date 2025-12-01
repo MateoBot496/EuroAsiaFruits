@@ -4,7 +4,10 @@ import logo from "../assets/logo.png";
 export default function Navbar() {
   return (
     <nav className="navbar">
-      <img src={logo} alt="logo" className="logo" />
+      <Link to="/" className="navLink">
+        <img src={logo} alt="logo" className="logo" />
+      </Link>
+      
 
       <Link to="/" className="navLink">Home</Link>
       <Link to="/productos" className="navLink">Productos</Link>
