@@ -2,7 +2,7 @@ const ProductosService = require("../../services/productos.service");
 
 module.exports = {
 
-  // / GET /api/public/productos/buscar?search=xxx
+  // GET /api/public/productos/buscar?search=xxx
   async searchProductos(req, res, next) {
     try {
       const search = req.query.search || "";
