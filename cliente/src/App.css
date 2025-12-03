@@ -74,6 +74,7 @@ body{
         background: gray;
         border-radius: 999px;
         color: white;
+        flex-direction: column;
 
     }
     .searchbar__input{
