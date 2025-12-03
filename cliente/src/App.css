@@ -1,3 +1,13 @@
+@font-face {
+    font-family: 'Commerce';
+    src: url(assets/fonts/CommerceRegular.ttf);
+}
+
+@font-face {
+    font-family: 'Baloo';
+    src: url(assets/fonts/Baloo2-VariableFont_wght.ttf);
+}
+
 /* ===========================
    VARIABLES DE COLOR
    =========================== */
@@ -11,13 +21,17 @@
   --color-crema-oscuro: rgba(245, 209, 172);
 }
 
+.rosa{
+    background-color: var(--color-rosado) !important;
+}
 /* ===========================
    bODY
    =========================== */
 body{
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Baloo';
+    font-size: 1.5rem;
 }
 /* ===========================
    COMPONENTES
@@ -27,12 +41,14 @@ body{
     /* ===========================
     NAVBAR
     =========================== */
+    
     .navbar{
         width: 100%;
         border-bottom: 2px solid rgb(255, 244, 220);
         background-color: var(--color-crema);
-        height: 7vh ;
+        height: 25vh;
         display: flex;
+        flex-direction: column;
         justify-content: space-around;
         align-items: center;
     }
@@ -54,11 +70,19 @@ body{
 
     .searchbar{
         display: flex;
-        padding: 10px 12px;
+        padding: 0.5vh 1vh;
         background: gray;
         border-radius: 999px;
         color: white;
+        flex-direction: column;
 
+    }
+    .searchbar__input{
+        border: none;
+        background: transparent;
+        outline: none;
+        color: white;
+        font-size: 1rem;
     }
         
     /* ===========================
@@ -70,6 +94,13 @@ body{
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         background-color: aliceblue;
+        color: black !important;
+        
+        width: 300px;
+    }
+
+    .producto-card p{
+        font-size: 1.1rem;
     }
 
 
@@ -86,6 +117,9 @@ body{
     /* ===========================
     HOME
     =========================== */
+    .home{
+        flex-direction: column;
+    }
 
     .homeHero{
         background-image: url('../assets/tomate2.jpg');
@@ -95,7 +129,9 @@ body{
         background-position: center;
         height: 50vh;
         color: var(--color-crema-oscuro);
-        font-family: Arial, Helvetica, sans-serif;
+        /*font-family: Arial, Helvetica, sans-serif;*/
+        font-family: 'Baloo';
+        font-style: italic;
     }
 
     .productos{
@@ -103,11 +139,11 @@ body{
     }
 
     .homeHero__title{
-        font-size: 48px;
         font-weight: bold;
+        font-size: 2rem;
     }
     .homeHero__subtitle{
-        font-size: 24px;
+        display: none;
     }
 
 
@@ -117,12 +153,59 @@ body{
         border-radius: 5px;
         background-color: var(--color-rojo);
         color: white;
-        font-size: 1rem;
         cursor: pointer;
     }
 
     .negro{
         background-color: rgb(44, 44, 44);
+    }
+
+    .companyBrief{
+        background-color: var(--color-crema);
+        color: var(--color-verde-oscuro);
+        font-family: 'Baloo';
+        display: flex;
+        flex-direction: column;
+        padding: 5%;
+        gap: 5vh;
+    }
+
+    .companyBriefContainer{
+        display: flex;
+        width: 80%;
+        justify-content: center;
+        align-items: center;
+        gap: 5vh;
+    }
+    
+    .companyBrief_cards{
+        display: flex;
+        flex-direction: column;
+        gap: 1vh;
+    }
+
+    .companyBrief_card{
+        border: 2px solid black;
+        border-radius: 10px;
+        background-color: var(--color-crema-oscuro);
+        padding: 1vh;
+        text-align: center;
+    }
+
+    .homeFinal{
+        background-color: var(--color-verde-azulado);
+        color: white;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2vh;
+        text-align: center  ;
+        min-height: 60vh;
+    }
+
+    .textoCard{
+        font-size: 1.2rem;
     }
 
 /* ===========================
@@ -134,7 +217,7 @@ body{
     flex: 1;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
+    gap: 5%;
 }
 
 /* ===========================
@@ -142,6 +225,26 @@ body{
    =========================== */
 h2{
     text-align: center;
-    font-size: large;
-    font-weight: bold;
+}
+
+
+
+/* ===========================
+   MEDIA QUERIES
+   =========================== */
+
+@media (min-width: 640px) {
+  .navbar {
+    flex-direction: row;
+    height: 7vh;
+  }
+
+  .homeHero__subtitle{
+        display: block;
+    }
+
+    .companyBrief_cards{
+        flex-direction: row;
+        gap: 2vh;
+    }
 }
