@@ -7,7 +7,7 @@ export default function useProductos() {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-
+        
         async function fetchProductos() {
             try {
                 const res: Response = await fetch("http://localhost:3000/api/public/productos/");

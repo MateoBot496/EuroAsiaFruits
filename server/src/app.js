@@ -3,6 +3,8 @@ const cors = require('cors');
 const path = require("path");
 
 const app = express();
+app.use(cors());
+
 const errorHandler = require("./middlewares/errorHandler");
 
 
