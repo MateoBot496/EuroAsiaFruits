@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import useSearchBar from "../hooks/useSearchBar";
 
 export default function Searchbar() {
@@ -33,8 +34,10 @@ export default function Searchbar() {
         resultado.length > 0 ? (
             <div className="bg-black border-2 w-60 absolute z-10">
               {resultado.map((producto) => (
+                
                 <div key={producto.id_producto} className="border-b-2 p-2 text-white">
-                  {producto.nombre}
+                  <Link to={`/producto/${producto.id_producto}`} key={producto.id_producto} > {producto.nombre} </Link>
+                  
                 </div>
               ))}
             </div>

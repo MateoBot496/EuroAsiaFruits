@@ -140,7 +140,7 @@ body{
 
     .homeHero__title{
         font-weight: bold;
-        font-size: 2rem;
+        font-size: 2em;
     }
     .homeHero__subtitle{
         display: none;
