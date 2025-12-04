@@ -10,7 +10,8 @@ import About from './pages/About'
 function App() : JSX.Element {
 
   
-
+//para importar los paths de las distintas páginas.
+//el navbar está por encima para que esté presente en todas las páginas.
   return (
     <>
       <BrowserRouter>

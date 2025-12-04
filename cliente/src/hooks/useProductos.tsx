@@ -6,6 +6,7 @@ export default function useProductos() {
     const [productos, setProductos] = useState<Producto[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
+    //hacer fetch para cargar productos actualizados cada vez que se cargue la página.
     useEffect(() => {
 
         async function fetchProductos() {
@@ -28,6 +29,7 @@ export default function useProductos() {
 
     },[]);
 
+    //para renderizar solo cuando la variable producto sea afectada)
     useEffect(() => {
         console.log(productos);
     }, [productos]);
