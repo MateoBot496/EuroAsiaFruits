@@ -1,13 +1,25 @@
 const ProductosService = require("../../services/productos.service");
 
+function buildImageUrl(req, filename) {
+  if (!filename) return null;
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
+  return `${baseUrl}/images/${filename}`;
+}
+
 module.exports = {
 
-  // / GET /api/public/productos/buscar?search=xxx
+  // GET /api/public/productos/buscar?search=xxx
   async searchProductos(req, res, next) {
     try {
       const search = req.query.search || "";
       const productos = await ProductosService.searchProductos(search);
-      res.json(productos);
+
+      const resultado = productos.map(p => ({
+        ...p,
+        url_imagen: buildImageUrl(req, p.url_imagen)
+      }));
+
+      res.json(resultado);
     } catch (error) {
       next(error);
     }
@@ -17,7 +29,13 @@ module.exports = {
   async getTodosProductos(req, res, next) {
     try {
       const productos = await ProductosService.getTodosProductos();
-      res.json(productos);
+
+      const resultado = productos.map(p => ({
+        ...p,
+        url_imagen: buildImageUrl(req, p.url_imagen)
+      }));
+
+      res.json(resultado);
     } catch (error) {
       next(error);
     }
@@ -32,6 +50,8 @@ module.exports = {
       if (!producto) {
         return res.status(404).json({ error: "Producto no encontrado" });
       }
+
+      producto.url_imagen = buildImageUrl(req, producto.url_imagen);
 
       res.json(producto);
     } catch (error) {
