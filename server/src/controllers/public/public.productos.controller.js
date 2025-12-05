@@ -1,5 +1,8 @@
 const ProductosService = require("../../services/productos.service");
 
+
+//convertir campo url_imagen de la BBDD en ruta dinámica
+
 function buildImageUrl(req, filename) {
   if (!filename) return null;
   const baseUrl = `${req.protocol}://${req.get("host")}`;

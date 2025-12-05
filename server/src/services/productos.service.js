@@ -70,7 +70,7 @@ module.exports = {
     return rows[0];
   },
 
-  // busqueda con palabra clave (nombre, descripcion, categoria, grupo, origen)
+  // busqueda con palabra clave (nombre, descripcion, categoria, grupo, origen,envase)
 
   async searchProductos(search) {
 
