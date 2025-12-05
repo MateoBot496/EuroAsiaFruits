@@ -13,5 +13,8 @@ router.get("/productos/buscar", PublicController.searchProductos);
 // GET /api/public/productos/:id
 router.get("/productos/:id", PublicController.getProductoById);
 
+// GET /api/public/productos-destacados
+router.get("/productos-destacados", PublicController.getProductosDestacados);
+
 
 module.exports = router;

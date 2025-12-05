@@ -11,6 +11,23 @@ function buildImageUrl(req, filename) {
 
 module.exports = {
 
+
+  // GET /api/public/productos-destacados
+  async getProductosDestacados(req, res, next) {
+    try {
+      const productos = await ProductosService.getProductosDestacados();
+
+      const resultado = productos.map(p => ({
+        ...p,
+        url_imagen: buildImageUrl(req, p.url_imagen)
+      }));
+
+      res.json(resultado);
+    } catch (error) {
+      next(error);
+    }
+  },
+
   // GET /api/public/productos/buscar?search=xxx
   async searchProductos(req, res, next) {
     try {
