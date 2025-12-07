@@ -2,25 +2,33 @@ import type { JSX } from "react";
 import tomate from '../assets/tomate2.jpg'
 import fresa from '../assets/fresa1.jpg'
 import ProductoCard from "../components/ProductoCard";
-import useProductos from "../hooks/useProductos";
+import useProductosDestacados from "../hooks/useProductosDestacados";
 
 
 
 function Home(): JSX.Element {
-    const {productos, loading} = useProductos();
+    const {
+        productos: productosDestacados,
+        loading: loadingDestacados
+    } = useProductosDestacados();
+
+    // Protección mientras carga los productos
+    if (loadingDestacados) {
+        return <p className="text-center mt-10">Cargando productos...</p>;
+    }
     return (
         <>
-           <div className="home">
-                    
+            <div className="home">
+
                 <div style={{ backgroundImage: `url(${tomate})` }} className="homeHero relative ">
 
                     <div className=" w-[50%] absolute left-0 h-[50vh] flex flex-col justify-center text-center ">
                         <h1 className="homeHero__title">Bienvenidos a EuroAsia Fruits</h1>
-                        <p className="homeHero__subtitle">Tu tienda de verduras, y frutas exóticas en línea</p>
+                        <p className="homeHero__subtitle">Tu tienda de verduras y frutas exóticas en línea</p>
                     </div>
-                    
+
                     <div className="w-full h-[20vh] flex flex-col  justify-center items-center gap-5 absolute bottom-0 xl:flex-row">
-                        
+
                         <button className="saberMasButton">Saber mas</button>
                         <button className="saberMasButton negro">Otro boton</button>
                     </div>
@@ -34,11 +42,11 @@ function Home(): JSX.Element {
                             <p className="text-center">
                                 Trabajamos para llevar productos frescos y de calidad a mercados internacionales, garantizando la satisfacción de nuestros clientes y el bienestar de nuestros productores.
                             </p>
-                            
+
                         </div>
                         <img src={fresa} alt="imagen de fresa" className="w-100" />
                     </div>
-                    
+
 
                     <div className="companyBrief_cards w-[80%] ">
                         <div className="companyBrief_card">
@@ -61,7 +69,7 @@ function Home(): JSX.Element {
                         </div>
                     </div>
                 </div>
-                    
+
 
 
 
@@ -79,7 +87,7 @@ function Home(): JSX.Element {
                             Trabajamos para llevar productos frescos y de calidad a mercados internacionales, garantizando la satisfacción de nuestros clientes y el bienestar de nuestros productores.
                         </p>
                         <div className="flex gap-5 flex-col xl:flex-row justify-center items-center">
-                            {productos.slice(0, 2).map((producto, index) => (
+                            {productosDestacados.slice(0, 2).map((producto, index) => (
                                 <ProductoCard key={index} producto={producto} />
                             ))}
                         </div>
