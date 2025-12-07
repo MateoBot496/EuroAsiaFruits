@@ -87,8 +87,8 @@ function Home(): JSX.Element {
                             Trabajamos para llevar productos frescos y de calidad a mercados internacionales, garantizando la satisfacción de nuestros clientes y el bienestar de nuestros productores.
                         </p>
                         <div className="flex gap-5 flex-col xl:flex-row justify-center items-center">
-                            {productosDestacados.slice(0, 2).map((producto, index) => (
-                                <ProductoCard key={index} producto={producto} />
+                            {productosDestacados.slice(0, 2).map((producto) => (
+                                <ProductoCard key={producto.id_producto} producto={producto} />
                             ))}
                         </div>
                     </div>
