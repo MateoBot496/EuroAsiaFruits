@@ -70,6 +70,7 @@ module.exports = {
     return rows[0];
   },
 
+// Obtener productos destacados (para homepage: destacados)
 
   async getProductosDestacados() {
 
