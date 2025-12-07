@@ -36,7 +36,7 @@ module.exports = {
     return rows;
   },
 
-  // un producto (para pagina detalle de producto)
+  // Obtener un producto (para pagina detalle de producto)
 
   async getProductoById(id) {
 
@@ -70,7 +70,31 @@ module.exports = {
     return rows[0];
   },
 
-  // busqueda con palabra clave (nombre, descripcion, categoria, grupo, origen)
+// Obtener productos destacados (para homepage: destacados)
+
+  async getProductosDestacados() {
+
+    const [rows] = await pool.query(`
+    SELECT
+      p.id_producto,
+      p.referencia,
+      p.nombre,
+      p.descripcion,
+      p.url_imagen,
+
+      c.nombre AS categoria,
+      g.nombre AS grupo
+
+    FROM productos p
+    LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+    LEFT JOIN grupos g ON p.id_grupo = g.id_grupo
+    WHERE p.destacado = 1;
+  `);
+
+    return rows;
+  },
+
+  // Búsqueda con palabra clave (nombre, descripcion, categoria, grupo, origen,envase)
 
   async searchProductos(search) {
 

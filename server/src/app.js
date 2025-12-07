@@ -10,7 +10,7 @@ const errorHandler = require("./middlewares/errorHandler");
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-// PUBLIC ROUTES
+// Rutas publicas
 app.use(
   "/api/public",
   require("./routes/public/public.productos.routes")
@@ -19,7 +19,7 @@ app.use(
 // Middleware de errores
 app.use(errorHandler);
 
-// servir carpeta estática para imágenes
+// Declarar carpeta estática para imágenes
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 module.exports = app;
