@@ -3,6 +3,7 @@ import tomate from '../assets/tomate2.jpg'
 import fresa from '../assets/fresa1.jpg'
 import ProductoCard from "../components/ProductoCard";
 import useProductosDestacados from "../hooks/useProductosDestacados";
+import { Link } from "react-router-dom";
 
 
 
@@ -88,7 +89,12 @@ function Home(): JSX.Element {
                         </p>
                         <div className="flex gap-5 flex-col xl:flex-row justify-center items-center">
                             {productosDestacados.slice(0, 2).map((producto, index) => (
-                                <ProductoCard key={index} producto={producto} />
+                                <Link to={`/producto/${producto.id_producto}`} key={producto.id_producto} > 
+
+                                    
+                                    <ProductoCard key={index} producto={producto} />
+
+                                </Link>
                             ))}
                         </div>
                     </div>

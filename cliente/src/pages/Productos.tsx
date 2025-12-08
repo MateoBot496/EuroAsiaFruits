@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 import useProductos from "../hooks/useProductos";
 import ProductoCard from "../components/ProductoCard";
+import { Link } from "react-router-dom";
 
 function Productos(): JSX.Element {
     const {productos, loading} = useProductos();
@@ -10,13 +11,15 @@ function Productos(): JSX.Element {
             <div className="productos">
                 
                 
-                <h1 className="text-3xl font-bold underline "> Hola mundillo desde Productos </h1>
+                <h1 className="text-3xl font-bold underline "> Todos los productos </h1>
                 <div className="productos-content">
 
                     
 
                     {productos.map((producto) => (
-                        <ProductoCard key={producto.id_producto} producto={producto} />
+                        <Link to={`/producto/${producto.id_producto}`} key={producto.id_producto} >
+                            <ProductoCard key={producto.id_producto} producto={producto} />
+                        </Link>
                         )
                     )}
                     
