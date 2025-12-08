@@ -29,8 +29,8 @@ function Home(): JSX.Element {
 
                     <div className="w-full h-[20vh] flex flex-col  justify-center items-center gap-5 absolute bottom-0 xl:flex-row">
 
-                        <button className="saberMasButton">Saber mas</button>
-                        <button className="saberMasButton negro">Otro boton</button>
+                        <button className="saberMasButton">Saber más</button>
+                        <button className="saberMasButton negro">Otro botón</button>
                     </div>
 
                 </div>
