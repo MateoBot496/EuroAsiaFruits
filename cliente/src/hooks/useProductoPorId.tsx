@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import type Producto from "../interfaces/productoInterface";
 
-export default function useProductos() {
+export default function useProductos(id: string | undefined) {
 
-    const [productos, setProductos] = useState<Producto[]>([]);
+    const [producto, setProductos] = useState<Producto>({} as Producto);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         
         async function fetchProductos() {
             try {
-                const res: Response = await fetch("http://localhost:3000/api/public/productos/");
+                const res: Response = await fetch(`http://localhost:3000/api/public/productos/${id}`);
                 if (!res.ok) {
                     throw new Error(`Error del servidor: ${res.status}`);
                 }
-                const data: Producto[] = await res.json();
+                const data: Producto = await res.json();
                 setProductos(data);
             } catch (err) {
                 console.error(err);
@@ -26,9 +26,9 @@ export default function useProductos() {
         fetchProductos();
 
 
-    },[]);
+    },[id]);
 
 
-    return { productos, loading };
+    return { producto, loading };
 
 }

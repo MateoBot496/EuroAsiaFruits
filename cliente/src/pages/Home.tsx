@@ -3,6 +3,7 @@ import tomate from '../assets/tomate2.jpg'
 import fresa from '../assets/fresa1.jpg'
 import ProductoCard from "../components/ProductoCard";
 import useProductosDestacados from "../hooks/useProductosDestacados";
+import { Link } from "react-router-dom";
 
 
 
@@ -74,21 +75,26 @@ function Home(): JSX.Element {
 
 
                 <div className="homeFinal flex-col xl:flex-row gap-10 ">
-                    <div className="flex flex-col gap-10 justify-center items-center">
+                    <div className="flex flex-col gap-10 justify-center items-center xl:!w-[80vh]">
                         <h2 className="font-bold text-2xl text-center">¿Quieres conocernos?</h2>
                         <p>
                             Trabajamos para llevar productos frescos y de calidad a mercados internacionales, garantizando la satisfacción de nuestros clientes y el bienestar de nuestros productores.
                         </p>
-                        <button className="saberMasButton rosa !w-60" > Saber más</button>
+                        <button className="saberMasButton rosa !w-60 xl:!w-80" > Saber más</button>
                     </div>
-                    <div className="flex flex-col gap-5 justify-center items-center">
+                    <div className="flex flex-col gap-5 justify-center items-center xl:!w-[80vh]">
                         <h2 className="font-bold text-2xl text-center">Nuestros productos</h2>
                         <p>
                             Trabajamos para llevar productos frescos y de calidad a mercados internacionales, garantizando la satisfacción de nuestros clientes y el bienestar de nuestros productores.
                         </p>
                         <div className="flex gap-5 flex-col xl:flex-row justify-center items-center">
                             {productosDestacados.slice(0, 2).map((producto, index) => (
-                                <ProductoCard key={index} producto={producto} />
+                                <Link to={`/producto/${producto.id_producto}`} key={producto.id_producto} > 
+
+                                    
+                                    <ProductoCard key={index} producto={producto} />
+
+                                </Link>
                             ))}
                         </div>
                     </div>

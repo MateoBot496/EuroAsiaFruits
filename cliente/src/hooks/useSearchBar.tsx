@@ -59,8 +59,6 @@ export default function useSearchBar({ searchTerm }: { searchTerm: string }) {
 
           const data: Producto[] = await res.json();
           setResultado(data);
-          // si quieres loguear el resultado exacto recibido, hazlo con `data`:
-          console.log("data recibida:", data);
         } catch (err: any) {
           if (err.name === "AbortError") {
             // petición cancelada: no es un error real que queramos mostrar
@@ -89,5 +87,5 @@ export default function useSearchBar({ searchTerm }: { searchTerm: string }) {
 
 
 
-  return { resultado, loading, handleChange };
+  return { resultado, loading, handleChange, term };
 }

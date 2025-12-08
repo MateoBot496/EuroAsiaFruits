@@ -1,7 +1,15 @@
+import { Link } from "react-router-dom";
 import useSearchBar from "../hooks/useSearchBar";
+import { useEffect, useState } from "react";
 
 export default function Searchbar() {
-    const { resultado, loading, handleChange } = useSearchBar({searchTerm: ""});
+    const { resultado, loading, handleChange, term  } = useSearchBar({searchTerm: ""});
+    const [isOpen, setIsOpen] =  useState<boolean>(true);
+
+      useEffect(() => {
+          setIsOpen(true);
+      }, [resultado]);
+
   return (
     <div>
       <div className="searchbar">
@@ -30,11 +38,13 @@ export default function Searchbar() {
           
       </div>
       {
-        resultado.length > 0 ? (
-            <div className="bg-black border-2 w-60 absolute z-10">
+        resultado.length > 0 && term  != "" && isOpen ? (
+            <div className="searchbar-results w-60 absolute z-10">
               {resultado.map((producto) => (
-                <div key={producto.id_producto} className="border-b-2 p-2 text-white">
-                  {producto.nombre}
+                
+                <div key={producto.id_producto} className="searchbar-result-item hover:bg-gray-700">
+                  <Link to={`/producto/${producto.id_producto}`} key={producto.id_producto} onClick={() => setIsOpen(false)}> {producto.nombre} </Link>
+                  
                 </div>
               ))}
             </div>

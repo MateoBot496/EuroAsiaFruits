@@ -69,6 +69,7 @@ body{
     }
 
     .searchbar{
+        width: 250px;
         display: flex;
         padding: 0.5vh 1vh;
         background: gray;
@@ -83,6 +84,34 @@ body{
         outline: none;
         color: white;
         font-size: 1rem;
+    }
+    .searchbar-results{
+        width: 250px;
+        max-height: 200px;
+        overflow-y: auto;
+        background: rgb(63, 63, 63);
+        border-radius: 8px;
+        scrollbar-width: medium;
+        scrollbar-color: white;
+    }
+
+    .searchbar-results::-webkit-scrollbar {
+    width: 8px;
+}
+
+    .searchbar-results::-webkit-scrollbar-thumb {
+        background-color: white;
+        border-radius: 4px;
+    }
+
+    .searchbar-results::-webkit-scrollbar-track {
+        background: rgb(63, 63, 63);
+    }
+
+    .searchbar-result-item{
+        padding: 1vh;
+        color: white;
+        border: 1px solid white;
     }
         
     /* ===========================
@@ -140,7 +169,7 @@ body{
 
     .homeHero__title{
         font-weight: bold;
-        font-size: 2rem;
+        font-size: 2em;
     }
     .homeHero__subtitle{
         display: none;
