@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Productos from './pages/Productos'
 import About from './pages/About'
+import Producto from './pages/Producto'
 
 
 function App() : JSX.Element {
@@ -21,6 +22,7 @@ function App() : JSX.Element {
             <Route path="/" element={<Home />} />
             <Route path="/productos" element={<Productos />} />
             <Route path="/about" element={<About />} />
+            <Route path="/producto/:id" element={ <Producto /> } />
 
           </Routes>
           

@@ -59,20 +59,17 @@ export default function useSearchBar({ searchTerm }: { searchTerm: string }) {
 
           const data: Producto[] = await res.json();
           setResultado(data);
-          // si quieres loguear el resultado exacto recibido, hazlo con `data`:
-          console.log("data recibida:", data);
         } catch (err: any) {
           if (err.name === "AbortError") {
-            // petición cancelada: no es un error real que queramos mostrar
-            // console.log("fetch abortado");
+            
           } else {
             console.error(err);
           }
         } finally {
-          // sólo dejar loading = false si este controller sigue siendo el actual
+          
           if (abortCtrlRef.current === controller) {
             setLoading(false);
-            // NO uses console.log(resultado) aquí — puede estar desfasado.
+            
           }
         }
       })();
@@ -83,11 +80,11 @@ export default function useSearchBar({ searchTerm }: { searchTerm: string }) {
       if (debounceRef.current) {
         window.clearTimeout(debounceRef.current);
       }
-      // no abortar aquí necesariamente — lo hacemos al iniciar nueva petición arriba
+      
     };
   }, [term]);
 
 
 
-  return { resultado, loading, handleChange };
+  return { resultado, loading, handleChange, term };
 }
