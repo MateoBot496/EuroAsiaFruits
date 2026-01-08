@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
-const pool = require("../db.js");
-const { findAdminByEmail, findAdminById } = require("./users.js");
+const pool = require('../config/db');
+const { findAdminByEmail, findAdminById } = require("./users.service.js");
 
 /**
  * Crear un admin: SOLO SUPERADMIN

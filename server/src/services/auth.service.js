@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const pool = require("../db.js");
-const { findAdminByEmail } = require("./users.js");
+const pool = require('../config/db');
+const { findAdminByEmail } = require("./users.service.js");
 
 /**
  * Login para ADMIN/SUPERADMIN
