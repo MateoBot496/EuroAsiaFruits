@@ -1,7 +1,6 @@
 //Esta funcion verifica el JWT en las cookies de la solicitud entrante
 //y asegura que el usuario tenga el rol adecuado para acceder a la ruta protegida.
 
-
 import jwt from 'jsonwebtoken';
 
 
