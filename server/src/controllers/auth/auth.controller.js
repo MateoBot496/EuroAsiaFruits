@@ -1,33 +1,36 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { findUserByEmail } from '../../services/user.service.js';
+import { loginAdmin } from "../../services/auth.service.js";
 
+
+//POST /api/auth/login
 export const login = async (req, res) => {
-    const {email, password} = req.body;
+  try {
+    const { email, password } = req.body;
 
-    // Aquí deberías verificar el email y la contraseña con la base de datos
-    const user = await findUserByEmail(email); 
-    if (!user) {
-        return res.status(401).json({message: 'Credenciales inválidas'});
-    }
+    const { token, role } = await loginAdmin(email, password);
 
-    const valid = await bcrypt.compare(password, user.passwordHash);
-    if (!valid) {
-        return res.status(401).json({message: 'Credenciales inválidas'});
-    }
-
-    const token = jwt.sign(
-        {id: user.id, role: user.role},
-        process.env.JWT_SECRET,
-        {expiresIn: '1h'}
-    );
-    
-    res.cookie('token', token, {
-        httpOnly: true,
-        sameSite: 'strict',
-        secure: false
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
     });
 
-    res.json({role: user.role});
+    return res.status(200).json({ role });
+  } catch (e) {
+    return res.status(e.statusCode || 500).json({ message: e.message });
+  }
+};
 
-}
+// POST /api/auth/logout
+export const logout = async (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  });
+  return res.status(204).send();
+};
+
+//GET /api/auth/me
+export const me = async (req, res) => {
+  return res.status(200).json({ user: req.user });
+};

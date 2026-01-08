@@ -1,10 +1,11 @@
-const express = require("express");
-const router = express.Router();
-const { auth } = require("../../middlewares/auth");
+import { Router } from "express";
+import { auth } from "../../middlewares/auth.js";
+import { login, logout, me } from "../../controllers/auth/auth.controller.js";
 
-// GET /auth/me → devuelve info del usuario logueado
-router.get("/me", auth(), (req, res) => {
-  res.json({ role: req.user.role, username: req.user.username });
-});
+const router = Router();
 
-module.exports = router;
+router.post("/login", login);
+router.post("/logout", logout);
+router.get("/me", auth([0, 1]), me);
+
+export default router;
