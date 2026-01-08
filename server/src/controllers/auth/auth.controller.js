@@ -57,7 +57,8 @@ module.exports = {
   },
 
 
-  //POST /api/auth/refresh
+  //POST /api/auth/refresh   
+  // validar refreshToken y generar nuevo accessToken
   async refresh(req, res) {
     const token = req.cookies?.refreshToken;
     if (!token) return res.status(401).json({ message: "No refresh token" });
