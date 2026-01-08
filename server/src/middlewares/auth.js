@@ -1,33 +1,34 @@
-//Esta funcion verifica el JWT en las cookies de la solicitud entrante
-//y asegura que el usuario tenga el rol adecuado para acceder a la ruta protegida.
+const jwt = require("jsonwebtoken");
+
 /**
- * Tambien comprueba el rol del autenticado:
+ * Verifica el JWT en cookie y comprueba roles.
+ *
+ * Uso:
+ *   auth()         -> solo autenticado
  *   auth([0,1])    -> ADMIN o SUPERADMIN
  *   auth([1])      -> solo SUPERADMIN
  */
+module.exports = {
+  auth(roles = []) {
+    return (req, res, next) => {
+      const token = req.cookies?.token;
 
-import jwt from 'jsonwebtoken';
-
-export function auth(roles = []) {
-  return (req, res, next) => {
-    const token = req.cookies?.token;  // evita crash si no hay cookie
-
-    if (!token) {
-      return res.status(401).json({ message: "No autorizado" });
-    }
-
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded;
-
-      if (roles.length > 0 && !roles.includes(decoded.role)) {
-        return res.status(403).json({ message: "Prohibido" });
+      if (!token) {
+        return res.status(401).json({ message: "No autorizado" });
       }
 
-      return next();  // next() debe estar dentro de try
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
 
-    } catch (err) {
-      return res.status(401).json({ message: "Token inválido o expirado" });
-    }
-  };
-}
+        if (roles.length > 0 && !roles.includes(decoded.role)) {
+          return res.status(403).json({ message: "Prohibido" });
+        }
+
+        return next();
+      } catch (err) {
+        return res.status(401).json({ message: "Token inválido o expirado" });
+      }
+    };
+  },
+};

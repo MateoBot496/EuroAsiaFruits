@@ -1,11 +1,10 @@
-import { Router } from "express";
-import { auth } from "../../middlewares/auth.js";
-import { login, logout, me } from "../../controllers/auth/auth.controller.js";
+const AuthController = require("../../controllers/auth/auth.controller.js");
 
-const router = Router();
+//POST /api/auth/login
+router.post("/login", AuthController.login);
 
-router.post("/login", login);
-router.post("/logout", logout);
-router.get("/me", auth([0, 1]), me);
+//POST /api/auth/logout
+router.post("/logout", AuthController.logout);
 
-export default router;
+//GET /api/auth/me 
+router.get("/me", auth([0,1]), AuthController.me);

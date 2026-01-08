@@ -11,7 +11,6 @@ function buildImageUrl(req, filename) {
 
 module.exports = {
 
-
   // GET /api/public/productos-destacados
   async getProductosDestacados(req, res, next) {
     try {
