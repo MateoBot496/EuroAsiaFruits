@@ -8,27 +8,28 @@ const jwt = require("jsonwebtoken");
  *   auth([0,1])    -> ADMIN o SUPERADMIN
  *   auth([1])      -> solo SUPERADMIN
  */
-module.exports = {
-  auth(roles = []) {
-    return (req, res, next) => {
-      const token = req.cookies?.token;
 
-      if (!token) {
-        return res.status(401).json({ message: "No autorizado" });
+function auth(roles = []) {
+  return (req, res, next) => {
+    const token = req.cookies?.token;
+
+    if (!token) {
+      return res.status(401).json({ message: "No autorizado" });
+    }
+
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+
+      if (roles.length > 0 && !roles.includes(decoded.role)) {
+        return res.status(403).json({ message: "Prohibido" });
       }
 
-      try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
+      return next();
+    } catch (err) {
+      return res.status(401).json({ message: "Token inválido o expirado" });
+    }
+  };
+}
 
-        if (roles.length > 0 && !roles.includes(decoded.role)) {
-          return res.status(403).json({ message: "Prohibido" });
-        }
-
-        return next();
-      } catch (err) {
-        return res.status(401).json({ message: "Token inválido o expirado" });
-      }
-    };
-  },
-};
+module.exports = auth;
