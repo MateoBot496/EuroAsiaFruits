@@ -48,13 +48,22 @@ async function loginAdmin(email, password) {
     [admin.id]
   );
 
-  const token = jwt.sign(
-    { id: admin.id, role: admin.role },
+  const payload = { id: admin.id, role: admin.role };
+
+  const accessToken = jwt.sign(
+    payload,
     process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN || "1h" }
+    { expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || "10m" }
   );
 
-  return { token, role: admin.role };
+  const refreshToken = jwt.sign(
+    payload,
+    process.env.JWT_REFRESH_SECRET,
+    { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "14d" }
+  );
+
+  return { accessToken, refreshToken, role: admin.role };
+
 }
 
 module.exports = {

@@ -11,7 +11,7 @@ const jwt = require("jsonwebtoken");
 
 function auth(roles = []) {
   return (req, res, next) => {
-    const token = req.cookies?.token;
+    const token = req.cookies?.accessToken; //auth siempre con acessToken
 
     if (!token) {
       return res.status(401).json({ message: "No autorizado" });
