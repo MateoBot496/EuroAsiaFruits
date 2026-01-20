@@ -26,7 +26,7 @@ function auth(roles = []) {
       }
 
       return next();
-    } catch (err) {
+    } catch (e) {
       return res.status(401).json({ message: "Token inválido o expirado" });
     }
   };
