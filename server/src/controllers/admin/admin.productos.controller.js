@@ -1,4 +1,4 @@
-const AdminProductosService = require("../services/adminProductos.service");
+const AdminProductosService = require("../../services/admin.productos.service");
 
 // POST /api/admin/productos
 async function create(req, res, next) {
@@ -6,7 +6,7 @@ async function create(req, res, next) {
     const producto = await AdminProductosService.createProducto(req.body);
     return res.status(201).json(producto);
   } catch (e) {
-    next(e);
+    next(e); 
   }
 }
 

@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const pool = require('../config/db');
+const pool = require('../config/db.js');
 const { findAdminByEmail, findAdminById } = require("./users.service.js");
 
 /**

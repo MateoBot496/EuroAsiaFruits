@@ -2,7 +2,7 @@ const {
   createAdmin,
   disableAdmin,
   changeRole,
-} = require("../../services/adminUsers.service.js");
+} = require("../../services/admin.adminUsers.service.js");
 
 const AdminUserController = {
   

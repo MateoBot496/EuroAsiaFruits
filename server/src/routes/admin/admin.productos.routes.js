@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const AdminProductosController = require("../controllers/adminProductos.controller");
-const auth = require("../middlewares/auth");
+const AdminProductosController = require("../../controllers/admin/admin.productos.controller");
+const auth = require("../../middlewares/auth");
 
 // api/admin/productos
 
