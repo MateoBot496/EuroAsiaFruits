@@ -10,7 +10,7 @@ async function create(req, res, next) {
   }
 }
 
-// PUT o PATCH /api/admin/productos/:id
+// PUT /api/admin/productos/:id
 async function update(req, res, next) {
   try {
     const producto = await AdminProductosService.updateProducto(req.params.id, req.body);
