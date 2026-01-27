@@ -4,13 +4,13 @@ const AdminUserController = require("../../controllers/admin/admin.adminUsers.co
 
 const router = express.Router();
 
-//POST /api/admin/create
+//POST /api/admin/users/create
 router.post("/create", auth([1]), AdminUserController.createAdmin);
 
-//PUT /api/admin/disable/:adminId
+//PUT /api/admin/users/disable/:adminId
 router.put("/disable/:adminId", auth([1]), AdminUserController.disableAdmin);
 
-//PUT /api/admin/role/:adminId
+//PUT /api/admin/users/role/:adminId
 router.put("/role/:adminId", auth([1]), AdminUserController.changeRole);
 
 module.exports = router;

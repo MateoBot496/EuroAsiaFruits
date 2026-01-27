@@ -6,7 +6,7 @@ const {
 
 const AdminUserController = {
   
-//POST /api/admin/create
+//POST /api/admin/users/create
   async createAdmin(req, res) {
     try {
       const { email, password, role } = req.body;
@@ -26,7 +26,7 @@ const AdminUserController = {
   },
 
   
-//PUT /api/admin/disable/:adminId
+//PUT /api/admin/users/disable/:adminId
   async disableAdmin(req, res) {
     try {
       const adminId = Number(req.params.adminId);
@@ -41,7 +41,7 @@ const AdminUserController = {
   },
 
   
-//PUT /api/admin/role/:adminId
+//PUT /api/admin/users/role/:adminId
 
   async changeRole(req, res) {
     try {
