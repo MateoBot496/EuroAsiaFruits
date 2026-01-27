@@ -25,4 +25,4 @@ const userPool = mysql.createPool({
 module.exports = {
   productPool,
   userPool,
-};
+}; 

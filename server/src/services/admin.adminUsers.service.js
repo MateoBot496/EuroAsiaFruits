@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const pool = require('../config/db.js');
+const { userPool } = require('../config/db.js');
 const { findAdminByEmail, findAdminById } = require("./users.service.js");
 
 /**
@@ -29,7 +29,7 @@ async function createAdmin({ email, password, role = 0, createdBy }) {
 
   const passwordHash = await bcrypt.hash(password, 10);
 
-  const [result] = await pool.query(
+  const [result] = await userPool.query(
     `INSERT INTO admin_users (email, password_hash, role, is_active, created_by)
      VALUES (?, ?, ?, 1, ?)`,
     [email, passwordHash, role, createdBy]
@@ -53,7 +53,7 @@ async function disableAdmin({ adminId, disabledBy }) {
     throw err;
   }
 
-  await pool.query(
+  await userPool.query(
     `UPDATE admin_users SET is_active = 0 WHERE id = ?`,
     [adminId]
   );
@@ -78,7 +78,7 @@ async function changeRole({ adminId, newRole, changedBy }) {
     throw err;
   }
 
-  const [rows] = await pool.query(
+  const [rows] = await userPool.query(
     `SELECT id FROM admin_users WHERE id = ? LIMIT 1`,
     [adminId]
   );
@@ -89,7 +89,7 @@ async function changeRole({ adminId, newRole, changedBy }) {
     throw err;
   }
 
-  await pool.query(
+  await userPool.query(
     `UPDATE admin_users SET role = ? WHERE id = ?`,
     [newRole, adminId]
   );
