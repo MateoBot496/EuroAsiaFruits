@@ -4,8 +4,9 @@ const AdminUserController = require("../../controllers/admin/admin.adminUsers.co
 
 const router = express.Router();
 
+
 //POST /api/admin/create
-router.post("/create", auth([1]), AdminUserController.createAdmin);
+router.post("/create", AdminUserController.createAdmin);
 
 //PUT /api/admin/disable/:adminId
 router.put("/disable/:adminId", auth([1]), AdminUserController.disableAdmin);

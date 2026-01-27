@@ -5,18 +5,16 @@ const {
 } = require("../../services/admin.adminUsers.service.js");
 
 const AdminUserController = {
-  
-//POST /api/admin/create
+  //POST /api/admin/create
   async createAdmin(req, res) {
     try {
-      const { email, password, role } = req.body;
-      const createdBy = req.user.id;
+      const { username, email, password, role } = req.body;
 
       const admin = await createAdmin({
+        username,
         email,
         password,
-        role: role === undefined ? 0 : Number(role),
-        createdBy,
+        role: role || "admin",
       });
 
       return res.status(201).json(admin);
@@ -25,8 +23,7 @@ const AdminUserController = {
     }
   },
 
-  
-//PUT /api/admin/disable/:adminId
+  //PUT /api/admin/disable/:adminId
   async disableAdmin(req, res) {
     try {
       const adminId = Number(req.params.adminId);
@@ -40,8 +37,7 @@ const AdminUserController = {
     }
   },
 
-  
-//PUT /api/admin/role/:adminId
+  //PUT /api/admin/role/:adminId
 
   async changeRole(req, res) {
     try {
