@@ -9,14 +9,13 @@ const AdminUserController = {
 //POST /api/admin/users/create
   async createAdmin(req, res) {
     try {
-      const { email, password, role } = req.body;
-      const createdBy = req.user.id;
+      const { username, email, password, role } = req.body;
 
       const admin = await createAdmin({
+        username,
         email,
         password,
-        role: role === undefined ? 0 : Number(role),
-        createdBy,
+        role: role || "admin",
       });
 
       return res.status(201).json(admin);
