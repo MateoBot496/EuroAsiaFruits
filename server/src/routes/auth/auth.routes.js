@@ -8,13 +8,12 @@ const AuthController = require("../../controllers/auth/auth.controller");
 router.post("/login", AuthController.login); // publico
 
 //POST /api/auth/logout
-router.post("/logout", auth([0,1]), AuthController.logout);
+router.post("/logout", auth(["admin", "superadmin"]), AuthController.logout);
 
-//GET /api/auth/me 
-router.get("/me", auth([0,1]), AuthController.me);
+//GET /api/auth/me
+router.get("/me", auth(["admin", "superadmin"]), AuthController.me);
 
 //POST /api/auth/refresh
 router.post("/refresh", AuthController.refresh); // público: accessToken expirado y auth fallado
-
 
 module.exports = router;
