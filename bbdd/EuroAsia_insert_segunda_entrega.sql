@@ -1,3 +1,5 @@
+USE EUROASIA;
+
 INSERT INTO grupos (nombre) VALUES
 ('fruta'),
 ('verdura'),
@@ -392,15 +394,85 @@ WHERE referencia IN ('FRU001', 'FRU002', 'FRU003', 'FRU004');
 SELECT * FROM productos WHERE destacado = 1;
 
 -- insertar imagenes de producto
--- línea necesaria para hacer UPDATES sin WHERE.
+
 SET SQL_SAFE_UPDATES = 0;
 
--- nuevo código para insertar las imágenes. 
--- Sustituye los espacios vacíos del nombre por las líneas de guion bajo. Más eficiente y menos código a mano. WIN-WIN.
--- IMPORTANTE: revisar que las imágenes y los nombres de las verduras se correspondan. 
 UPDATE productos
-SET url_imagen = CONCAT(REPLACE(nombre, ' ', '_'), '.webp')
-WHERE url_imagen IS NULL OR url_imagen = '';
+SET url_imagen = 'seta_enoki.webp'
+WHERE nombre = 'seta enoki';
+
+UPDATE productos
+SET url_imagen = 'seta_eryngii.webp'
+WHERE nombre = 'seta eryngii';
+
+UPDATE productos
+SET url_imagen = 'seta_seafood.webp'
+WHERE nombre = 'seta seafood';
+
+UPDATE productos
+SET url_imagen = 'seta_shimeji_blanco.webp'
+WHERE nombre = 'seta shimeji blanco';
+
+UPDATE productos
+SET url_imagen = 'seta_shimeji_marron.webp'
+WHERE nombre = 'seta shimeji marron';
+
+UPDATE productos
+SET url_imagen = 'seta_shiitake.webp'
+WHERE nombre = 'seta shitake';
+
+UPDATE productos
+SET url_imagen = 'setas_mixtas.webp'
+WHERE nombre = 'setas mixtas';
+
+UPDATE productos
+SET url_imagen = 'pomelo_blanco.webp'
+WHERE nombre = 'pomelo blanco';
+
+UPDATE productos
+SET url_imagen = 'pomelo_rojo.webp'
+WHERE nombre = 'pomelo rojo';
+
+UPDATE productos
+SET url_imagen = 'pera_nachi.webp'
+WHERE nombre = 'pera nachi';
+
+UPDATE productos
+SET url_imagen = 'pera_marron.webp'
+WHERE nombre = 'pera marron';
+
+UPDATE productos
+SET url_imagen = 'pera_korla.webp'
+WHERE nombre = 'pera korla';
+
+UPDATE productos
+SET url_imagen = 'pera_ya.webp'
+WHERE nombre = 'pera ya';
+
+UPDATE productos
+SET url_imagen = 'manzana_fuji.webp'
+WHERE nombre = 'manzana fuji';
+
+UPDATE productos
+SET url_imagen = 'manzana_azucar_corazon.webp'
+WHERE nombre = 'manzana azucar corazon';
+
+UPDATE productos
+SET url_imagen = 'longan.webp'
+WHERE nombre = 'longan';
+
+UPDATE productos
+SET url_imagen = 'azufaifa_verde.webp'
+WHERE nombre = 'azufaifa verde';
+--modificado.
+
+-- a futuro: hacer el siguiente comando:
+
+-- UPDATE productos
+-- SET url_imagen = CONCAT(REPLACE(nombre, ' ', '_'), '.webp');
 
 
--- actualizado con el webp (28 diciembre 2025)
+
+
+
+
