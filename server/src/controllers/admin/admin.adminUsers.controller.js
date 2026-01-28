@@ -6,16 +6,17 @@ const {
 
 const AdminUserController = {
   
-//POST /api/admin/users/create
+//POST /api/admin/users
   async createAdmin(req, res) {
     try {
-      const { username, email, password, role } = req.body;
+      const { username, email, password} = req.body;
 
       const admin = await createAdmin({
         username,
         email,
         password,
-        role: role || "admin",
+        role: 0,
+        createdBy: req.user.id
       });
 
       return res.status(201).json(admin);
@@ -40,21 +41,6 @@ const AdminUserController = {
   },
 
   
-//PUT /api/admin/users/role/:adminId
-
-  async changeRole(req, res) {
-    try {
-      const adminId = Number(req.params.adminId);
-      const newRole = Number(req.body.role);
-      const changedBy = req.user.id;
-
-      const result = await changeRole({ adminId, newRole, changedBy });
-
-      return res.status(200).json(result);
-    } catch (e) {
-      return res.status(e.statusCode || 500).json({ message: e.message });
-    }
-  },
 };
 
 module.exports = AdminUserController;

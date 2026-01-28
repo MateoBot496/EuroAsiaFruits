@@ -3,8 +3,6 @@ const mysql = require("mysql2/promise");
 
 // DB: PUBLIC (solo lectura)
 
-console.log("DB_NAME =", process.env.DB_NAME);
-
 const publicPool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_PUBLIC_USER,
