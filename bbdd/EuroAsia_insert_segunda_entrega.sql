@@ -472,7 +472,21 @@ WHERE nombre = 'azufaifa verde';
 -- SET url_imagen = CONCAT(REPLACE(nombre, ' ', '_'), '.webp');
 
 
-
+-- SUPERADMIN para pruebas 
+-- SOLO PARA ENTORNOS DE DESARROLLO / TESTING
+INSERT INTO admin_users (
+  id,
+  email,
+  password_hash,
+  role,
+  is_active
+) VALUES (
+  UUID(),
+  'superadmin@euroasia.com',
+  '$2b$10$AUMEGQk.WD523pn0tbbAnuznazEVRkwd2ObBUyoJByMISzKX399Nu',
+  1,   -- SUPERADMIN
+  1
+);
 
 
 
