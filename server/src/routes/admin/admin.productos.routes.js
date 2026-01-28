@@ -6,7 +6,9 @@ const auth = require("../../middlewares/auth");
 
 // api/admin/productos
 
+
 // Crear: ADMIN (0) o SUPERADMIN (1)
+//POST api/admin/productos
 router.post(
   "/",
   auth([0, 1]),
@@ -14,13 +16,15 @@ router.post(
 );
 
 // Update: ADMIN (0) o SUPERADMIN (1)
-router.patch(
+//PUT api/admin/productos/:id
+router.put(
   "/:id",
   auth([0, 1]),
   AdminProductosController.update
 );
 
-// Delete: ADMIN (0) o SUPERADMIN (1) o SOLO SUPERADMIN???
+// Delete: SOLO SUPERADMIN (1)???
+//DELETE api/admin/productos/:id
 router.delete(
   "/:id",
   auth([1]),

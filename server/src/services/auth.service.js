@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { userPool } = require("../config/db");
+const { adminPool } = require("../config/db");
 const { findAdminByEmail } = require("./users.service.js");
 
 /**
@@ -41,7 +41,7 @@ async function loginAdmin(email, password) {
     throw err;
   }
 
-  await userPool.query(
+  await adminPool.query(
     `UPDATE admin_users
      SET failed_attempts = 0,
          locked_until = NULL,

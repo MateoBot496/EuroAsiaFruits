@@ -1,4 +1,4 @@
-const { userPool } = require('../config/db');
+const { adminPool } = require('../config/db');
 
 module.exports = {
   /**
@@ -6,7 +6,7 @@ module.exports = {
    * Devuelve null si no existe
    */
   async findAdminByEmail(email) {
-    const [rows] = await userPool.query(
+    const [rows] = await adminPool.query(
       `SELECT 
           id,
           email,
@@ -28,7 +28,7 @@ module.exports = {
    * Devuelve null si no existe
    */
   async findAdminById(id) {
-    const [rows] = await userPool.query(
+    const [rows] = await adminPool.query(
       `SELECT id, email, role, is_active AS isActive
        FROM admin_users
        WHERE id = ?
