@@ -121,7 +121,6 @@ CREATE TABLE IF NOT EXISTS admin_users (
   created_by      INT UNSIGNED NULL,
 -- mínimo para hacer los logs de auditoría.
 
-  ,
   UNIQUE KEY uk_admin_email (email),
   KEY idx_admin_role (role),
   KEY idx_admin_active (is_active),
