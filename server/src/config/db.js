@@ -1,28 +1,32 @@
 require("dotenv").config();
-
 const mysql = require("mysql2/promise");
 
+// DB: PUBLIC (solo lectura)
 
-// DB: PRODUCTOS
-const productPool = mysql.createPool({
-  host: process.env.PRODUCT_DB_HOST,
-  user: process.env.PRODUCT_DB_USER,
-  password: process.env.PRODUCT_DB_PASS,
-  database: process.env.PRODUCT_DB_NAME,
-  port: process.env.PRODUCT_DB_PORT,
+const publicPool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_PUBLIC_USER,
+  password: process.env.DB_PUBLIC_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+  waitForConnections: true,
+  connectionLimit: 10,
 });
 
 
-// DB: USUARIOS
-const userPool = mysql.createPool({
-  host: process.env.USER_DB_HOST,
-  user: process.env.USER_DB_USER,
-  password: process.env.USER_DB_PASS,
-  database: process.env.USER_DB_NAME,
-  port: process.env.USER_DB_PORT,
+// DB: ADMIN (CRUD + AUTH)
+
+const adminPool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_ADMIN_USER,
+  password: process.env.DB_ADMIN_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+  waitForConnections: true,
+  connectionLimit: 10,
 });
 
 module.exports = {
-  productPool,
-  userPool,
-}; 
+  publicPool,
+  adminPool,
+};

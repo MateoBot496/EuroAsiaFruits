@@ -1,11 +1,11 @@
-const { productPool }  = require("../config/db");
+const { publicPool }  = require("../config/db");
 module.exports = {
 
   /***********************API public *******************************/
 
   // listar todos productos 
   async getTodosProductos() {
-    const [rows] = await productPool.query(`
+    const [rows] = await publicPool.query(`
       SELECT
         p.id_producto,
         p.referencia,
@@ -39,7 +39,7 @@ module.exports = {
 
   async getProductoById(id) {
 
-    const [rows] = await productPool.query(`
+    const [rows] = await publicPool.query(`
     SELECT
       p.id_producto,
       p.referencia,
@@ -73,7 +73,7 @@ module.exports = {
 
   async getProductosDestacados() {
 
-    const [rows] = await productPool.query(`
+    const [rows] = await publicPool.query(`
     SELECT
       p.id_producto,
       p.referencia,
@@ -101,7 +101,7 @@ module.exports = {
 
     const like = `%${search}%`;
 
-    const [rows] = await productPool.query(`
+    const [rows] = await publicPool.query(`
       SELECT
         p.id_producto,
         p.referencia,
