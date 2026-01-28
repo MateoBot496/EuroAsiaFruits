@@ -1,4 +1,4 @@
-const pool = require("../config/db");
+const { productPool }  = require("../config/db");
 const PublicProductosService = require("./productos.service.js");
 
 // Normalizar valores de checkbox/boolean a TINYINT(1): descatado, disponible
@@ -37,7 +37,7 @@ async function createProducto(payload) {
   }
 
   try {
-    const [result] = await pool.query(
+    const [result] = await productPool.query(
       `
       INSERT INTO productos
       (referencia, nombre, nombre_ingles, descripcion, id_grupo, id_categoria, id_origen, url_imagen, disponible, destacado)
@@ -150,7 +150,7 @@ async function updateProducto(idProducto, payload) {
 
   try {
     values.push(id);
-    const [result] = await pool.query(
+    const [result] = await productPool.query(
       `UPDATE productos SET ${fields.join(", ")} WHERE id_producto = ?`,
       values
     );
@@ -192,7 +192,7 @@ async function deleteProducto(idProducto) {
   }
 
   try {
-    const [result] = await pool.query(
+    const [result] = await productPool.query(
       `DELETE FROM productos WHERE id_producto = ?`,
       [id]
     );
