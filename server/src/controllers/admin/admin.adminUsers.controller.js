@@ -1,22 +1,31 @@
 const {
   createAdmin,
-  disableAdmin,
-  changeRole,
+  changeAdminStatus,
+  listAdmins,
 } = require("../../services/admin.adminUsers.service.js");
 
 const AdminUserController = {
   
-//POST /api/admin/users
+  // GET /api/admin/users
+  async getAdmins(req, res) {
+    try {
+      const admins = await listAdmins();
+      return res.status(200).json(admins);
+    } catch (e) {
+      return res.status(e.statusCode || 500).json({ message: e.message });
+    }
+  },
+
+  // POST /api/admin/users
   async createAdmin(req, res) {
     try {
-      const { username, email, password} = req.body;
+      const { email, password } = req.body;
 
       const admin = await createAdmin({
-        username,
         email,
         password,
         role: 0,
-        createdBy: req.user.id
+        createdBy: Number(req.user.id), 
       });
 
       return res.status(201).json(admin);
@@ -25,22 +34,25 @@ const AdminUserController = {
     }
   },
 
-  
-//PUT /api/admin/users/disable/:adminId
-  async disableAdmin(req, res) {
-    try {
-      const adminId = Number(req.params.adminId);
-      const disabledBy = req.user.id;
+ // PUT /api/admin/users/:adminId/status
+async changeStatus(req, res) {
+  try {
+    const adminId = Number(req.params.adminId);
+    const isActive = Number(req.body.isActive);
+    const changedBy = Number(req.user.id);
 
-      const result = await disableAdmin({ adminId, disabledBy });
+    const result = await changeAdminStatus({
+      adminId,
+      isActive,
+      changedBy,
+    });
 
-      return res.status(200).json(result);
-    } catch (e) {
-      return res.status(e.statusCode || 500).json({ message: e.message });
-    }
-  },
+    return res.status(200).json(result);
+  } catch (e) {
+    return res.status(e.statusCode || 500).json({ message: e.message });
+  }
+}
 
-  
 };
 
 module.exports = AdminUserController;

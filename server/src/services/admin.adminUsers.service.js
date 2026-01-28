@@ -1,21 +1,44 @@
 const bcrypt = require("bcrypt");
 const { adminPool } = require('../config/db.js');
 const { findAdminByEmail, findAdminById } = require("./users.service.js");
-const { randomUUID } = require("crypto");
+
+/**
+ * Listar todos los admins: SOLO SUPERADMIN
+ */
+
+async function listAdmins() {
+  const [rows] = await adminPool.query(`
+    SELECT
+      id,
+      email,
+      role,
+      is_active,
+      failed_attempts,
+      locked_until,
+      last_login_at,
+      created_at,
+      updated_at,
+      created_by
+    FROM admin_users
+    ORDER BY role DESC, created_at ASC
+  `);
+
+  return rows;
+}
 
 /**
  * Crear un admin: SOLO SUPERADMIN
  * createdBy = req.user.id (del superadmin)
  */
-
 async function createAdmin({ email, password, role = 0, createdBy }) {
-
   if (!email || !password) {
     const err = new Error("Email y password son obligatorios");
     err.statusCode = 400;
     throw err;
   }
-  if (!createdBy) {
+
+  const createdByNum = Number(createdBy);
+  if (!Number.isInteger(createdByNum) || createdByNum <= 0) {
     const err = new Error("Falta createdBy (id del creador)");
     err.statusCode = 400;
     throw err;
@@ -28,9 +51,8 @@ async function createAdmin({ email, password, role = 0, createdBy }) {
     throw err;
   }
 
-  const creator = await findAdminById(createdBy);
-
-  if (!creator || Number(creator.is_active) === 0 || Number(creator.role) !== 1) {
+  const creator = await findAdminById(createdByNum); // devuelve isActive
+  if (!creator || creator.isActive === 0 || creator.role !== 1) {
     const err = new Error("Solo SUPERADMIN puede crear admins");
     err.statusCode = 403;
     throw err;
@@ -51,67 +73,77 @@ async function createAdmin({ email, password, role = 0, createdBy }) {
     throw err;
   }
 
-  const id = randomUUID();
   const passwordHash = await bcrypt.hash(password, 10);
 
-  await adminPool.query(
-    `INSERT INTO admin_users (id, email, password_hash, role, is_active, created_by)
-     VALUES (?, ?, ?, ?, 1, ?)`,
-    [id, normalizedEmail, passwordHash, roleNum, createdBy]
+  const [result] = await adminPool.query(
+    `INSERT INTO admin_users (email, password_hash, role, is_active, created_by)
+     VALUES (?, ?, ?, 1, ?)`,
+    [normalizedEmail, passwordHash, roleNum, createdByNum]
   );
 
-  return { id, email: normalizedEmail, role: roleNum };
+  return { id: result.insertId, email: normalizedEmail, role: roleNum };
 }
 
-/**
- * Desactivar un admin: SOLO SUPERADMIN
- */
-async function disableAdmin({ adminId, disabledBy }) {
-  const targetId = Number(adminId);
-  const performerId = Number(disabledBy);
 
-  if (!Number.isInteger(targetId) || targetId <= 0) {
+/**
+ * Cambiar status (isActive) de un admin: SOLO SUPERADMIN
+ */
+async function changeAdminStatus({ adminId, isActive, changedBy }) {
+  if (!Number.isInteger(adminId) || adminId <= 0) {
     const err = new Error("ID inválido");
     err.statusCode = 400;
     throw err;
   }
 
-  // solo active SUPERADMIN
-  const performer = await findAdminById(performerId);
-  if (!performer || Number(performer.is_active) === 0 || Number(performer.role) !== 1) {
-    const err = new Error("Solo SUPERADMIN puede desactivar admins");
-    err.statusCode = 403;
-    throw err;
-  }
-  // SUPERADMIN no puede desactivar a él mismo
-  if (performerId === targetId) {
-    const err = new Error("No puedes desactivarte a ti mismo");
+  if (![0, 1].includes(isActive)) {
+    const err = new Error("Estado inválido (0=disabled, 1=enabled)");
     err.statusCode = 400;
     throw err;
   }
-  // comprobar si admin existe
- const [rows] = await adminPool.query(
-    `SELECT id FROM admin_users WHERE id = ? LIMIT 1`,
-    [adminId]
-  );
-  if (!rows[0]) {
+
+  if (!Number.isInteger(changedBy) || changedBy <= 0) {
+    const err = new Error("Operador inválido");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  //Solo SUPERADMIN activo
+  const performer = await findAdminById(changedBy);
+  if (!performer || performer.isActive === 0 || performer.role !== 1) {
+    const err = new Error("Solo SUPERADMIN puede cambiar estado");
+    err.statusCode = 403;
+    throw err;
+  }
+
+  // SUPERADMIN no puede cambiar su propio estado
+  if (adminId === changedBy) {
+    const err = new Error("No puedes cambiar tu propio estado");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const target = await findAdminById(adminId);
+  if (!target) {
     const err = new Error("Admin no encontrado");
     err.statusCode = 404;
     throw err;
   }
 
-  
+  if (target.isActive === isActive) {
+    return { ok: true, alreadyInState: true };
+  }
+
   await adminPool.query(
-    `UPDATE admin_users SET is_active = 0 WHERE id = ?`,
-    [targetId]
+    `UPDATE admin_users SET is_active = ? WHERE id = ?`,
+    [isActive, adminId]
   );
 
-  return { ok: true };
+  return { ok: true, isActive };
 }
-
 
 
 module.exports = {
   createAdmin,
-  disableAdmin
+  changeAdminStatus,
+  listAdmins
 };

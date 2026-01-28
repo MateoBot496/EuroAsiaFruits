@@ -7,8 +7,12 @@ const router = express.Router();
 //POST /api/admin/users
 router.post("/", auth([1]), AdminUserController.createAdmin);
 
-//PUT /api/admin/users/disable/:adminId
-router.put("/disable/:adminId", auth([1]), AdminUserController.disableAdmin);
+//GET /api/admin/users
+router.get("/", auth([1]), AdminUserController.getAdmins);
+
+// PUT /api/admin/users/status/:adminId
+router.put("/status/:adminId", auth([1]), AdminUserController.changeStatus);
+
 
 
 module.exports = router;
