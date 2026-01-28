@@ -96,7 +96,7 @@ CREATE TABLE productos_envases (
 -- =========================================================
 CREATE TABLE IF NOT EXISTS admin_users (
   id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
-  --cambiado id para hacerlo más manejable en las FK (CHAR(36) es un poco engorroso)
+-- cambiado id para hacerlo más manejable en las FK (CHAR(36) es un poco engorroso)
   email           VARCHAR(254) NOT NULL,
   password_hash   VARCHAR(255) NOT NULL,
 
@@ -118,10 +118,9 @@ CREATE TABLE IF NOT EXISTS admin_users (
   created_at      DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   updated_at      DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)
                                  ON UPDATE CURRENT_TIMESTAMP(3),
-  created_by      CHAR(36) NULL,
+  created_by      INT UNSIGNED NULL,
 -- mínimo para hacer los logs de auditoría.
 
-  PRIMARY KEY (id),
   UNIQUE KEY uk_admin_email (email),
   KEY idx_admin_role (role),
   KEY idx_admin_active (is_active),
@@ -163,8 +162,8 @@ DELIMITER ;
 -- Un admin puede tener varios refresh tokens (varios dispositivos).
 
 CREATE TABLE IF NOT EXISTS admin_refresh_tokens (
-  id            CHAR(36) NOT NULL,
-  admin_user_id CHAR(36) NOT NULL,
+  id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  admin_user_id INT UNSIGNED NOT NULL,
 
   token_hash    VARCHAR(255) NOT NULL,
 
@@ -177,7 +176,6 @@ CREATE TABLE IF NOT EXISTS admin_refresh_tokens (
   user_agent    VARCHAR(255) NULL,
   ip_address    VARCHAR(45) NULL,
 
-  PRIMARY KEY (id),
   KEY idx_rt_admin (admin_user_id),
   KEY idx_rt_expires (expires_at),
 -- acelera: trae todos los tokens de un usuario, y revoca todos los tokens expirados.
