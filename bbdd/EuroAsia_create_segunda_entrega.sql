@@ -95,7 +95,8 @@ CREATE TABLE productos_envases (
 -- TABLAS DE ADMIN (admin_users, admin_refresh_tokens)
 -- =========================================================
 CREATE TABLE IF NOT EXISTS admin_users (
-  id              CHAR(36) NOT NULL,
+  id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+  --cambiado id para hacerlo más manejable en las FK (CHAR(36) es un poco engorroso)
   email           VARCHAR(254) NOT NULL,
   password_hash   VARCHAR(255) NOT NULL,
 
