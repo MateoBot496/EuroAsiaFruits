@@ -53,6 +53,18 @@ body{
         align-items: center;
     }
 
+    .adminNavbar{
+        width: 100%;
+        border-bottom: 2px solid rgb(0, 0, 0);
+        background-color: white;
+        height: 25vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+
     .navLink{
         text-decoration: none;
         color: black;
@@ -263,7 +275,8 @@ h2{
    =========================== */
 
 @media (min-width: 640px) {
-  .navbar {
+
+  .navbar, .adminNavbar {
     flex-direction: row;
     height: 7vh;
   }

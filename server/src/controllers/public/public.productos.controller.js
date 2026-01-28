@@ -11,7 +11,6 @@ function buildImageUrl(req, filename) {
 
 module.exports = {
 
-
   // GET /api/public/productos-destacados
   async getProductosDestacados(req, res, next) {
     try {
@@ -23,8 +22,8 @@ module.exports = {
       }));
 
       res.json(resultado);
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      next(e);
     }
   },
 
@@ -40,8 +39,8 @@ module.exports = {
       }));
 
       res.json(resultado);
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      next(e);
     }
   },
 
@@ -56,8 +55,8 @@ module.exports = {
       }));
 
       res.json(resultado);
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      next(e);
     }
   },
 
@@ -74,8 +73,8 @@ module.exports = {
       producto.url_imagen = buildImageUrl(req, producto.url_imagen);
 
       res.json(producto);
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      next(e);
     }
   }
 };
