@@ -14,5 +14,4 @@ router.get("/", auth([1]), AdminUserController.getAdmins);
 router.put("/status/:adminId", auth([1]), AdminUserController.changeStatus);
 
 
-
 module.exports = router;

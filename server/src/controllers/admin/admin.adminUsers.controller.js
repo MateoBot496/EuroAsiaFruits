@@ -34,7 +34,7 @@ const AdminUserController = {
     }
   },
 
- // PUT /api/admin/users/:adminId/status
+ // PUT /api/admin/users/status/:adminId
 async changeStatus(req, res) {
   try {
     const adminId = Number(req.params.adminId);

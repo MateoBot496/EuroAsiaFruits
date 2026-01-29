@@ -23,7 +23,7 @@ app.use("/api/public", require("./routes/public/public.productos.routes"));
 app.use("/api/auth", require("./routes/auth/auth.routes"));
 
 // Rutas admin (protegidas)
-app.use("/api/admin", auth([]));
+app.use("/api/admin", auth([0,1]));
 app.use("/api/admin/users", require("./routes/admin/admin.adminUsers.routes"));
 app.use("/api/admin/productos", require("./routes/admin/admin.productos.routes"));
 
