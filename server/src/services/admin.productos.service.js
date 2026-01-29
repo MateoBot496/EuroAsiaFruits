@@ -93,6 +93,39 @@ async function getProductoByIdAdmin(idProducto) {
   return rows[0] || null;
 }
 
+// Buscar por nombre
+
+async function searchProductosByNombreAdmin(nombre) {
+  const search = (nombre ?? "").toString().trim();
+  if (!search) {
+    const err = new Error("Falta nombre");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const like = `%${search}%`;
+
+  const [rows] = await adminPool.query(
+    `
+    SELECT
+      p.id_producto,
+      p.referencia,
+      p.nombre,
+      p.url_imagen,
+      p.disponible,
+      p.destacado
+    FROM productos p
+    WHERE p.nombre LIKE ?
+    ORDER BY p.id_producto DESC
+    LIMIT 20
+    `,
+    [like]
+  );
+
+  return rows;
+}
+
+
 // CREATE producto segun payload (front)
 // Campos:
 // - referencia (required, unique)
@@ -314,6 +347,7 @@ async function deleteProducto(idProducto) {
 module.exports = {
   getTodosProductosAdmin,
   getProductoByIdAdmin,
+  searchProductosByNombreAdmin,
   createProducto,
   updateProducto,
   deleteProducto,
