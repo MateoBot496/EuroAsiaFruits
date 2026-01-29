@@ -7,13 +7,14 @@ export const AdminRoute = ({ children }: { children: JSX.Element }) => {
 
   if (loading) return <div>Cargando...</div>; // esperar a que el contexto cargue
 
-  if (role === "guest") {
+  if (!role) {
     // No logueado → redirigir a login
     return <Navigate to="/login" replace />;
   }
 
-  if (role !== "admin") {
+  if (role !== 1) {
     // No tiene permisos
+    console.log("AdminRoute: Rol del usuario:", role);
     return <div>No tienes permisos para esta página</div>;
   }
 
