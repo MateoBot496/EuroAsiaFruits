@@ -8,6 +8,9 @@ const auth = require("../../middlewares/auth");
 //GET api/admin/productos
 router.get("/",auth([0, 1]),AdminProductosController.getAll)
 
+// GET /api/admin/productos/buscar?nombre=XXX
+router.get("/buscar",auth([0, 1]),AdminProductosController.searchByNombre)
+
 //GET api/admin/productos/:id
 router.get("/:id",auth([0, 1]),AdminProductosController.getById)
 

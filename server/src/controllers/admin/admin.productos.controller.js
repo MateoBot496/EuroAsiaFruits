@@ -41,6 +41,26 @@ async function getById(req, res, next) {
   }
 }
 
+// GET /api/admin/productos/buscar?nombre=...
+async function searchByNombre(req, res, next) {
+  try {
+    const { nombre } = req.query;
+    if (!nombre) {
+      return res.status(400).json({ message: "Falta nombre" });
+    }
+    const productos = await AdminProductosService.searchProductosByNombreAdmin(nombre);
+
+    const resultado = productos.map((p) => ({
+      ...p,
+      url_imagen: buildImageUrl(req, p.url_imagen),
+    }));
+
+    return res.status(200).json(resultado);
+  } catch (e) {
+    next(e);
+  }
+}
+
 // POST /api/admin/productos
 async function create(req, res, next) {
   try {
@@ -87,4 +107,5 @@ module.exports = {
   create,
   update,
   remove,
+  searchByNombre
 };
