@@ -2,6 +2,7 @@ const { loginAdmin,
   verifyRefreshToken,
   issueAccessToken,
   revokeRefreshToken, } = require("../../services/auth.service.js");
+
 const jwt = require("jsonwebtoken");
 
 module.exports = {
@@ -20,14 +21,14 @@ module.exports = {
         httpOnly: true,
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
-        maxAge: 10 * 60 * 1000,
+        maxAge: 10 * 60 * 1000, // 10 minutos
       });
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
-        maxAge: 14 * 24 * 60 * 60 * 1000,
+        maxAge: 14 * 24 * 60 * 60 * 1000, // 14 dias
       });
 
       return res.status(200).json({ role });
