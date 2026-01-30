@@ -12,9 +12,8 @@ export const AdminRoute = ({ children }: { children: JSX.Element }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (role !== 1) {
+  if (role !== 1 && role !== 0) {
     // No tiene permisos
-    console.log("AdminRoute: Rol del usuario:", role);
     return <div>No tienes permisos para esta página</div>;
   }
 

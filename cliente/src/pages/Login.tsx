@@ -45,30 +45,37 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Login</h1>
+    <div className="w-full h-[80vh] flex flex-col justify-center items-center ">
+      
+        <h1>Admin Login</h1>
+        <h2>superadmin@euroasia.com - superadmin123</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col border-2 p-4 gap-2 rounded-md">
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
+        <input
+          className="border-1 rounded-md p-1"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-      <input
-        type="password"
-        placeholder="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+        <input
+        className="border-1 rounded-md p-1"
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <button type="submit" disabled={loading}>
-        {loading ? "Entrando..." : "Entrar"}
-      </button>
-    </form>
+        <button type="submit" disabled={loading} className="loginSubmitButton">
+          {loading ? "Entrando..." : "Entrar"}
+        </button>
+      </form>
+    </div>
+    
   );
 }

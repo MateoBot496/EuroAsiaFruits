@@ -262,6 +262,22 @@ body{
 }
 
 /* ===========================
+   ADMIN PAGES
+   =========================== */
+
+.loginSubmitButton{
+    padding: 1vh 4vh;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: var(--color-verde-azulado);
+    color: white;
+    cursor: pointer;
+}
+.loginSubmitButton:hover{
+    background-color: var(--color-verde-oscuro);
+    transition: all 0.2s ease-in-out;
+}
+/* ===========================
    HEADERS
    =========================== */
 h2{
