@@ -64,9 +64,11 @@ async function searchByNombre(req, res, next) {
 // POST /api/admin/productos
 async function create(req, res, next) {
   try {
+    //console.log("Server/Controller/adminProductos: Creando producto con datos:", req.body);
     const producto = await AdminProductosService.createProducto(req.body);
     return res.status(201).json(producto);
   } catch (e) {
+    console.error("Server/Controller/adminProductos: Error al crear producto:", e);
     next(e); 
   }
 }
