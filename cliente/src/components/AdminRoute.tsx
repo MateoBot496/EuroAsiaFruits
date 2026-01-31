@@ -4,6 +4,7 @@ import type { JSX } from "react";
 
 export const AdminRoute = ({ children }: { children: JSX.Element }) => {
   const { role, loading } = useAuth();
+  console.log("AdminRoute: role = " + role);
 
   if (loading) return <div>Cargando...</div>; // esperar a que el contexto cargue
 

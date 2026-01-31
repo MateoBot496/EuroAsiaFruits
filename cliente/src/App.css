@@ -21,6 +21,11 @@
   --color-crema-oscuro: rgba(245, 209, 172);
 }
 
+#root{
+    height: 100%;
+    width: 100%;
+}
+
 .rosa{
     background-color: var(--color-rosado) !important;
 }
