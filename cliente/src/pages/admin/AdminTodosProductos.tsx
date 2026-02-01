@@ -2,6 +2,7 @@ import { useState } from "react";
 import ProductoCard from "../../components/ProductoCard";
 import SearchbarAdmin from "../../components/SearchbarAdmin";
 import useProductos from "../../hooks/useProductos";
+import { Link } from "react-router-dom";
 
 export default function AdminTodosProductos() {
   const { productos, loading } = useProductos();
@@ -33,15 +34,19 @@ export default function AdminTodosProductos() {
               <ProductoCard producto={producto} />
 
               <div className="w-full">
-                <button className="bg-blue-500 text-white px-4 py-2 mt-2 rounded w-full hover:bg-blue-600 hover:cursor-pointer">
-                  Editar
-                </button>
+                <Link to={`/admin/producto/${producto.id_producto}`}>
+                  <button className="bg-blue-500 text-white px-4 py-2 mt-2 rounded w-full hover:bg-blue-600 hover:cursor-pointer">
+                    Editar
+                  </button>
+                </Link>
+                
                 <button className="bg-red-500 text-white px-4 py-2 mt-2 rounded w-full hover:bg-red-600 hover:cursor-pointer">
                   Borrar
                 </button>
               </div>
             </div>
-          ))}
+          )
+        )}
         </div>
       )}
     </div>

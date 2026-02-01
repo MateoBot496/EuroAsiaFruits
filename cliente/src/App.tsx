@@ -15,6 +15,8 @@ import LoginRoute from "./components/LoginRoute";
 import AdminTodosProductos from "./pages/admin/AdminTodosProductos";
 import AdminHome from "./pages/admin/AdminHome";
 import AdminCrearProducto from "./pages/admin/AdminCrearProducto";
+import NotFound from "./pages/NotFound";
+import AdminEditarProducto from "./pages/admin/AdminEditarProducto";
 
 function AppContent() {
   const location = useLocation();
@@ -52,7 +54,9 @@ function AppContent() {
 
             <Route path="productos/todos" element={<AdminTodosProductos />} />
             <Route path="productos/crear" element={<AdminCrearProducto />} />
+            <Route path="producto/:id_producto" element={<AdminEditarProducto />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
     </div>
