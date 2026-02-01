@@ -18,6 +18,7 @@ app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 // Rutas públicas
 app.use("/api/public", require("./routes/public/public.productos.routes"));
+app.use("/api/public", require("./routes/public/public.catalogos.routes"));
 
 // Rutas de auth (login/logout/me/refresh)
 app.use("/api/auth", require("./routes/auth/auth.routes"));
