@@ -1,87 +1,109 @@
-import { useState } from "react";
+import { useParams } from "react-router-dom";
+import ProductoCard from "../../components/ProductoCard";
+import useProductoPorId from "../../hooks/useProductoPorId";
+import { useEffect, useState } from "react";
 import { useCatalogos } from "../../hooks/useCatalogos";
 
-export default function AdminCrearProducto() {
+export default function AdminEditarProducto() {
   const { catalogos } = useCatalogos();
-  const [form, setForm] = useState({
-    referencia: "",
-    nombre: "",
-    nombre_ingles: "",
-    descripcion: "",
-    id_grupo: "",
-    id_categoria: "",
-    id_origen: "",
-    url_imagen: "",
-    disponible: 1,
-    destacado: 0,
-  });
-
-  const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
 
-  const handleChange = (e:any) => {
+  const { id_producto } = useParams();
+  const { producto, loading } = useProductoPorId(id_producto);
+  
+  const [form, setForm] = useState({
+    referencia: producto?.referencia || "",
+    nombre: producto?.nombre || "",
+    nombre_ingles: producto?.nombre_ingles || "",
+    descripcion: producto?.descripcion || "",
+    id_grupo: producto?.grupo || "",
+    id_categoria: producto?.categoria || "",
+    id_origen: producto?.origen || "",
+    url_imagen: producto?.url_imagen || "",
+    disponible: producto?.disponible || 1,
+    destacado: producto?.destacado || 0,
+  });
+
+  const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
 
     setForm({
       ...form,
-      [name]:
-        type === "checkbox"
-          ? checked ? 1 : 0
-          : value,
+      [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
     });
   };
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    setLoading(true);
     setMsg("");
 
     try {
-
-      const res = await fetch("http://localhost:3000/api/admin/productos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `http://localhost:3000/api/admin/productos/${id_producto}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // 🔥 cookies
+          body: JSON.stringify(form),
         },
-        credentials: "include", // 🔥 cookies
-        body: JSON.stringify(form),
-      });
+      );
 
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.message);
 
-      setMsg("✅ Producto creado!");
-      setForm({
-        referencia: "",
-        nombre: "", 
-        nombre_ingles: "",
-        descripcion: "",
-        id_grupo: "",
-        id_categoria: "",
-        id_origen: "",
-        url_imagen: "",
-        disponible: 1,
-        destacado: 0,
-      });
-
-    } catch (err:any) {
+      setMsg("✅ Producto modificado!");
+      if(res.ok){
+        window.location.reload();
+      }
+    } catch (err: any) {
       setMsg("❌ " + err.message);
     } finally {
-      setLoading(false);
     }
   };
 
-  return (
-    <div className="p-6 max-w-2xl">
-      <h1 className="text-2xl font-bold mb-6">
-        Crear Nuevo Producto
-      </h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4"
-      >
+
+  useEffect(() => {
+    if (!producto || !catalogos) return;
+
+    const grupo = catalogos.grupos.find((g) => g.nombre === producto.grupo);
+
+    const categoria = catalogos.categorias.find(
+      (c) => c.nombre === producto.categoria,
+    );
+
+    const origen = catalogos.origenes.find((o) => o.nombre === producto.origen);
+
+    setForm({
+      referencia: producto.referencia,
+      nombre: producto.nombre,
+      nombre_ingles: producto.nombre_ingles,
+      descripcion: producto.descripcion,
+      id_grupo: grupo?.id_grupo ?? null,
+      id_categoria: categoria?.id_categoria ?? null,
+      id_origen: origen?.id_origen ?? null,
+            url_imagen: producto.url_imagen
+        ? producto.url_imagen.replace("http://localhost:3000/images/", "")
+        : "",
+
+      disponible: producto.disponible,
+      destacado: producto.destacado,
+    });
+  }, [producto, catalogos]);
+
+  if (loading) {
+    return <p>Cargando producto...</p>;
+  }
+  return (
+    <div className="p-4 flex flex-col w-full overflow-y-hidden">
+      <ProductoCard producto={producto} />
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold mb-6">Editar Producto</h1>
+        <label> Referencia </label>
         <input
           name="referencia"
           placeholder="Referencia *"
@@ -90,6 +112,8 @@ export default function AdminCrearProducto() {
           required
           className="border p-2 rounded"
         />
+
+        <label> Nombre </label>
 
         <input
           name="nombre"
@@ -100,6 +124,8 @@ export default function AdminCrearProducto() {
           className="border p-2 rounded"
         />
 
+        <label> Nombre inglés </label>
+
         <input
           name="nombre_ingles"
           placeholder="Nombre inglés"
@@ -108,6 +134,8 @@ export default function AdminCrearProducto() {
           className="border p-2 rounded"
         />
 
+        <label> Descripción </label>
+
         <textarea
           name="descripcion"
           placeholder="Descripción"
@@ -115,6 +143,8 @@ export default function AdminCrearProducto() {
           onChange={handleChange}
           className="border p-2 rounded"
         />
+        
+        <label> URL imagen </label>
 
         <input
           name="url_imagen"
@@ -181,6 +211,7 @@ export default function AdminCrearProducto() {
           ))}
         </select>
 
+        <label> Disponible </label>
         <label className="flex gap-2">
           <input
             type="checkbox"
@@ -191,6 +222,7 @@ export default function AdminCrearProducto() {
           Disponible
         </label>
 
+        <label> Destacado </label>
         <label className="flex gap-2">
           <input
             type="checkbox"
@@ -205,14 +237,10 @@ export default function AdminCrearProducto() {
           disabled={loading}
           className="bg-green-600 text-white p-3 rounded hover:bg-green-700 disabled:opacity-50"
         >
-          {loading ? "Creando..." : "Crear Producto"}
+          {loading ? "Modificando..." : "Modificar Producto"}
         </button>
 
-        {msg && (
-          <p className="font-medium">
-            {msg}
-          </p>
-        )}
+        {msg && <p className="font-medium">{msg}</p>}
       </form>
     </div>
   );

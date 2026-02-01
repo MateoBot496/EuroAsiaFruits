@@ -3,11 +3,11 @@ export default interface Producto {
   nombre: string;
   nombre_ingles: string;
   descripcion: string;
-  categoria: string;
-  grupo: string;
+  categoria: any;
+  grupo: any ;
   referencia: string;
   envases: string;
-  origen: string;
+  origen: any;
   disponible: number;  // 0 o 1
   destacado: number;   // 0 o 1
   url_imagen: string | null;
