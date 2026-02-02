@@ -3,10 +3,24 @@ import ProductoCard from "../../components/ProductoCard";
 import SearchbarAdmin from "../../components/SearchbarAdmin";
 import useProductos from "../../hooks/useProductos";
 import { Link } from "react-router-dom";
+import deleteProducto  from "../../hooks/deleteProducto";
 
 export default function AdminTodosProductos() {
-  const { productos, loading } = useProductos();
+  const { productos, loading, fetchProductos } = useProductos();
   const [search, setSearch] = useState("");
+
+  const handleDelete = async (id_producto: number) => {
+    const ok = window.confirm("¿Estás seguro de que deseas eliminar este producto?");
+    if (!ok) return;
+    try {
+      await deleteProducto(id_producto);
+      await fetchProductos(); // Refetch productos to update the list
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error);
+    }
+
+  };
+
 
   const productosFiltrados = productos.filter((p) =>
     p.nombre.toLowerCase().includes(search.toLowerCase())
@@ -40,7 +54,8 @@ export default function AdminTodosProductos() {
                   </button>
                 </Link>
                 
-                <button className="bg-red-500 text-white px-4 py-2 mt-2 rounded w-full hover:bg-red-600 hover:cursor-pointer">
+                <button className="bg-red-500 text-white px-4 py-2 mt-2 rounded w-full hover:bg-red-600 hover:cursor-pointer" 
+                  onClick={() => handleDelete(producto.id_producto)}>
                   Borrar
                 </button>
               </div>
