@@ -1,11 +1,10 @@
-// src/services/auth.service.js
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { adminPool } = require("../config/db");
 const { findAdminByEmail } = require("./users.service.js");
 
-// 只用于 refresh token：存 hash，不存明文
+// Para convertir refresh token en hash 
 function hashToken(token) {
   return crypto.createHash("sha256").update(token).digest("hex");
 }
@@ -79,9 +78,8 @@ async function loginAdmin(email, password, meta = {}) {
   return { accessToken, refreshToken, role: admin.role };
 }
 
-/**
- * Verifica refreshToken
- */
+
+//Verificar refreshToken
 async function verifyRefreshToken(refreshToken) {
   let payload;
   try {
@@ -116,18 +114,15 @@ async function verifyRefreshToken(refreshToken) {
   return { id: payload.id, role: payload.role };
 }
 
-/**
- * Emite nuevo access token
- */
+// Emitir nuevo access token
 function issueAccessToken(payload) {
   return jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || "10m",
   });
 }
 
-/**
- * Revoca refresh token actual (logout real)
- */
+//Revocar refresh token actual (logout real)
+
 async function revokeRefreshToken(refreshToken) {
   const tokenHash = hashToken(refreshToken);
   await adminPool.query(
