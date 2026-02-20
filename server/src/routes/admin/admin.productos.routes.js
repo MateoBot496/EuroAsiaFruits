@@ -22,7 +22,15 @@ router.post("/",auth([0, 1]),AdminProductosController.create);
 //PUT api/admin/productos/:id
 router.put("/:id",auth([0, 1]),AdminProductosController.update);
 
-// Delete: SOLO SUPERADMIN (1)???
+// Editar destacado: ADMIN (0) o SUPERADMIN (1)
+// PUT api/admin/productos/:id/destacado
+router.put("/:id/destacado", auth([0, 1]), AdminProductosController.updateDestacado);
+
+// Editar disponible: ADMIN (0) o SUPERADMIN (1)
+// PUT api/admin/productos/:id/disponible
+router.put("/:id/disponible", auth([0, 1]), AdminProductosController.updateDisponible);
+
+// Delete: SOLO SUPERADMIN (1)
 //DELETE api/admin/productos/:id
 router.delete("/:id",auth([1]),AdminProductosController.remove);
 
