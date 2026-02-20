@@ -88,6 +88,45 @@ async function update(req, res, next) {
   }
 }
 
+// PUT api/admin/productos/:id/disponible
+async function updateDisponible(req, res) {
+  try {
+    const { id } = req.params;
+    const { disponible } = req.body;
+
+    const producto = await AdminProductosService.updateProductoDisponible(id, disponible);
+
+    if (!producto) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    return res.json(producto);
+
+  } catch (e) {
+    return res.status(e.statusCode || 500).json({ message: e.message });
+  }
+}
+
+// PUT api/admin/productos/:id/destacado
+async function updateDestacado(req, res) {
+  try {
+    const { id } = req.params;
+    const { destacado } = req.body;
+
+    const producto = await AdminProductosService.updateProductoDestacado(id, destacado);
+
+    if (!producto) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    return res.json(producto);
+
+  } catch (e) {
+    return res.status(e.statusCode || 500).json({ message: e.message });
+  }
+}
+
+
 // DELETE /api/admin/productos/:id
 async function remove(req, res, next) {
   try {
@@ -108,6 +147,8 @@ module.exports = {
   getById,
   create,
   update,
+  updateDestacado,
+  updateDisponible,
   remove,
   searchByNombre
 };
