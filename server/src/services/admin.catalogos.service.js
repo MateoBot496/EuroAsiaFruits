@@ -102,7 +102,7 @@ async function renameTipo(tipo, oldValorRaw, newValorRaw) {
   }
 
   if (oldValor === newValor) {
-    return { oldValor, newValor };
+    return { valor: newValor };
   }
 
   try {
@@ -113,7 +113,7 @@ async function renameTipo(tipo, oldValorRaw, newValorRaw) {
 
     if (r.affectedRows === 0) return null;
 
-    return { oldValor, newValor };
+    return { valor: newValor };
 
   } catch (e) {
     if (e.code === "ER_DUP_ENTRY") {
