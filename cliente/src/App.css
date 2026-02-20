@@ -254,6 +254,45 @@ body{
         font-size: 1.2rem;
     }
 
+    /* ===========================
+    ABOUT
+    =========================== */
+    .about{
+        flex-direction: column;
+    }
+    .about1{
+        width: 100%;
+        background-color: var(--color-crema);
+        color: var(--color-verde-oscuro);
+        font-family: 'Baloo';
+        display: flex;
+        padding: 5%;
+        justify-content: center;
+        align-items: center;
+    }
+    .about2{
+        width: 100%;
+        background-color: var(--color-verde-azulado);
+        color: white;
+        font-family: 'Baloo';
+        display: flex;
+        flex-direction: column;
+        padding: 5%;
+        justify-content: center;
+        align-items: center;
+    }
+    .about3{
+        width: 100%;
+        background-color: var(--color-crema);
+        color: var(--color-verde-oscuro);
+        font-family: 'Baloo';
+        display: flex;
+        flex-direction: column;
+        padding: 5%;
+        justify-content: center;
+        align-items: center;
+    }
+
 /* ===========================
    PRODUCTOS GRID
    =========================== */
