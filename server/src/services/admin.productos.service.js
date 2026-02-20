@@ -2,17 +2,22 @@ const { adminPool } = require("../config/db");
 const PublicProductosService = require("./productos.service.js");
 
 // Normalizar(descatado, disponible): checkbox/boolean -> TINYINT(1)
-const toTinyInt = (v) => {
+
+const toTinyIntOptional = (v, fieldName = "valor") => {
+  if (v === undefined) return undefined; 
   if (v === true || v === 1 || v === "1" || v === "on" || v === "true") return 1;
   if (v === false || v === 0 || v === "0" || v === "false" || v === "off") return 0;
-  return 0;
+
+  const err = new Error(`${fieldName} debe ser 1 o 0`);
+  err.statusCode = 400;
+  throw err;
 };
 
 // Normalizar (origen, grupo, categoria): si desde front llega algun campo ""
 const toNullableInt = (v) => {
   if (v === null || v === undefined || v === "") return null;
   const n = Number(v);
-  return Number.isInteger(n) ? n : null;
+  return Number.isInteger(n) && n > 0 ? n : null;
 };
 
 
@@ -338,7 +343,7 @@ async function updateProductoDisponible(idProducto, disponibleRaw) {
   }
 }
 
-// Actualizar Descatado(0/1)
+// Actualizar Destacaado(0/1)
 async function updateProductoDestacado(idProducto, destacadoRaw) {
   const id = Number(idProducto);
   if (!Number.isInteger(id) || id <= 0) {
