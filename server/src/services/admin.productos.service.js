@@ -2,17 +2,22 @@ const { adminPool } = require("../config/db");
 const PublicProductosService = require("./productos.service.js");
 
 // Normalizar(descatado, disponible): checkbox/boolean -> TINYINT(1)
-const toTinyInt = (v) => {
+
+const toTinyIntOptional = (v, fieldName = "valor") => {
+  if (v === undefined) return undefined; 
   if (v === true || v === 1 || v === "1" || v === "on" || v === "true") return 1;
   if (v === false || v === 0 || v === "0" || v === "false" || v === "off") return 0;
-  return 0;
+
+  const err = new Error(`${fieldName} debe ser 1 o 0`);
+  err.statusCode = 400;
+  throw err;
 };
 
 // Normalizar (origen, grupo, categoria): si desde front llega algun campo ""
 const toNullableInt = (v) => {
   if (v === null || v === undefined || v === "") return null;
   const n = Number(v);
-  return Number.isInteger(n) ? n : null;
+  return Number.isInteger(n) && n > 0 ? n : null;
 };
 
 
@@ -162,45 +167,46 @@ async function createProducto(payload) {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       [
-          referencia,
-          nombre,
-          nombre_ingles,
-          descripcion,
-          toNullableInt(id_grupo),
-          toNullableInt(id_categoria),
-          toNullableInt(id_origen),
-          url_imagen,
-          toTinyInt(disponible),
-          toTinyInt(destacado),
+        referencia,
+        nombre,
+        nombre_ingles,
+        descripcion,
+        toNullableInt(id_grupo),
+        toNullableInt(id_categoria),
+        toNullableInt(id_origen),
+        url_imagen,
+        toTinyInt(disponible),
+        toTinyInt(destacado),
       ]
     );
 
     return await PublicProductosService.getProductoById(result.insertId);
   } catch (e) {
-  console.error("createProducto ERROR:", {
-    code: e.code,
-    errno: e.errno,
-    sqlState: e.sqlState,
-    sqlMessage: e.sqlMessage,
-  });
+    console.error("createProducto ERROR:", {
+      code: e.code,
+      errno: e.errno,
+      sqlState: e.sqlState,
+      sqlMessage: e.sqlMessage,
+    });
 
-  if (e.code === "ER_DUP_ENTRY") {
-    const err = new Error("Referencia repetida");
-    err.statusCode = 409;
+    if (e.code === "ER_DUP_ENTRY") {
+      const err = new Error("Referencia repetida");
+      err.statusCode = 409;
+      throw err;
+    }
+
+    const err = new Error(
+      `Error interno creando producto: ${e.code || ""} ${e.sqlMessage || ""}`.trim()
+    );
+    err.statusCode = 500;
     throw err;
   }
-
-  const err = new Error(
-    `Error interno creando producto: ${e.code || ""} ${e.sqlMessage || ""}`.trim()
-  );
-  err.statusCode = 500;
-  throw err;
-}
 }
 
-// UPDATE segun payload (parcial)
+// UPDATE producto segun payload (parcial)
 // No obligar a rellenar todos los campos 
 // Solo actualizar segun payload: setIfDefined
+// No permite actualizar Descatado y Disponible: endpoints propios
 // Devuelve el producto actualizado (null si no existe)
 
 async function updateProducto(idProducto, payload) {
@@ -214,6 +220,17 @@ async function updateProducto(idProducto, payload) {
 
   // Datos a actualizar
   const data = payload || {};
+
+  // Prohibir modificar disponible / destacado aquí
+  if (data.disponible !== undefined || data.destacado !== undefined) {
+    const err = new Error(
+      "disponible/destacado se actualizan en endpoints separados (/disponible, /destacado)"
+    );
+    err.statusCode = 400;
+    throw err;
+  }
+
+
   const fields = [];
   const values = [];
 
@@ -258,15 +275,6 @@ async function updateProducto(idProducto, payload) {
     values.push(data.url_imagen);
   }
 
-  if (data.disponible !== undefined) {
-    fields.push("disponible = ?");
-    values.push(toTinyInt(data.disponible));
-  }
-
-  if (data.destacado !== undefined) {
-    fields.push("destacado = ?");
-    values.push(toTinyInt(data.destacado));
-  }
 
   // Nada que actualizar
   if (fields.length === 0) {
@@ -305,6 +313,65 @@ async function updateProducto(idProducto, payload) {
   }
 }
 
+// Actualizar Diponible (0/1)
+async function updateProductoDisponible(idProducto, disponibleRaw) {
+  const id = Number(idProducto);
+  if (!Number.isInteger(id) || id <= 0) {
+    const err = new Error("ID inválido");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const disponible = toTinyInt(disponibleRaw); 
+
+  try {
+    const [result] = await adminPool.query(
+      `UPDATE productos SET disponible = ? WHERE id_producto = ?`,
+      [disponible, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return null;
+    }
+
+    return await PublicProductosService.getProductoById(id);
+
+  } catch (e) {
+    const err = new Error("Error interno actualizando disponible");
+    err.statusCode = 500;
+    throw err;
+  }
+}
+
+// Actualizar Destacaado(0/1)
+async function updateProductoDestacado(idProducto, destacadoRaw) {
+  const id = Number(idProducto);
+  if (!Number.isInteger(id) || id <= 0) {
+    const err = new Error("ID inválido");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const destacado = toTinyInt(destacadoRaw); 
+
+  try {
+    const [result] = await adminPool.query(
+      `UPDATE productos SET destacado = ? WHERE id_producto = ?`,
+      [destacado, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return null;
+    }
+
+    return await PublicProductosService.getProductoById(id);
+
+  } catch (e) {
+    const err = new Error("Error interno actualizando destacado");
+    err.statusCode = 500;
+    throw err;
+  }
+}
 
 // DELETE: devuelve boolean
 // true  -> producto borrado
@@ -350,5 +417,7 @@ module.exports = {
   searchProductosByNombreAdmin,
   createProducto,
   updateProducto,
+  updateProductoDestacado,
+  updateProductoDisponible,
   deleteProducto,
 };
