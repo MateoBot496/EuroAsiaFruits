@@ -9,6 +9,8 @@ function buildImageUrl(req, filename) {
   return `${baseUrl}/images/${filename}`;
 }
 
+
+
 module.exports = {
 
   // GET /api/public/productos-destacados
@@ -44,11 +46,13 @@ module.exports = {
     }
   },
 
-  // GET /api/public/productos
+  // GET /api/public/productos 
+  // Con query: /api/public/productos?etiquetas(envases,id_origen,id_categoria,id_grupo)=
+  // Si no hay query: todos los productos
+
   async getTodosProductos(req, res, next) {
     try {
-      const productos = await ProductosService.getTodosProductos();
-
+      const productos = await ProductosService.getTodosProductos(req.query); 
       const resultado = productos.map(p => ({
         ...p,
         url_imagen: buildImageUrl(req, p.url_imagen)
