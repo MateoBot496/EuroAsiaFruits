@@ -12,20 +12,25 @@ export default function ProductoCard({
     >
       {/* Imagen del producto */}
       {producto.url_imagen && (
-        <div className="">
+        <div className="w-full h-52 overflow-hidden">
           <img
             src={producto.url_imagen}
             alt={producto.nombre}
             className="
-              producto-imagen
+              w-full h-full object-cover
+              transition-transform duration-300
+              
+              rounded-t-lg
+              hover:scale-105
+              hover:cursor-pointer
             "
           />
         </div>
       )}
 
       {/* Contenido */}
-      <div className="p-4 flex flex-col gap-2">
-        <h2 className="text-lg font-semibold text-gray-800">
+      <div className="p-5 flex flex-col gap-3">
+        <h2 className="text-lg font-semibold text-gray-900">
           {producto.nombre}
         </h2>
 
@@ -33,13 +38,17 @@ export default function ProductoCard({
           {producto.descripcion}
         </p>
 
-        <p className="text-sm text-gray-700">
-          <span className="font-medium">Envase:</span> {producto.envases}
-        </p>
+        <div className="flex flex-col gap-1 text-sm text-gray-700">
+          <p>
+            <span className="font-medium text-gray-900">Envase:</span>{" "}
+            {producto.envases}
+          </p>
 
-        <p className="text-sm text-gray-700">
-          <span className="font-medium">Origen:</span> {producto.origen}
-        </p>
+          <p>
+            <span className="font-medium text-gray-900">Origen:</span>{" "}
+            {producto.origen}
+          </p>
+        </div>
       </div>
     </div>
   );
