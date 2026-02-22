@@ -4,11 +4,11 @@
 const { adminPool } = require("../config/db");
 
 const MAP = {
-  grupos: { table: "grupos", field: "nombre" },
-  categorias: { table: "categorias", field: "nombre" },
-  origenes: { table: "origenes", field: "nombre" },
-  etiquetas: { table: "etiquetas", field: "nombre" },
-  envases: { table: "envases", field: "descripcion" },
+  grupos:     { table: "grupos",     idField: "id_grupo",     field: "nombre" },
+  categorias: { table: "categorias", idField: "id_categoria", field: "nombre" },
+  origenes:   { table: "origenes",   idField: "id_origen",    field: "nombre" },
+  etiquetas:  { table: "etiquetas",  idField: "id_etiqueta",  field: "nombre" },
+  envases:    { table: "envases",    idField: "id_envase",    field: "descripcion" },
 };
 
 function getConfig(tipo) {
@@ -40,21 +40,25 @@ const toTinyInt = (v, fieldName = "valor") => {
   throw err;
 };
 
-// Listar todos los valores de un tipo
+// Listar todos los valores de un tipo 
+
 async function getAllByTipo(tipo) {
-  const { table, field } = getConfig(tipo);
+  const { table, field, idField } = getConfig(tipo);
 
   const [rows] = await adminPool.query(
-    `SELECT ${field} AS valor, is_active
+    `SELECT ${idField} AS id, ${field} AS valor, is_active
      FROM ${table}
      ORDER BY ${field}`
   );
 
   return rows.map((r) => ({
+    id: r.id,
     valor: r.valor,
     isActive: r.is_active,
   }));
 }
+
+
 
 // Crear un valor nuevo (siempre is_active = 1 por defecto)
 async function createTipo(tipo, valorRaw) {
