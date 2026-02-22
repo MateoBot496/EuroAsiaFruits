@@ -39,6 +39,7 @@ INSERT INTO envases (descripcion) VALUES
 ('bolsas 100g*50 / 5kg'),
 ('bolsas 200g*25 / 5kg'),
 ('bolsas 2kg*2 / 4kg'),
+('bolsas 2,5kg*2 / 5kg'),
 ('al vacío 250g*20 / 5kg'),
 ('bolsas 150g*40 / 6kg'),
 ('bolsas 150g*20 / 3kg'),
@@ -306,7 +307,7 @@ JOIN envases e ON e.descripcion = '8/9/10/12/14 piezas / 5kg'
 WHERE p.referencia = 'FRU003';
 
 INSERT INTO productos_envases SELECT p.id_producto, e.id_envase FROM productos p
-JOIN envases e ON e.descripcion = 'bandejas 3 pieza*8 / 11kg'
+JOIN envases e ON e.descripcion = 'bandejas 3 piezas*8 / 11kg'
 WHERE p.referencia = 'FRU003';
 
 INSERT INTO productos_envases SELECT p.id_producto, e.id_envase FROM productos p
@@ -419,7 +420,7 @@ WHERE nombre = 'seta shimeji marron';
 
 UPDATE productos
 SET url_imagen = 'seta_shiitake.webp'
-WHERE nombre = 'seta shitake';
+WHERE nombre = 'seta shiitake';
 
 UPDATE productos
 SET url_imagen = 'setas_mixtas.webp'
@@ -464,7 +465,7 @@ WHERE nombre = 'longan';
 UPDATE productos
 SET url_imagen = 'azufaifa_verde.webp'
 WHERE nombre = 'azufaifa verde';
---modificado.
+-- modificado.
 
 -- a futuro: hacer el siguiente comando:
 
@@ -474,19 +475,16 @@ WHERE nombre = 'azufaifa verde';
 
 -- SUPERADMIN para pruebas 
 -- SOLO PARA ENTORNOS DE DESARROLLO / TESTING
-INSERT INTO admin_users (
-  id,
-  email,
-  password_hash,
-  role,
-  is_active
-) VALUES (
-  UUID(),
+
+INSERT INTO admin_users (email, password_hash, role, is_active)
+VALUES (
   'superadmin@euroasia.com',
   '$2b$10$AUMEGQk.WD523pn0tbbAnuznazEVRkwd2ObBUyoJByMISzKX399Nu',
-  1,   -- SUPERADMIN
+  1,
   1
-);
-
-
+)
+ON DUPLICATE KEY UPDATE
+  password_hash = VALUES(password_hash),
+  role = VALUES(role),
+  is_active = VALUES(is_active);
 

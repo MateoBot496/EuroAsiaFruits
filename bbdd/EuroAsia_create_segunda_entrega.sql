@@ -3,7 +3,7 @@ DROP DATABASE IF EXISTS EUROASIA;
 
 CREATE DATABASE EUROASIA
   CHARACTER SET utf8mb4
-  COLLATE utf8mb4_0900_ai_ci;
+  COLLATE utf8mb4_unicode_ci;
 
 USE EUROASIA;
 
@@ -223,4 +223,24 @@ GRANT SELECT, INSERT, UPDATE, DELETE
   TO 'euroasia_admin'@'%';
 
 FLUSH PRIVILEGES;
+
+-- alter de Peilei para añadir is_active a tablas de grupos, origenes, envases, etiquetas y categorias
+-- necesario para los endpoints nuevos
+
+USE EUROASIA;
+
+ALTER TABLE grupos
+ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 1;
+
+ALTER TABLE origenes
+ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 1;
+
+ALTER TABLE envases
+ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 1;
+
+ALTER TABLE etiquetas
+ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 1;
+
+ALTER TABLE categorias
+ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 1;
 
