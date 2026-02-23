@@ -3,7 +3,7 @@ const PublicProductosService = require("./productos.service.js");
 
 // Normalizar(descatado, disponible): checkbox/boolean -> TINYINT(1)
 
-const toTinyIntOptional = (v, fieldName = "valor") => {
+const toTinyInt = (v, fieldName = "valor") => {
   if (v === undefined) return undefined; 
   if (v === true || v === 1 || v === "1" || v === "on" || v === "true") return 1;
   if (v === false || v === 0 || v === "0" || v === "false" || v === "off") return 0;
@@ -20,6 +20,21 @@ const toNullableInt = (v) => {
   return Number.isInteger(n) && n > 0 ? n : null;
 };
 
+// normalizar y convertir String recibido desde front a array
+// Ejemplo: "2,5" -> [2,5]
+const parseIds = (input) => {
+  if (!input) return [];
+
+  const arr = Array.isArray(input)
+    ? input
+    : String(input).split(",");
+
+  return [...new Set(
+    arr
+      .map((x) => Number(String(x).trim()))
+      .filter((n) => Number.isInteger(n) && n > 0)
+  )];
+};
 
 // GET todos
 async function getTodosProductosAdmin() {
@@ -40,7 +55,9 @@ async function getTodosProductosAdmin() {
       g.nombre AS grupo,
       o.nombre AS origen,
 
-      GROUP_CONCAT(DISTINCT e.descripcion SEPARATOR ' || ') AS envases
+      GROUP_CONCAT(DISTINCT e.descripcion SEPARATOR ' || ') AS envases,
+      GROUP_CONCAT(DISTINCT t.nombre SEPARATOR ' || ') AS etiquetas
+      
     FROM productos p
     LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
     LEFT JOIN grupos g ON p.id_grupo = g.id_grupo
@@ -138,6 +155,7 @@ async function searchProductosByNombreAdmin(nombre) {
 // - nombre_ingles, descripcion, url_imagen (opcionales)
 // - id_grupo, id_categoria, id_origen (opcionales, pueden ser null)
 // - disponible, destacado (checkbox/boolean)
+// -envases, etiqutas: checkbox, multiple
 // Devuelve el producto creado
 async function createProducto(payload) {
   const {
@@ -151,6 +169,9 @@ async function createProducto(payload) {
     url_imagen = null,
     disponible = 1,
     destacado = 0,
+
+    envases = [],    
+    etiquetas = [],  
   } = payload || {};
 
   if (!referencia || !nombre) {
@@ -159,8 +180,17 @@ async function createProducto(payload) {
     throw err;
   }
 
-  try {
-    const [result] = await adminPool.query(
+  const envaseIds = parseIds(envases);
+  const etiquetaIds = parseIds(etiquetas);
+
+  const conn = await adminPool.getConnection();
+
+    try {
+   // Transaction: evitar datos inconsistentes
+   // Por ejemplo: fallo al insertar en las tablas intermedias
+    await conn.beginTransaction(); 
+
+    const [result] = await conn.query(
       `
       INSERT INTO productos
       (referencia, nombre, nombre_ingles, descripcion, id_grupo, id_categoria, id_origen, url_imagen, disponible, destacado)
@@ -180,29 +210,55 @@ async function createProducto(payload) {
       ]
     );
 
-    return await PublicProductosService.getProductoById(result.insertId);
-  } catch (e) {
-    console.error("createProducto ERROR:", {
-      code: e.code,
-      errno: e.errno,
-      sqlState: e.sqlState,
-      sqlMessage: e.sqlMessage,
-    });
+    const idProducto = result.insertId;
 
-    if (e.code === "ER_DUP_ENTRY") {
-      const err = new Error("Referencia repetida");
-      err.statusCode = 409;
-      throw err;
+    // insertar envases (tabla intermedia productos_envases)
+    if (envaseIds.length) {
+      const values = envaseIds.map((idEnvase) => [idProducto, idEnvase]);
+      await conn.query(
+        `INSERT INTO productos_envases (id_producto, id_envase) VALUES ?`,
+        [values]
+      );
     }
 
-    const err = new Error(
-      `Error interno creando producto: ${e.code || ""} ${e.sqlMessage || ""}`.trim()
-    );
-    err.statusCode = 500;
+    //  insertar etiquetas (tabla intermedia productos_etiquetas)
+    if (etiquetaIds.length) {
+      const values = etiquetaIds.map((idEtiqueta) => [idProducto, idEtiqueta]);
+      await conn.query(
+        `INSERT INTO productos_etiquetas (id_producto, id_etiqueta) VALUES ?`,
+        [values]
+      );
+    }
+
+    await conn.commit();
+
+    // Devolver el producto creado usando getProductoById (endpoint publico)
+    return await PublicProductosService.getProductoById(idProducto);
+
+  } catch (e) {
+  try { await conn.rollback(); } catch (_) {}
+
+  console.error("createProducto ERROR RAW:", e);
+  console.error("createProducto ERROR keys:", Object.keys(e || {}));
+  console.error("createProducto ERROR message:", e?.message);
+  console.error("createProducto ERROR stack:", e?.stack);
+
+  if (e && e.code === "ER_DUP_ENTRY") {
+    const err = new Error("Referencia repetida");
+    err.statusCode = 409;
     throw err;
   }
-}
 
+  const err = new Error(
+    `Error interno creando producto: ${e?.code || ""} ${e?.sqlMessage || e?.message || ""}`.trim()
+  );
+  err.statusCode = 500;
+  throw err;
+
+} finally {
+  conn.release();
+}
+}
 // UPDATE producto segun payload (parcial)
 // No obligar a rellenar todos los campos 
 // Solo actualizar segun payload: setIfDefined
@@ -210,7 +266,7 @@ async function createProducto(payload) {
 // Devuelve el producto actualizado (null si no existe)
 
 async function updateProducto(idProducto, payload) {
-  // Validación de id
+
   const id = Number(idProducto);
   if (!Number.isInteger(id) || id <= 0) {
     const err = new Error("ID inválido");
@@ -218,10 +274,8 @@ async function updateProducto(idProducto, payload) {
     throw err;
   }
 
-  // Datos a actualizar
   const data = payload || {};
 
-  // Prohibir modificar disponible / destacado aquí
   if (data.disponible !== undefined || data.destacado !== undefined) {
     const err = new Error(
       "disponible/destacado se actualizan en endpoints separados (/disponible, /destacado)"
@@ -230,11 +284,9 @@ async function updateProducto(idProducto, payload) {
     throw err;
   }
 
-
   const fields = [];
   const values = [];
 
-  // Validar si desde front llega datos para actualizar
   if (data.referencia !== undefined) {
     fields.push("referencia = ?");
     values.push(data.referencia);
@@ -275,41 +327,100 @@ async function updateProducto(idProducto, payload) {
     values.push(data.url_imagen);
   }
 
+  const shouldUpdateEnvases = data.envases !== undefined;
+  const shouldUpdateEtiquetas = data.etiquetas !== undefined;
 
-  // Nada que actualizar
-  if (fields.length === 0) {
+  const envaseIds = shouldUpdateEnvases ? parseIds(data.envases) : [];
+  const etiquetaIds = shouldUpdateEtiquetas ? parseIds(data.etiquetas) : [];
+
+  if (fields.length === 0 && !shouldUpdateEnvases && !shouldUpdateEtiquetas) {
     const err = new Error("No hay campos para actualizar");
     err.statusCode = 400;
     throw err;
   }
 
-  try {
-    values.push(id);
-    const [result] = await adminPool.query(
-      `UPDATE productos SET ${fields.join(", ")} WHERE id_producto = ?`,
-      values
-    );
+  const conn = await adminPool.getConnection();
 
-    // Producto no encontrado
-    if (result.affectedRows === 0) {
-      return null;
+  try {
+    await conn.beginTransaction();
+
+    if (fields.length > 0) {
+      const updateValues = [...values, id];
+
+      const [result] = await conn.query(
+        `UPDATE productos SET ${fields.join(", ")} WHERE id_producto = ?`,
+        updateValues
+      );
+
+      if (result.affectedRows === 0) {
+        await conn.rollback();
+        return null;
+      }
+    } else {
+      const [exists] = await conn.query(
+        `SELECT id_producto FROM productos WHERE id_producto = ?`,
+        [id]
+      );
+
+      if (exists.length === 0) {
+        await conn.rollback();
+        return null;
+      }
     }
 
-    // Devolver producto actualizado
+    if (shouldUpdateEnvases) {
+      await conn.query(
+        `DELETE FROM productos_envases WHERE id_producto = ?`,
+        [id]
+      );
+
+      if (envaseIds.length > 0) {
+        const valuesEnv = envaseIds.map((idEnvase) => [id, idEnvase]);
+
+        await conn.query(
+          `INSERT INTO productos_envases (id_producto, id_envase) VALUES ?`,
+          [valuesEnv]
+        );
+      }
+    }
+
+    if (shouldUpdateEtiquetas) {
+      await conn.query(
+        `DELETE FROM productos_etiquetas WHERE id_producto = ?`,
+        [id]
+      );
+
+      if (etiquetaIds.length > 0) {
+        const valuesEt = etiquetaIds.map((idEtiqueta) => [id, idEtiqueta]);
+
+        await conn.query(
+          `INSERT INTO productos_etiquetas (id_producto, id_etiqueta) VALUES ?`,
+          [valuesEt]
+        );
+      }
+    }
+
+    await conn.commit();
+
     return await PublicProductosService.getProductoById(id);
 
   } catch (e) {
-    // Error de referencia(unique) duplicada
+    try {
+      await conn.rollback();
+    } catch (_) {}
+
     if (e.code === "ER_DUP_ENTRY") {
       const err = new Error("Referencia repetida");
       err.statusCode = 409;
       throw err;
     }
 
-    // Error genérico
     const err = new Error("Error interno actualizando producto");
     err.statusCode = 500;
     throw err;
+
+  } finally {
+    conn.release();
   }
 }
 
