@@ -10,6 +10,22 @@ export default function AdminSidebar(){
                 <li>
                     <a href="/admin/productos/crear" className="text-blue-900 hover:underline">Crear productos</a>
                 </li>
+                <li>
+                    <a href="/admin/categorias" className="text-blue-900 hover:underline">Categorias</a>
+                </li>
+                <li>
+                    <a href="/admin/origenes" className="text-blue-900 hover:underline">Orígenes</a>
+                </li>
+                <li>
+                    <a href="/admin/grupos" className="text-blue-900 hover:underline">Grupos</a>
+                </li>
+                <li>
+                    <a href="/admin/envases" className="text-blue-900 hover:underline">Envases</a>
+                </li>
+                <li>
+                    <a href="/admin/etiquetas" className="text-blue-900 hover:underline">Etiquetas</a>
+                </li>
+
             </ul>
 
             <ul>
