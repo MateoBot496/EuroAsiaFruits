@@ -136,13 +136,23 @@ body{
     =========================== */
     .producto-card{
         border: 1px solid #ccc;
-        padding: 16px;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         background-color: aliceblue;
         color: black !important;
+        overflow: hidden;
+        text-align: left;
         
         width: 300px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .producto-card:hover{
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
     }
 
     .producto-card p{
@@ -296,15 +306,15 @@ body{
 /* ===========================
    PRODUCTOS GRID
    =========================== */
-.productos-content{
+.productos-content {
     width: 100%;
     padding: 5vh;
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 5%;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
+    gap: 5vh;
+    justify-content: center; /* 🔥 clave */
 }
-
 /* ===========================
    ADMIN PAGES
    =========================== */

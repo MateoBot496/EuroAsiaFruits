@@ -17,6 +17,10 @@ import AdminHome from "./pages/admin/AdminHome";
 import AdminCrearProducto from "./pages/admin/AdminCrearProducto";
 import NotFound from "./pages/NotFound";
 import AdminEditarProducto from "./pages/admin/AdminEditarProducto";
+import AdminTodosUsuarios from "./pages/admin/AdminTodosUsuarios";
+import AdminCrearUsuario from "./pages/admin/AdminCrearUsuario";
+import AdminEditarUsuario from "./pages/admin/AdminEditarUsuario";
+import AdminCategorias from "./pages/admin/AdminCategorias";
 
 function AppContent() {
   const location = useLocation();
@@ -55,6 +59,12 @@ function AppContent() {
             <Route path="productos/todos" element={<AdminTodosProductos />} />
             <Route path="productos/crear" element={<AdminCrearProducto />} />
             <Route path="producto/:id_producto" element={<AdminEditarProducto />} />
+
+            <Route path="usuarios/todos" element={<AdminTodosUsuarios />} />
+            <Route path="usuarios/crear" element={<AdminCrearUsuario />} />
+            <Route path="usuario/:id_usuario" element={<AdminEditarUsuario />} />
+
+            <Route path="categorias" element={<AdminCategorias />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

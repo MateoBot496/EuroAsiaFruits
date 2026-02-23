@@ -5,5 +5,6 @@ const CatalogosController = require("../../controllers/public/public.catalogos.c
 
 // GET /api/public/catalogos
 router.get("/catalogos", CatalogosController.getCatalogos);
+router.get("/catalogos/active", CatalogosController.getActiveCatalogos);
 
 module.exports = router;

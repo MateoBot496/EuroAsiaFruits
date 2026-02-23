@@ -19,11 +19,11 @@ type Catalogos = {
   envases: CatalogoItem[];
 };
 
-export function useCatalogos() {
+export function useActiveCatalogos() {
   const [catalogos, setCatalogos] = useState<Catalogos | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/public/catalogos")
+    fetch("http://localhost:3000/api/public/catalogos/active")
       .then((res) => res.json())
       .then((data) => setCatalogos(data))
       .finally();
