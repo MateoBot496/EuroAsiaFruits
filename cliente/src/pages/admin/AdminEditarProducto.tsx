@@ -3,9 +3,10 @@ import ProductoCard from "../../components/ProductoCard";
 import useProductoPorId from "../../hooks/useProductoPorId";
 import { useEffect, useState } from "react";
 import { useCatalogos } from "../../hooks/useCatalogos";
+import { useActiveCatalogos } from "../../hooks/useActiveCatalogos";
 
 export default function AdminEditarProducto() {
-  const { catalogos } = useCatalogos();
+  const { catalogos } = useActiveCatalogos();
   const [msg, setMsg] = useState("");
 
   const { id_producto } = useParams();

@@ -13,6 +13,16 @@ async function getCatalogos(req, res, next) {
   }
 }
 
+async function getActiveCatalogos(req, res, next) {
+    try {
+      const data = await CatalogosService.getActiveCatalogos();
+      res.json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+
 module.exports = {
-  getCatalogos
+  getCatalogos,
+  getActiveCatalogos
 };

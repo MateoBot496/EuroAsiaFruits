@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useCatalogos } from "../../hooks/useCatalogos";
+import { useActiveCatalogos } from "../../hooks/useActiveCatalogos";
 
 export default function AdminCrearProducto() {
-  const { catalogos } = useCatalogos();
+  const { catalogos } = useActiveCatalogos();
   const [form, setForm] = useState({
     referencia: "",
     nombre: "",
