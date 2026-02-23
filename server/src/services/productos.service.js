@@ -113,7 +113,7 @@ module.exports = {
       g.nombre AS grupo,
       o.nombre AS origen,
 
-      GROUP_CONCAT(DISTINCT e.descripcion SEPARATOR ' || ') AS envases，
+      GROUP_CONCAT(DISTINCT e.descripcion SEPARATOR ' || ') AS envases,
       GROUP_CONCAT(DISTINCT t.nombre SEPARATOR ' || ') AS etiquetas
 
       FROM productos p
@@ -153,7 +153,7 @@ module.exports = {
       g.nombre AS grupo,
       o.nombre AS origen,
 
-      GROUP_CONCAT(DISTINCT e.descripcion SEPARATOR ' || ') AS envases，
+      GROUP_CONCAT(DISTINCT e.descripcion SEPARATOR ' || ') AS envases,
       GROUP_CONCAT(DISTINCT t.nombre SEPARATOR ' || ') AS etiquetas
 
   FROM productos p
@@ -201,7 +201,7 @@ module.exports = {
         g.nombre AS grupo,
         o.nombre AS origen,
 
-        GROUP_CONCAT(DISTINCT e.descripcion SEPARATOR ' || ') AS envases，
+        GROUP_CONCAT(DISTINCT e.descripcion SEPARATOR ' || ') AS envases,
         GROUP_CONCAT(DISTINCT t.nombre SEPARATOR ' || ') AS etiquetas
 
       FROM productos p
