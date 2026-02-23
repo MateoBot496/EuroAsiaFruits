@@ -3,7 +3,7 @@ const PublicProductosService = require("./productos.service.js");
 
 // Normalizar(descatado, disponible): checkbox/boolean -> TINYINT(1)
 
-const toTinyIntOptional = (v, fieldName = "valor") => {
+const toTinyInt = (v, fieldName = "valor") => {
   if (v === undefined) return undefined; 
   if (v === true || v === 1 || v === "1" || v === "on" || v === "true") return 1;
   if (v === false || v === 0 || v === "0" || v === "false" || v === "off") return 0;
@@ -55,7 +55,9 @@ async function getTodosProductosAdmin() {
       g.nombre AS grupo,
       o.nombre AS origen,
 
-      GROUP_CONCAT(DISTINCT e.descripcion SEPARATOR ' || ') AS envases
+      GROUP_CONCAT(DISTINCT e.descripcion SEPARATOR ' || ') AS envases,
+      GROUP_CONCAT(DISTINCT t.nombre SEPARATOR ' || ') AS etiquetas
+      
     FROM productos p
     LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
     LEFT JOIN grupos g ON p.id_grupo = g.id_grupo
@@ -234,32 +236,29 @@ async function createProducto(payload) {
     return await PublicProductosService.getProductoById(idProducto);
 
   } catch (e) {
-    await conn.rollback();
+  try { await conn.rollback(); } catch (_) {}
 
-    console.error("createProducto ERROR:", {
-      code: e.code,
-      errno: e.errno,
-      sqlState: e.sqlState,
-      sqlMessage: e.sqlMessage,
-    });
+  console.error("createProducto ERROR RAW:", e);
+  console.error("createProducto ERROR keys:", Object.keys(e || {}));
+  console.error("createProducto ERROR message:", e?.message);
+  console.error("createProducto ERROR stack:", e?.stack);
 
-    if (e.code === "ER_DUP_ENTRY") {
-      const err = new Error("Referencia repetida");
-      err.statusCode = 409;
-      throw err;
-    }
-
-    const err = new Error(
-      `Error interno creando producto: ${e.code || ""} ${e.sqlMessage || ""}`.trim()
-    );
-    err.statusCode = 500;
+  if (e && e.code === "ER_DUP_ENTRY") {
+    const err = new Error("Referencia repetida");
+    err.statusCode = 409;
     throw err;
-
-  } finally {
-    conn.release();
   }
-}
 
+  const err = new Error(
+    `Error interno creando producto: ${e?.code || ""} ${e?.sqlMessage || e?.message || ""}`.trim()
+  );
+  err.statusCode = 500;
+  throw err;
+
+} finally {
+  conn.release();
+}
+}
 // UPDATE producto segun payload (parcial)
 // No obligar a rellenar todos los campos 
 // Solo actualizar segun payload: setIfDefined
