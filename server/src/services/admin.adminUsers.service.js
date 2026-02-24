@@ -27,6 +27,31 @@ async function listAdmins() {
 }
 
 /**
+ * ADMIN BY ID
+ */
+
+async function getAdminById(adminId) {
+  if (!Number.isInteger(adminId) || adminId <= 0) {
+    const err = new Error("ID inválido");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const [rows] = await adminPool.query(
+    `SELECT id, email, role, is_active, failed_attempts, locked_until, last_login_at, created_at, updated_at, created_by
+     FROM admin_users WHERE id = ?`,
+    [adminId]
+  );
+
+  if (rows.length === 0) {
+    const err = new Error("Admin no encontrado");
+    err.statusCode = 404;
+    throw err;
+  }
+  return rows[0];
+}
+
+/**
  * Crear un admin: SOLO SUPERADMIN
  * createdBy = req.user.id (del superadmin)
  */
@@ -145,5 +170,6 @@ async function changeAdminStatus({ adminId, isActive, changedBy }) {
 module.exports = {
   createAdmin,
   changeAdminStatus,
-  listAdmins
+  listAdmins,
+  getAdminById,
 };

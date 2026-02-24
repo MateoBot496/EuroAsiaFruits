@@ -5,7 +5,7 @@ export default function Searchbar({ onSearch }: any) {
         <input
           className="searchbar__input"
           type="text"
-          placeholder="Buscar productos..."
+          placeholder="Buscar..."
           onChange={(e) => {
             onSearch(e.target.value); // Llama a la función onSearch pasada como prop, pasando el valor del input
           }}
