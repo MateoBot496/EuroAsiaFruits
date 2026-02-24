@@ -14,4 +14,8 @@ router.get("/", auth([1]), AdminUserController.getAdmins);
 router.put("/status/:adminId", auth([1]), AdminUserController.changeStatus);
 
 
+// PUT /api/admin/users/password/:adminId
+router.put("/password/:adminId", auth([1]), AdminUserController.changePassword);
+
+
 module.exports = router;
