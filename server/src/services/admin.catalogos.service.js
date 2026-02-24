@@ -41,7 +41,6 @@ const toTinyInt = (v, fieldName = "valor") => {
 };
 
 // Listar todos los valores de un tipo 
-
 async function getAllByTipo(tipo) {
   const { table, field, idField } = getConfig(tipo);
 

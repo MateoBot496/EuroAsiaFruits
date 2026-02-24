@@ -21,6 +21,10 @@ import AdminTodosUsuarios from "./pages/admin/AdminTodosUsuarios";
 import AdminCrearUsuario from "./pages/admin/AdminCrearUsuario";
 import AdminEditarUsuario from "./pages/admin/AdminEditarUsuario";
 import AdminCategorias from "./pages/admin/AdminCategorias";
+import AdminOrigenes from "./pages/admin/AdminOrigenes";
+import AdminGrupos from "./pages/admin/AdminGrupos";
+import AdminEtiquetas from "./pages/admin/AdminEtiquetas";
+import AdminEnvases from "./pages/admin/AdminEnvases";
 
 function AppContent() {
   const location = useLocation();
@@ -62,9 +66,13 @@ function AppContent() {
 
             <Route path="usuarios/todos" element={<AdminTodosUsuarios />} />
             <Route path="usuarios/crear" element={<AdminCrearUsuario />} />
-            <Route path="usuario/:id_usuario" element={<AdminEditarUsuario />} />
+            <Route path="usuario/:id" element={<AdminEditarUsuario />} />
 
             <Route path="categorias" element={<AdminCategorias />} />
+            <Route path="origenes" element={<AdminOrigenes />} />
+            <Route path="grupos" element={<AdminGrupos />} />
+            <Route path="etiquetas" element={<AdminEtiquetas />} />
+            <Route path="envases" element={<AdminEnvases />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

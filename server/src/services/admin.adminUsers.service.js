@@ -27,6 +27,49 @@ async function listAdmins() {
 }
 
 /**
+ * ADMIN BY ID
+ */
+
+async function getAdminById(adminId) {
+  if (!Number.isInteger(adminId) || adminId <= 0) {
+    const err = new Error("ID inválido");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const [rows] = await adminPool.query(
+    `SELECT id, email, role, is_active, failed_attempts, locked_until, last_login_at, created_at, updated_at, created_by
+     FROM admin_users WHERE id = ?`,
+    [adminId]
+  );
+
+  if (rows.length === 0) {
+    const err = new Error("Admin no encontrado");
+    err.statusCode = 404;
+    throw err;
+  }
+  return rows[0];
+}
+
+async function getAdminByEmail(email) {
+  if (!email || typeof email !== "string") {
+    const err = new Error("Email inválido");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const [rows] = await adminPool.query(
+    `SELECT id, email, password_hash, role, is_active, failed_attempts, locked_until, last_login_at, created_at, updated_at, created_by
+     FROM admin_users WHERE email = ?`,
+    [normalizedEmail]
+  );
+
+  return rows.length > 0 ? rows[0] : null;
+}
+
+/**
  * Crear un admin: SOLO SUPERADMIN
  * createdBy = req.user.id (del superadmin)
  */
@@ -83,6 +126,7 @@ async function createAdmin({ email, password, role = 0, createdBy }) {
 
   return { id: result.insertId, email: normalizedEmail, role: roleNum };
 }
+
 
 
 /**
@@ -145,5 +189,7 @@ async function changeAdminStatus({ adminId, isActive, changedBy }) {
 module.exports = {
   createAdmin,
   changeAdminStatus,
-  listAdmins
+  listAdmins,
+  getAdminById,
+  getAdminByEmail,
 };
