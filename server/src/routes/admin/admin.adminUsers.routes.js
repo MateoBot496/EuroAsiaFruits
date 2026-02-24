@@ -13,6 +13,11 @@ router.get("/", auth([1]), AdminUserController.getAdmins);
 //GET /api/admin/users/:adminId
 router.get("/:adminId", auth([1]), AdminUserController.getAdminById);
 
+//GET /api/admin/users/email/:email
+router.get("/email/:email", auth([1]), AdminUserController.getAdminByEmail);
+
+
+
 // PUT /api/admin/users/status/:adminId
 router.put("/status/:adminId", auth([1]), AdminUserController.changeStatus);
 
