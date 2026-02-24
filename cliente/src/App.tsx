@@ -66,7 +66,7 @@ function AppContent() {
 
             <Route path="usuarios/todos" element={<AdminTodosUsuarios />} />
             <Route path="usuarios/crear" element={<AdminCrearUsuario />} />
-            <Route path="usuario/:id_usuario" element={<AdminEditarUsuario />} />
+            <Route path="usuario/:id" element={<AdminEditarUsuario />} />
 
             <Route path="categorias" element={<AdminCategorias />} />
             <Route path="origenes" element={<AdminOrigenes />} />
