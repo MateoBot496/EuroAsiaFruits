@@ -3,6 +3,7 @@ const {
   changeAdminStatus,
   listAdmins,
   getAdminById,
+  getAdminByEmail,
 } = require("../../services/admin.adminUsers.service.js");
 
 const AdminUserController = {
@@ -12,6 +13,17 @@ const AdminUserController = {
     try {
       const admins = await listAdmins();
       return res.status(200).json(admins);
+    } catch (e) {
+      return res.status(e.statusCode || 500).json({ message: e.message });
+    }
+  },
+
+  // GET /api/admin/users/email/:email
+  async getAdminByEmail(req, res) {
+    try {
+      const { email } = req.params;
+      const admin = await getAdminByEmail(email);
+      return res.status(200).json(admin);
     } catch (e) {
       return res.status(e.statusCode || 500).json({ message: e.message });
     }
