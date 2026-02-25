@@ -22,6 +22,8 @@ router.get("/email/:email", auth([1]), AdminUserController.getAdminByEmail);
 router.put("/status/:adminId", auth([1]), AdminUserController.changeStatus);
 
 
+// PUT /api/admin/users/password/:adminId
+router.put("/password/:adminId", auth([1]), AdminUserController.changePassword);
 
 
 module.exports = router;
