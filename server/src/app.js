@@ -19,6 +19,8 @@ app.use("/images", express.static(path.join(__dirname, "public/images")));
 // Rutas públicas
 app.use("/api/public", require("./routes/public/public.productos.routes"));
 app.use("/api/public", require("./routes/public/public.catalogos.routes"));
+// para enviar formulario de contacto
+app.use("/api/public", require("./routes/public/public.contacto.routes"));
 
 // Rutas de auth (login/logout/me/refresh)
 app.use("/api/auth", require("./routes/auth/auth.routes"));
@@ -28,6 +30,7 @@ app.use("/api/admin", auth([0,1]));
 app.use("/api/admin/users", require("./routes/admin/admin.adminUsers.routes"));
 app.use("/api/admin/productos", require("./routes/admin/admin.productos.routes"));
 app.use("/api/admin/catalogos", require("./routes/admin/admin.catalogos.routes"));
+
 
 // Middleware de errores (siempre al final)
 app.use(errorHandler);
