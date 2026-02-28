@@ -9,8 +9,11 @@ yarn-error.log
 
 # --- ENV FILES ---
 #.env
-.env.local
-.env.*.local
+# ENV files
+.env
+.env.*
+server/.env
+cliente/.env
 
 # --- SERVER ---
 server/node_modules/
