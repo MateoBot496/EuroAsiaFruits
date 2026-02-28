@@ -29,6 +29,7 @@ import AdminEnvases from "./pages/admin/AdminEnvases";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import Contacto from "./pages/Contacto";
 import ProductosDestacados from "./pages/ProductosDestacados";
+import ScrollRestoration from "./components/ScrollRestoration";
 
 function AppContent() {
   const location = useLocation();
@@ -38,6 +39,7 @@ function AppContent() {
 
   return (
     <div className="h-full flex flex-col">
+       <ScrollRestoration />
       {!isAdminRoute && <Navbar />}
       {isAdminRoute && <AdminNavbar />}
       <AuthProvider>
