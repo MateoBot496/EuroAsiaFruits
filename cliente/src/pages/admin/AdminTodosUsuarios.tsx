@@ -42,6 +42,7 @@ export default function AdminTodosUsuarios() {
             <div key={usuario.id} className="p-3 flex flex-col items-center border rounded bg-gray-100">
                 <p className="font-bold">{usuario.email}</p>
                 {usuario.role == 1 ? <p className="text-3xl text-red-500">Superadmin</p> : <p className="text-3xl text-green-500">Admin</p>}
+                {usuario.is_active == 1 ? <p className="text-green-500">Activo</p> : <p className="text-red-500">Inactivo</p>}
 
               <div className="w-full">
                 <Link to={`/admin/usuario/${usuario.id}`}>
@@ -49,13 +50,6 @@ export default function AdminTodosUsuarios() {
                     Editar
                   </button>
                 </Link>
-
-                <button
-                  className="bg-red-500 text-white px-4 py-2 mt-2 rounded w-full hover:bg-red-600 hover:cursor-pointer"
-                  onClick={() => handleDelete(usuario.id)}
-                >
-                  Borrar
-                </button>
               </div>
             </div>
           ))}

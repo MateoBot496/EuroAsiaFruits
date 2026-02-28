@@ -19,7 +19,7 @@ type Props = {
   productoNombre: string;
   productoReferencia: string;
 
-  // false => NO muestra Nombre/Referencia en el formulario 
+  // false => NO muestra Nombre/Referencia en el formulario
   showProductoFields?: boolean;
 
   // para EmailJS
@@ -52,7 +52,7 @@ export default function FormularioContacto({
       empresa: "",
       mensaje: "",
     }),
-    [productoNombre, productoReferencia]
+    [productoNombre, productoReferencia],
   );
 
   const [form, setForm] = useState<FormState>(initialForm);
@@ -102,7 +102,9 @@ export default function FormularioContacto({
       emailjsPublicKey || (import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string);
 
     if (!sid || !tid || !pkey) {
-      throw new Error("Falta configuración EmailJS (Service/Template/Public Key).");
+      throw new Error(
+        "Falta configuración EmailJS (Service/Template/Public Key).",
+      );
     }
 
     const templateParams = {
