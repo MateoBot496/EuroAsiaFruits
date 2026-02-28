@@ -46,6 +46,11 @@ export default function ProductoCard({
         {!simple && (
           <div className="flex flex-col gap-1 text-sm text-gray-700 mt-auto">
             <p>
+              <span className="font-medium text-gray-900">Referencia:</span>{" "}
+              {producto.referencia}
+            </p>
+
+            <p>
               <span className="font-medium text-gray-900">Envase:</span>{" "}
               {formatLabel(producto.envases)}
             </p>
