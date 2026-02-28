@@ -20,16 +20,22 @@ function Productos(): JSX.Element {
                 <h1 className="text-4xl font-bold mb-4">Nuestros Productos</h1>
 
                 <div className="filtros w-full flex gap-5 mb-5 justify-center flex-wrap">
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Frutas Exóticas
-                    </button>
-                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                        Setas
-                    </button>
-                    <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
-                        Frutas Orgánicas
-                    </button>
-                </div>
+    <button className="filtroBtn filtroBtn--frutas">
+        Frutas
+    </button>
+    <button className="filtroBtn filtroBtn--citricos">
+        Cítricos
+    </button>
+    <button className="filtroBtn filtroBtn--raices">
+        Raíces y tubérculos
+    </button>
+    <button className="filtroBtn filtroBtn--verduras">
+        Verduras
+    </button>
+    <button className="filtroBtn filtroBtn--setas">
+        Setas
+    </button>
+</div>
             </div>
 
             <div className="productos-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 pb-10">

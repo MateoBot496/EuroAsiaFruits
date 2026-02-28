@@ -26,6 +26,13 @@ type Props = {
   emailjsServiceId?: string;
   emailjsTemplateId?: string;
   emailjsPublicKey?: string;
+
+  // Variantes de UI
+  showCloseButton?: boolean;   // default true  — oculta la X superior derecha
+  titulo?: string;             // default "Consulta de producto"
+  showCancelButton?: boolean;  // default true  — oculta/muestra "Cancelar"/"Borrar"
+  cancelLabel?: string;        // default "Cancelar"
+  cancelClearsForm?: boolean;  // default false — si true, borra el form en vez de cerrar
 };
 
 function isValidEmail(v: string): boolean {
@@ -41,6 +48,10 @@ export default function FormularioContacto({
   emailjsServiceId,
   emailjsTemplateId,
   emailjsPublicKey,
+  showCloseButton = true,
+  titulo = "Consulta de producto",
+  cancelClearsForm = false,
+  cancelLabel = cancelClearsForm ? "Borrar" : "Cancelar",
 }: Props): JSX.Element | null {
   const initialForm: FormState = useMemo(
     () => ({
@@ -156,21 +167,23 @@ export default function FormularioContacto({
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 className="text-xl font-bold text-gray-900">
-              Consulta de producto
+              {titulo}
             </h2>
             <p className="text-sm text-gray-600 mt-1">
               Completa tus datos y te contactamos.
             </p>
           </div>
 
-          <button
-            onClick={onClose}
-            className="rounded-lg px-3 py-1 text-gray-600 hover:bg-gray-100"
-            type="button"
-            disabled={sending}
-          >
-            Cerrar
-          </button>
+          {showCloseButton && (
+            <button
+              onClick={onClose}
+              className="rounded-lg px-3 py-1 text-gray-600 hover:bg-gray-100"
+              type="button"
+              disabled={sending}
+            >
+              Cerrar
+            </button>
+          )}
         </div>
 
         <form onSubmit={onSubmit} className="mt-5 space-y-4">
@@ -279,11 +292,11 @@ export default function FormularioContacto({
           <div className="flex gap-3 justify-end pt-2">
             <button
               type="button"
-              onClick={onClose}
+              onClick={cancelClearsForm ? () => { setForm(initialForm); setOkMsg(null); setErrMsg(null); } : onClose}
               className="rounded-xl px-4 py-2 border border-gray-300 text-gray-800 hover:bg-gray-50"
               disabled={sending}
             >
-              Cancelar
+              {cancelLabel}
             </button>
 
             <button

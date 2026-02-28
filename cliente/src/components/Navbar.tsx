@@ -12,7 +12,7 @@ export default function Navbar() {
 
       <Link to="/" className="navLink">Home</Link>
       <Link to="/productos" className="navLink">Productos</Link>
-      <Link to="/productos-destacados" className="navLink">Destacados</Link>
+      <Link to="/destacados" className="navLink">Destacados</Link>
       <Link to="/about"  className="navLink">Sobre Nosotros</Link>
       <Link to="/contacto" className="navLink">Contacto</Link>
       

@@ -27,6 +27,8 @@ import AdminGrupos from "./pages/admin/AdminGrupos";
 import AdminEtiquetas from "./pages/admin/AdminEtiquetas";
 import AdminEnvases from "./pages/admin/AdminEnvases";
 import ScrollToTopButton from "./components/ScrollToTopButton";
+import Contacto from "./pages/Contacto";
+import ProductosDestacados from "./pages/ProductosDestacados";
 
 function AppContent() {
   const location = useLocation();
@@ -43,7 +45,9 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/productos" element={<Productos />} />
           <Route path="/about" element={<About />} />
+          <Route path="/contacto" element={<Contacto />} />
           <Route path="/producto/:id" element={<Producto />} />
+          <Route path="/destacados" element={<ProductosDestacados />} />
           <Route
             path="/login"
             element={

@@ -515,6 +515,169 @@ h2{
 }
 
 /* ===========================
+   BOTONES FILTRO PRODUCTOS
+   =========================== */
+.filtroBtn {
+  font-family: 'Baloo';
+  font-weight: bold;
+  padding: 0.6vh 3vh;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.filtroBtn:hover {
+  transform: translateY(-2px);
+  opacity: 0.85;
+}
+
+/* Frutas → rojo corporativo */
+.filtroBtn--frutas {
+  background-color: var(--color-rojo);
+  color: white;
+}
+
+/* Cítricos → crema oscuro (evoca naranja/amarillo sin salirse de paleta) */
+.filtroBtn--citricos {
+  background-color: var(--color-crema-oscuro);
+  color: var(--color-verde-oscuro);
+}
+
+/* Raíces y tubérculos → verde oscuro (tierra) */
+.filtroBtn--raices {
+  background-color: var(--color-verde-oscuro);
+  color: var(--color-crema);
+}
+
+/* Verduras → verde azulado corporativo */
+.filtroBtn--verduras {
+  background-color: var(--color-verde-azulado);
+  color: white;
+}
+
+/* Setas → rosado (diferenciador suave) */
+.filtroBtn--setas {
+  background-color: var(--color-rosado);
+  color: white;
+}
+
+/* ===========================
+   PRODUCTOS DESTACADOS PAGE
+   =========================== */
+
+/* Hero */
+.destacadosHero {
+    width: 100%;
+    background-color: var(--color-verde-oscuro);
+    color: var(--color-crema);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6vh 5%;
+    gap: 1.5vh;
+}
+
+.destacadosHero__badge {
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background-color: var(--color-crema-oscuro);
+    color: var(--color-verde-oscuro);
+    padding: 0.4vh 2vh;
+    border-radius: 999px;
+}
+
+.destacadosHero__title {
+    font-size: 2.6rem;
+    font-weight: bold;
+    font-family: 'Baloo';
+    margin: 0;
+    color: var(--color-crema);
+}
+
+.destacadosHero__subtitle {
+    font-size: 1rem;
+    opacity: 0.85;
+    max-width: 520px;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Subheader con contador y link */
+.destacadosSubheader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5vh 5%;
+    border-bottom: 2px solid var(--color-crema-oscuro);
+    background-color: var(--color-crema);
+}
+
+.destacadosSubheader__count {
+    font-size: 0.95rem;
+    color: var(--color-verde-oscuro);
+    font-weight: bold;
+    margin: 0;
+}
+
+.destacadosSubheader__link {
+    font-size: 0.9rem;
+    color: var(--color-verde-azulado);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.15s ease;
+}
+
+.destacadosSubheader__link:hover {
+    color: var(--color-verde-oscuro);
+}
+
+/* Wrapper de cada card con badge */
+.destacadosCard__wrapper {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+
+.destacadosCard__badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    background-color: var(--color-crema-oscuro);
+    color: var(--color-verde-oscuro);
+    font-size: 0.72rem;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    padding: 0.3vh 1.2vh;
+    border-radius: 999px;
+    pointer-events: none;
+}
+
+/* Empty state */
+.destacadosEmpty {
+    width: 100%;
+    min-height: 30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-verde-oscuro);
+    font-size: 1.1rem;
+    padding: 5vh;
+    text-align: center;
+}
+
+
+
+
+/* ===========================
    SCROLL TO TOP BUTTON
    =========================== */
 .scrollToTop {
@@ -538,6 +701,196 @@ h2{
   transform: translateY(-3px);
 }
 
+/* ===========================
+   CONTACTO PAGE
+   =========================== */
+
+.contacto {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Hero */
+.contactoHero {
+    background-color: var(--color-verde-azulado);
+    color: white;
+    text-align: center;
+    padding: 6vh 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    align-items: center;
+}
+
+.contactoHero__title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    font-family: 'Baloo';
+    margin: 0;
+}
+
+.contactoHero__subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 500px;
+    margin: 0;
+}
+
+/* Layout principal */
+.contactoBody {
+    display: flex;
+    flex-direction: column;
+    gap: 4vh;
+    padding: 5vh 5%;
+    background-color: var(--color-crema);
+}
+
+/* Columna izquierda */
+.contactoLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 4vh;
+    flex: 1;
+}
+
+/* Tarjeta info */
+.contactoInfo {
+    background-color: white;
+    border-radius: 14px;
+    padding: 3vh 3%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+}
+
+.contactoInfo__heading {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--color-verde-oscuro);
+    border-bottom: 2px solid var(--color-crema-oscuro);
+    padding-bottom: 1vh;
+    margin: 0;
+    text-align: left;
+}
+
+.contactoInfo__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2vh;
+    font-size: 1rem;
+    color: #333;
+}
+
+.contactoInfo__icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.contactoInfo__link {
+    color: var(--color-verde-azulado);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.contactoInfo__link:hover {
+    color: var(--color-verde-oscuro);
+    text-decoration: underline;
+}
+
+.contactoInfo__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vh;
+    margin-top: 1vh;
+}
+
+/* Mapa */
+.contactoMapa {
+    background-color: white;
+    border-radius: 14px;
+    padding: 3vh 3%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+}
+
+.contactoMapa__wrapper {
+    width: 100%;
+    height: 280px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid var(--color-crema-oscuro);
+    background-color: #e5e5e5;
+}
+
+.contactoMapa__note {
+    font-size: 0.78rem;
+    color: #888;
+    margin: 0;
+}
+
+/* Columna derecha: formulario */
+.contactoRight {
+    background-color: white;
+    border-radius: 14px;
+    padding: 3vh 3%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+}
+
+.contactoForm__desc {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 0;
+}
+
+/* 
+  Neutralizamos los estilos de modal del FormularioContacto
+  cuando se usa embebido (position fixed, overlay, etc.)
+*/
+.contactoForm__inline {
+    position: relative;
+}
+
+.contactoForm__inline > div {
+    position: static !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+}
+
+.contactoForm__inline > div > div:first-child {
+    /* overlay bg-black/50 → ocultamos */
+    display: none !important;
+}
+
+/* ===========================
+   CONTACTO RESPONSIVE
+   =========================== */
+
+@media (min-width: 900px) {
+    .contactoBody {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .contactoLeft {
+        max-width: 45%;
+    }
+
+    .contactoMapa__wrapper {
+        height: 320px;
+    }
+}
 
 
 /* ===========================
