@@ -514,7 +514,29 @@ h2{
     }
 }
 
+/* ===========================
+   SCROLL TO TOP BUTTON
+   =========================== */
+.scrollToTop {
+  position: fixed;
+  bottom: 4vh;
+  right: 4vh;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--color-verde-azulado);
+  color: white;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.2s ease, background-color 0.2s ease;
+  z-index: 999;
+}
 
+.scrollToTop:hover {
+  background-color: var(--color-verde-oscuro);
+  transform: translateY(-3px);
+}
 
 
 

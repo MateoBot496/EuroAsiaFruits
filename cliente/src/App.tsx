@@ -26,6 +26,7 @@ import AdminOrigenes from "./pages/admin/AdminOrigenes";
 import AdminGrupos from "./pages/admin/AdminGrupos";
 import AdminEtiquetas from "./pages/admin/AdminEtiquetas";
 import AdminEnvases from "./pages/admin/AdminEnvases";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 
 function AppContent() {
   const location = useLocation();
@@ -79,6 +80,7 @@ function AppContent() {
         </Routes>
       </AuthProvider>
       {!isAdminRoute && <Footer />}
+      {!isAdminRoute && <ScrollToTopButton />}
     </div>
   );
 }
