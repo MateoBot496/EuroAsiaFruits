@@ -173,10 +173,6 @@ async function changeAdminStatus({ adminId, isActive, changedBy }) {
     throw err;
   }
 
-  if (target.isActive === isActive) {
-    return { ok: true, alreadyInState: true };
-  }
-
   await adminPool.query(
     `UPDATE admin_users SET is_active = ? WHERE id = ?`,
     [isActive, adminId]
@@ -211,6 +207,7 @@ async function changeAdminPassword({
   }
 
   if (!newPassword || newPassword.length < 6) {
+    console.log("Nueva contraseña inválida:", newPassword);
     const err = new Error("La nueva contraseña debe tener al menos 6 caracteres");
     err.statusCode = 400;
     throw err;

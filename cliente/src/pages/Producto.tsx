@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import useProductoPorId from "../hooks/useProductoPorId";
 import { formatLabel } from "../utils/formatLabel";
-import FormularioContacto from "../components/ FormularioContacto";
+import FormularioContacto from "../components/FormularioContacto";
 
 export default function Producto(): JSX.Element {
   const { id } = useParams();
