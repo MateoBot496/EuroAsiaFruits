@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { type JSX } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Productos from "./pages/Productos";
 import About from "./pages/About";
@@ -29,13 +30,13 @@ import AdminEnvases from "./pages/admin/AdminEnvases";
 function AppContent() {
   const location = useLocation();
 
-  const hideNavbar =
+  const isAdminRoute =
     location.pathname === "/admin" || location.pathname.startsWith("/admin/");
 
   return (
     <div className="h-full flex flex-col">
-      {!hideNavbar && <Navbar />}
-      {hideNavbar && <AdminNavbar />}
+      {!isAdminRoute && <Navbar />}
+      {isAdminRoute && <AdminNavbar />}
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -77,6 +78,7 @@ function AppContent() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
+      {!isAdminRoute && <Footer />}
     </div>
   );
 }
