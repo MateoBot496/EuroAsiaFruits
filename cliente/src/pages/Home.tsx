@@ -98,15 +98,18 @@ function Home(): JSX.Element {
               internacionales, garantizando la satisfacción de nuestros clientes
               y el bienestar de nuestros productores.
             </p>
+            
             <div className="flex gap-5 flex-col xl:flex-row justify-center items-center">
               {productosDestacados.slice(0, 2).map((producto, index) => (
-                <Link
-                  to={`/producto/${producto.id_producto}`}
-                  key={producto.id_producto}
-                >
-                  <ProductoCard key={index} producto={producto} />
-                </Link>
-              ))}
+              <Link
+                to={`/producto/${producto.id_producto}`}
+                key={producto.id_producto}
+                className="destacadosCard__wrapper block"
+    >
+              <div className="destacadosCard__badge">✦ Destacado</div>
+              <ProductoCard key={index} producto={producto} simple />
+              </Link>
+))}
             </div>
           </div>
         </div>
