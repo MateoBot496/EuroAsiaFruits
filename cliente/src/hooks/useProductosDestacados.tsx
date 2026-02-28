@@ -14,7 +14,6 @@ export default function useProductosDestacados() {
                     throw new Error(`Error del servidor: ${res.status}`);
                 }
                 const data: Producto[] = await res.json();
-                console.log("Productos destacados:", data);
                 setProductos(data);
             } catch (err) {
                 console.error(err);

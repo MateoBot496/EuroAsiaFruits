@@ -173,10 +173,6 @@ async function changeAdminStatus({ adminId, isActive, changedBy }) {
     throw err;
   }
 
-  if (target.isActive === isActive) {
-    return { ok: true, alreadyInState: true };
-  }
-
   await adminPool.query(
     `UPDATE admin_users SET is_active = ? WHERE id = ?`,
     [isActive, adminId]
@@ -185,11 +181,105 @@ async function changeAdminStatus({ adminId, isActive, changedBy }) {
   return { ok: true, isActive };
 }
 
+/**
+ * Cambiar contraseña de un administrador
+ *
+ * Reglas:
+ * - El SUPERADMIN puede cambiar la contraseña de cualquier administrador.
+ * - El ADMIN solo puede cambiar su propia contraseña.
+ * - Si el cambio es propio, es obligatorio validar la contraseña actual (oldPassword).
+ * - No se permite cambiar la contraseña de un usuario deshabilitado.
+ * - Al cambiar la contraseña se reinician:
+ *     - failed_attempts
+ *     - locked_until
+ */
+async function changeAdminPassword({
+  adminId,
+  oldPassword,
+  newPassword,
+  changedBy
+}) {
+
+  if (!Number.isInteger(adminId) || adminId <= 0) {
+    const err = new Error("ID inválido");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (!newPassword || newPassword.length < 6) {
+    console.log("Nueva contraseña inválida:", newPassword);
+    const err = new Error("La nueva contraseña debe tener al menos 6 caracteres");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (!Number.isInteger(changedBy) || changedBy <= 0) {
+    const err = new Error("Operador inválido");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const performer = await findAdminById(changedBy);
+  if (!performer || performer.isActive === 0) {
+    const err = new Error("No autorizado");
+    err.statusCode = 403;
+    throw err;
+  }
+
+  const target = await findAdminById(adminId);
+  if (!target) {
+    const err = new Error("Admin no encontrado");
+    err.statusCode = 404;
+    throw err;
+  }
+
+  if (target.isActive === 0) {
+    const err = new Error("No se puede modificar un usuario deshabilitado");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const isSelf = adminId === changedBy;
+  const isSuperAdmin = performer.role === 1;
+
+  if (!isSuperAdmin && !isSelf) {
+    const err = new Error("No tienes permisos para cambiar esta contraseña");
+    err.statusCode = 403;
+    throw err;
+  }
+
+  if (isSelf) {
+    if (!oldPassword) {
+      const err = new Error("Debes proporcionar la contraseña actual");
+      err.statusCode = 400;
+      throw err;
+    }
+
+    const match = await bcrypt.compare(oldPassword, target.passwordHash);
+    if (!match) {
+      const err = new Error("La contraseña actual es incorrecta");
+      err.statusCode = 400;
+      throw err;
+    }
+  }
+
+  const newHash = await bcrypt.hash(newPassword, 10);
+
+  await adminPool.query(
+    `UPDATE admin_users
+     SET password_hash = ?, failed_attempts = 0, locked_until = NULL
+     WHERE id = ?`,
+    [newHash, adminId]
+  );
+
+  return { ok: true };
+}
 
 module.exports = {
   createAdmin,
   changeAdminStatus,
   listAdmins,
-  getAdminById,
   getAdminByEmail,
+  changeAdminPassword,
+  getAdminById
 };
