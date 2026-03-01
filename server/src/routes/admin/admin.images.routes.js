@@ -8,6 +8,6 @@ const upload = multer({ storage: multer.memoryStorage() });
 const ImagesController = require("../../controllers/admin/admin.images.controller");
 
 // POST /api/admin/images/producto
-router.post("/producto",auth([0, 1]),upload.single("imagen"),ImagesController.uploadProducto);
+router.post("/producto",auth([0, 1]),upload.single("imagen"),ImagesController.uploadImagenProducto);
 
 module.exports = router;
