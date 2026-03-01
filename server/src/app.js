@@ -30,6 +30,7 @@ app.use("/api/admin", auth([0,1]));
 app.use("/api/admin/users", require("./routes/admin/admin.adminUsers.routes"));
 app.use("/api/admin/productos", require("./routes/admin/admin.productos.routes"));
 app.use("/api/admin/catalogos", require("./routes/admin/admin.catalogos.routes"));
+app.use("/api/admin/images", require("./routes/admin/admin.images.routes"));
 
 
 // Middleware de errores (siempre al final)
