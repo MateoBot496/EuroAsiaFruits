@@ -100,35 +100,51 @@ module.exports = {
 
     const [rows] = await publicPool.query(`
     SELECT
-      p.id_producto,
-      p.referencia,
-      p.nombre,
-      p.nombre_ingles,
-      p.descripcion,
-      p.url_imagen,
-      p.destacado,
-      p.disponible,
+  p.id_producto,
+  p.referencia,
+  p.nombre,
+  p.nombre_ingles,
+  p.descripcion,
+  p.url_imagen,
+  p.destacado,
+  p.disponible,
 
-      c.nombre AS categoria,
-      g.nombre AS grupo,
-      o.nombre AS origen,
+  c.nombre AS categoria,
+  g.nombre AS grupo,
+  o.nombre AS origen,
 
-      GROUP_CONCAT(DISTINCT e.descripcion SEPARATOR ' || ') AS envases,
-      GROUP_CONCAT(DISTINCT t.nombre SEPARATOR ' || ') AS etiquetas
+  GROUP_CONCAT(DISTINCT pe.id_envase) AS envases_ids,
+  GROUP_CONCAT(DISTINCT pt.id_etiqueta) AS etiquetas_ids,
 
-      FROM productos p
-      LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
-      LEFT JOIN grupos g ON p.id_grupo = g.id_grupo
-      LEFT JOIN origenes o ON p.id_origen = o.id_origen
+  GROUP_CONCAT(DISTINCT e.descripcion SEPARATOR ' || ') AS envases,
+  GROUP_CONCAT(DISTINCT t.nombre SEPARATOR ' || ') AS etiquetas
 
-      LEFT JOIN productos_envases pe ON p.id_producto = pe.id_producto
-      LEFT JOIN envases e ON pe.id_envase = e.id_envase
+FROM productos p
 
-      LEFT JOIN productos_etiquetas pt ON p.id_producto = pt.id_producto
-      LEFT JOIN etiquetas t ON pt.id_etiqueta = t.id_etiqueta
+LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+LEFT JOIN grupos g ON p.id_grupo = g.id_grupo
+LEFT JOIN origenes o ON p.id_origen = o.id_origen
 
-    WHERE p.id_producto = ?
-    GROUP BY p.id_producto;
+LEFT JOIN productos_envases pe ON p.id_producto = pe.id_producto
+LEFT JOIN envases e ON pe.id_envase = e.id_envase
+
+LEFT JOIN productos_etiquetas pt ON p.id_producto = pt.id_producto
+LEFT JOIN etiquetas t ON pt.id_etiqueta = t.id_etiqueta
+
+WHERE p.id_producto = ?
+
+GROUP BY 
+  p.id_producto,
+  p.referencia,
+  p.nombre,
+  p.nombre_ingles,
+  p.descripcion,
+  p.url_imagen,
+  p.destacado,
+  p.disponible,
+  c.nombre,
+  g.nombre,
+  o.nombre;
   `, [id]);
 
     return rows[0];

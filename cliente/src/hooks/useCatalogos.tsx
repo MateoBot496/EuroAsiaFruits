@@ -4,8 +4,8 @@ type CatalogoItem = {
   id_grupo?: number;
   id_categoria?: number;
   id_origen?: number;
-  id_etiqueta?: number;
-  id_envase?: number;
+  id_etiqueta?: any;
+  id_envase?: any;
   nombre?: string;
   descripcion?: string;
   is_active?: boolean;
