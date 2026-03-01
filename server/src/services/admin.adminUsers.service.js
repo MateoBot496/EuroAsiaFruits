@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { adminPool } = require('../config/db.js');
+const { adminPool } = require("../config/db.js");
 const { findAdminByEmail, findAdminById } = require("./users.service.js");
 
 /**
@@ -40,7 +40,7 @@ async function getAdminById(adminId) {
   const [rows] = await adminPool.query(
     `SELECT id, email, role, is_active, failed_attempts, locked_until, last_login_at, created_at, updated_at, created_by
      FROM admin_users WHERE id = ?`,
-    [adminId]
+    [adminId],
   );
 
   if (rows.length === 0) {
@@ -63,7 +63,7 @@ async function getAdminByEmail(email) {
   const [rows] = await adminPool.query(
     `SELECT id, email, password_hash, role, is_active, failed_attempts, locked_until, last_login_at, created_at, updated_at, created_by
      FROM admin_users WHERE email = ?`,
-    [normalizedEmail]
+    [normalizedEmail],
   );
 
   return rows.length > 0 ? rows[0] : null;
@@ -121,13 +121,11 @@ async function createAdmin({ email, password, role = 0, createdBy }) {
   const [result] = await adminPool.query(
     `INSERT INTO admin_users (email, password_hash, role, is_active, created_by)
      VALUES (?, ?, ?, 1, ?)`,
-    [normalizedEmail, passwordHash, roleNum, createdByNum]
+    [normalizedEmail, passwordHash, roleNum, createdByNum],
   );
 
   return { id: result.insertId, email: normalizedEmail, role: roleNum };
 }
-
-
 
 /**
  * Cambiar status (isActive) de un admin: SOLO SUPERADMIN
@@ -173,10 +171,10 @@ async function changeAdminStatus({ adminId, isActive, changedBy }) {
     throw err;
   }
 
-  await adminPool.query(
-    `UPDATE admin_users SET is_active = ? WHERE id = ?`,
-    [isActive, adminId]
-  );
+  await adminPool.query(`UPDATE admin_users SET is_active = ? WHERE id = ?`, [
+    isActive,
+    adminId,
+  ]);
 
   return { ok: true, isActive };
 }
@@ -197,9 +195,8 @@ async function changeAdminPassword({
   adminId,
   oldPassword,
   newPassword,
-  changedBy
+  changedBy,
 }) {
-
   if (!Number.isInteger(adminId) || adminId <= 0) {
     const err = new Error("ID inválido");
     err.statusCode = 400;
@@ -208,7 +205,9 @@ async function changeAdminPassword({
 
   if (!newPassword || newPassword.length < 6) {
     console.log("Nueva contraseña inválida:", newPassword);
-    const err = new Error("La nueva contraseña debe tener al menos 6 caracteres");
+    const err = new Error(
+      "La nueva contraseña debe tener al menos 6 caracteres",
+    );
     err.statusCode = 400;
     throw err;
   }
@@ -255,6 +254,7 @@ async function changeAdminPassword({
       throw err;
     }
 
+    console.log(oldPassword + " - n: " + target.passwordHash);
     const match = await bcrypt.compare(oldPassword, target.passwordHash);
     if (!match) {
       const err = new Error("La contraseña actual es incorrecta");
@@ -269,7 +269,7 @@ async function changeAdminPassword({
     `UPDATE admin_users
      SET password_hash = ?, failed_attempts = 0, locked_until = NULL
      WHERE id = ?`,
-    [newHash, adminId]
+    [newHash, adminId],
   );
 
   return { ok: true };
@@ -281,5 +281,5 @@ module.exports = {
   listAdmins,
   getAdminByEmail,
   changeAdminPassword,
-  getAdminById
+  getAdminById,
 };

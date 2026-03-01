@@ -4,8 +4,10 @@ import SearchbarAdmin from "../../components/SearchbarAdmin";
 import useProductos from "../../hooks/useProductos";
 import { Link } from "react-router-dom";
 import deleteProducto  from "../../hooks/deleteProducto";
+import { useGetUsuarioActual } from "../../hooks/useGetUsuarioActual";
 
 export default function AdminTodosProductos() {
+  const { me } = useGetUsuarioActual()
   const { productos, loading, fetchProductos } = useProductos();
   const [search, setSearch] = useState("");
 
@@ -54,10 +56,12 @@ export default function AdminTodosProductos() {
                   </button>
                 </Link>
                 
-                <button className="bg-red-500 text-white px-4 py-2 mt-2 rounded w-full hover:bg-red-600 hover:cursor-pointer" 
+                {me?.role == 1 ? ( 
+                  <button className="bg-red-500 text-white px-4 py-2 mt-2 rounded w-full hover:bg-red-600 hover:cursor-pointer" 
                   onClick={() => handleDelete(producto.id_producto)}>
                   Borrar
-                </button>
+                </button>) : ("") }
+               
               </div>
             </div>
           )

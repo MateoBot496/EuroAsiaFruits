@@ -11,7 +11,7 @@ router.post("/", auth([1]), AdminUserController.createAdmin);
 router.get("/", auth([1]), AdminUserController.getAdmins);
 
 //GET /api/admin/users/:adminId
-router.get("/:adminId", auth([1]), AdminUserController.getAdminById);
+router.get("/:adminId", auth([0,1]), AdminUserController.getAdminById);
 
 //GET /api/admin/users/email/:email
 router.get("/email/:email", auth([1]), AdminUserController.getAdminByEmail);
@@ -23,7 +23,7 @@ router.put("/status/:adminId", auth([1]), AdminUserController.changeStatus);
 
 
 // PUT /api/admin/users/password/:adminId
-router.put("/password/:adminId", auth([1]), AdminUserController.changePassword);
+router.put("/password/:adminId", auth([0,1]), AdminUserController.changePassword);
 
 
 module.exports = router;
