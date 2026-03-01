@@ -1,14 +1,35 @@
 import type { JSX } from "react";
+import { useEffect, useRef, useState } from "react";
 import tomate from "../assets/tomate2.jpg";
 import fresa from "../assets/fresa1.jpg";
+import homevideo from "../assets/homevideo.mp4";
 import ProductoCard from "../components/ProductoCard";
 import useProductosDestacados from "../hooks/useProductosDestacados";
 import { Link } from "react-router-dom";
+
+
 
 function Home(): JSX.Element {
   const { productos: productosDestacados, loading: loadingDestacados } =
     useProductosDestacados();
 
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [muted, setMuted] = useState(true);
+
+    const toggleMute = () => {
+      if (videoRef.current) {
+        const newMuted = !muted;
+        videoRef.current.muted = newMuted;
+        setMuted(newMuted);
+      }
+    };
+
+  useEffect(() => {
+    // Garantiza que el vídeo arranca silenciado
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+    }
+  }, []);
   // Protección mientras carga los productos
   if (loadingDestacados) {
     return <p className="text-center mt-10">Cargando productos...</p>;
@@ -16,23 +37,43 @@ function Home(): JSX.Element {
   return (
     <>
       <div className="home">
-        <div
-          style={{ backgroundImage: `url(${tomate})` }}
-          className="homeHero relative "
-        >
-          <div className=" w-[50%] absolute left-0 h-[50vh] flex flex-col justify-center text-center ">
+
+        {/* ── VIDEO HERO ───────────────────────────────────────────────── */}
+        <div className="homeHero">
+
+          {/* Vídeo de fondo */}
+          <video
+            ref={videoRef}
+            className="homeHero__video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={tomate}
+          >
+            <source src={homevideo} type="video/mp4" />
+          </video>
+          {/* Botón unmute — esquina inferior derecha del hero */}
+          <button className="homeHero__muteBtn" onClick={toggleMute} aria-label={muted ? "Activar sonido" : "Silenciar"}>
+          {muted ? "🔇" : "🔊"}
+          </button>
+          {/* Overlay oscuro para legibilidad del texto */}
+          <div className="homeHero__overlay" />
+
+          {/* Contenido sobre el vídeo */}
+          <div className="homeHero__content">
             <h1 className="homeHero__title">Bienvenidos a EuroAsia Fruits</h1>
             <p className="homeHero__subtitle">
               Tu tienda de verduras y frutas exóticas en línea
             </p>
+            <div className="homeHero__buttons">
+              <Link to="/about">
+                <button className="saberMasButton">Saber más</button>
+              </Link>
+              <button className="saberMasButton negro">Otro botón</button>
+            </div>
           </div>
 
-          <div className="w-full h-[20vh] flex flex-col  justify-center items-center gap-5 absolute bottom-0 xl:flex-row">
-            <Link to="/about">
-              <button className="saberMasButton">Saber más</button>
-            </Link>
-            <button className="saberMasButton negro">Otro botón</button>
-          </div>
         </div>
 
         <div className="companyBrief justify-center items-center ">

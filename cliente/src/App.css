@@ -177,29 +177,103 @@ body{
         flex-direction: column;
     }
 
-    .homeHero{
-        background-image: url('../assets/tomate2.jpg');
+    
+    .homeHero {
+        position: relative;
         width: 100%;
-        gap: 16px;
-        background-size: cover;
-        background-position: center;
-        height: 50vh;
-        color: var(--color-crema-oscuro);
-        /*font-family: Arial, Helvetica, sans-serif;*/
-        font-family: 'Baloo';
-        font-style: italic;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
+    /* Vídeo de fondo */
+    .homeHero__video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        z-index: 0;
+    }
+
+    /* Overlay oscuro */
+    .homeHero__overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.42);
+        z-index: 1;
+    }
+
+    /* Contenido encima del vídeo */
+    .homeHero__content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 2vh;
+        padding: 0 5%;
+        color: white;
+    }
+
+    .homeHero__title {
+        font-weight: bold;
+        font-size: 2.8em;
+        font-family: 'Baloo';
+        color: white;
+        text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        margin: 0;
+    }
+
+    .homeHero__subtitle {
+        font-size: 1.2rem;
+        opacity: 0.92;
+        max-width: 520px;
+        text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+        margin: 0;
+    }
+
+    .homeHero__buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5vh;
+        margin-top: 1vh;
+    }
+
+    @media (min-width: 640px) {
+        .homeHero__title {
+            font-size: 3.5em;
+        }
+        .homeHero__buttons {
+            flex-direction: row;
+        }
+    }
+
+    .homeHero__muteBtn {
+  position: absolute;
+  bottom: 2vh;
+  right: 2vh;
+  z-index: 3;
+  background-color: rgba(0,0,0,0.45);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 999px;
+  padding: 0.6vh 1.4vh;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.homeHero__muteBtn:hover {
+  background-color: rgba(0,0,0,0.7);
+}
     .productos{
         flex-direction: column;
-    }
-
-    .homeHero__title{
-        font-weight: bold;
-        font-size: 2em;
-    }
-    .homeHero__subtitle{
-        display: none;
     }
 
 
