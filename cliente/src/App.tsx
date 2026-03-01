@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { type JSX } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Productos from "./pages/Productos";
 import About from "./pages/About";
@@ -25,23 +26,30 @@ import AdminOrigenes from "./pages/admin/AdminOrigenes";
 import AdminGrupos from "./pages/admin/AdminGrupos";
 import AdminEtiquetas from "./pages/admin/AdminEtiquetas";
 import AdminEnvases from "./pages/admin/AdminEnvases";
+import ScrollToTopButton from "./components/ScrollToTopButton";
+import Contacto from "./pages/Contacto";
+import ProductosDestacados from "./pages/ProductosDestacados";
+import ScrollRestoration from "./components/ScrollRestoration";
 
 function AppContent() {
   const location = useLocation();
 
-  const hideNavbar =
+  const isAdminRoute =
     location.pathname === "/admin" || location.pathname.startsWith("/admin/");
 
   return (
     <div className="h-full flex flex-col">
-      {!hideNavbar && <Navbar />}
-      {hideNavbar && <AdminNavbar />}
+       <ScrollRestoration />
+      {!isAdminRoute && <Navbar />}
+      {isAdminRoute && <AdminNavbar />}
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/productos" element={<Productos />} />
           <Route path="/about" element={<About />} />
+          <Route path="/contacto" element={<Contacto />} />
           <Route path="/producto/:id" element={<Producto />} />
+          <Route path="/destacados" element={<ProductosDestacados />} />
           <Route
             path="/login"
             element={
@@ -77,6 +85,8 @@ function AppContent() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
+      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && <ScrollToTopButton />}
     </div>
   );
 }

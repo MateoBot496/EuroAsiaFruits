@@ -4,20 +4,20 @@ import type { JSX } from "react";
 
 export const AdminRoute = ({ children }: { children: JSX.Element }) => {
   const { role, loading } = useAuth();
-  console.log("AdminRoute: role = " + role);
 
-  if (loading) return <div>Cargando...</div>; // esperar a que el contexto cargue
+  if (loading) return <div>Cargando...</div>; // Espera al fetch
 
-  if (!role) {
-    // No logueado → redirigir a login
+  const numericRole = role !== null ? Number(role) : null;
+
+  // Usuario no logueado
+  if (numericRole === null) {
     return <Navigate to="/login" replace />;
   }
 
-  if (role !== 1 && role !== 0) {
-    // No tiene permisos
+  // Solo admin o superadmin
+  if (numericRole !== 0 && numericRole !== 1) {
     return <div>No tienes permisos para esta página</div>;
   }
 
-  // Usuario admin → renderiza la página
-  return children;
+  return children; // autorizado
 };

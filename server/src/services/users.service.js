@@ -1,4 +1,4 @@
-const { adminPool } = require('../config/db');
+const { adminPool } = require("../config/db");
 
 module.exports = {
   /**
@@ -18,7 +18,7 @@ module.exports = {
        FROM admin_users
        WHERE email = LOWER(TRIM(?))
        LIMIT 1`,
-      [email]
+      [email],
     );
     return rows[0] || null;
   },
@@ -29,11 +29,12 @@ module.exports = {
    */
   async findAdminById(id) {
     const [rows] = await adminPool.query(
-      `SELECT id, email, role, is_active AS isActive
+      `SELECT id, email, 
+          password_hash AS passwordHash, role, is_active AS isActive
        FROM admin_users
        WHERE id = ?
        LIMIT 1`,
-      [id]
+      [id],
     );
     return rows[0] || null;
   },
