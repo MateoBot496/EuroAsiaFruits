@@ -3,10 +3,9 @@ import { useState } from "react";
 import FormularioContacto from "../components/FormularioContacto";
 
 // ─── Datos de la empresa ────────────────────────────────────────────────────
-// TODO: reemplaza con los datos reales del cliente
 const EMPRESA = {
   nombre: "EuroAsia Fruits",
-  direccion: " 427 Calle de Corullón, 28  <br> 28947 Fuenlabrada <br> España",
+  direccion: " 427 Calle de Corullón, 28 28947 Fuenlabrada",
   telefono: "+34 910692998",
   email: "contacto@euroasiafruits.com",
   whatsapp: "https://wa.me/34600000000",

@@ -533,35 +533,112 @@ h2{
   opacity: 0.85;
 }
 
-/* Frutas → rojo corporativo */
-.filtroBtn--frutas {
-  background-color: var(--color-rojo);
-  color: white;
+/* Estados activo/inactivo de los botones de filtro */
+.filtroBtn--activo {
+  background-color: var(--color-verde-oscuro);
+  color: var(--color-crema);
+  outline: 3px solid var(--color-verde-oscuro);
+  outline-offset: 2px;
 }
 
-/* Cítricos → crema oscuro (evoca naranja/amarillo sin salirse de paleta) */
-.filtroBtn--citricos {
+.filtroBtn--inactivo {
   background-color: var(--color-crema-oscuro);
   color: var(--color-verde-oscuro);
 }
 
-/* Raíces y tubérculos → verde oscuro (tierra) */
-.filtroBtn--raices {
-  background-color: var(--color-verde-oscuro);
-  color: var(--color-crema);
-}
-
-/* Verduras → verde azulado corporativo */
-.filtroBtn--verduras {
+.filtroBtn--inactivo:hover {
   background-color: var(--color-verde-azulado);
   color: white;
 }
 
-/* Setas → rosado (diferenciador suave) */
-.filtroBtn--setas {
-  background-color: var(--color-rosado);
-  color: white;
+/* ===========================
+   FILTRO DESPLEGABLE CATEGORÍA
+   =========================== */
+
+.filtroDesplegable {
+    position: relative;
 }
+
+.filtroDesplegable__trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.6vh;
+}
+
+.filtroDesplegable__arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.filtroDesplegable__arrow--open {
+    transform: rotate(180deg);
+}
+
+.filtroDesplegable__menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background-color: white;
+    border: 2px solid var(--color-crema-oscuro);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    min-width: 200px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.filtroDesplegable__item {
+    font-family: 'Baloo';
+    font-size: 0.95rem;
+    padding: 1vh 2vh;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-verde-oscuro);
+    transition: background-color 0.15s ease;
+}
+
+.filtroDesplegable__item:hover {
+    background-color: var(--color-crema);
+}
+
+.filtroDesplegable__item--todos {
+    font-weight: bold;
+    border-bottom: 1px solid var(--color-crema-oscuro);
+    color: var(--color-verde-azulado);
+}
+
+.filtroDesplegable__item--activo {
+    background-color: var(--color-crema);
+    font-weight: bold;
+    color: var(--color-verde-oscuro);
+}
+
+.filtroDesplegable__item--activo::before {
+    content: "✓ ";
+}
+
+/* Botón limpiar filtros */
+.filtroBtn--limpiar {
+    background-color: transparent;
+    color: var(--color-rojo);
+    border: 2px solid var(--color-rojo);
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
+.filtroBtn--limpiar:hover {
+    background-color: var(--color-rojo);
+    color: white;
+    opacity: 1;
+}
+
+
 
 /* ===========================
    PRODUCTOS DESTACADOS PAGE
