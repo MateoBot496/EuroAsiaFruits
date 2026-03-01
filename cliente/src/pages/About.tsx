@@ -30,7 +30,7 @@ function About(): JSX.Element {
             </div>
             <div className="about3">
                     <h1>
-                        Contactanos
+                        Contáctanos
                     </h1>
 
                     <p className="text-lg mb-4 text-justify w-4/5">

@@ -18,7 +18,7 @@ export default function Searchbar() {
               <input
               className="searchbar__input"
               type="text"
-              placeholder="Buscar productos..."
+              placeholder="  Buscar productos..."
               onChange={handleChange}
             />
 
