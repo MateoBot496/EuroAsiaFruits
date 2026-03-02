@@ -7,6 +7,9 @@ export default interface Producto {
   grupo: any ;
   referencia: string;
   envases: string;
+  envases_ids: any;
+  etiquetas_ids: any;
+  etiqueta: string;
   origen: any;
   disponible: number;  // 0 o 1
   destacado: number;   // 0 o 1

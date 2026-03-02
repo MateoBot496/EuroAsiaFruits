@@ -8,7 +8,7 @@ export default function AdminSidebar() {
     const userId = me?.id
 
     return (
-        <div className="bg-gray-100 min-h-[90dvh] p-4 w-full border-r-2">
+        <div className="bg-gray-100 h-full p-4 w-full border-r-2">
             <h2 className="text-xl font-semibold mb-4">
                 Sidebar de Administración
             </h2>
