@@ -20,17 +20,20 @@ export default function SedeCard({
           alt={sede.country}
           className="w-7 h-5 object-cover rounded-sm border"
         />
+        {/* Título en text-xl para que tenga presencia */}
         <h3 className="text-xl font-semibold text-gray-900">
           {sede.city}, {sede.country}
         </h3>
       </div>
 
       {sede.description && (
-        <p className="mt-3 text-gray-600">{sede.description}</p>
+        /* Descripción en text-base para una lectura cómoda */
+        <p className="mt-3 text-base text-gray-600">{sede.description}</p>
       )}
 
       {showContactInfo && (
-        <div className="mt-4 text-gray-700 space-y-2">
+        /* Información de contacto en text-base (tamaño estándar) */
+        <div className="mt-4 text-base text-gray-700 space-y-2">
           <div>
             <span className="font-semibold text-gray-900">Dirección:</span>{" "}
             {sede.addressLine1}
@@ -61,7 +64,7 @@ export default function SedeCard({
               href={sede.mapUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block mt-2 text-black font-medium hover:underline"
+              className="inline-block mt-2 text-black font-medium hover:underline text-sm"
             >
               Ver en Google Maps →
             </a>
@@ -70,7 +73,8 @@ export default function SedeCard({
       )}
 
       {showMap && sede.mapEmbedSrc && (
-        <div className="mt-6 w-full h-[300px] rounded-xl overflow-hidden">
+        /* Mapa en 280px para que sea grande pero no excesivo */
+        <div className="mt-6 w-full h-[280px] rounded-xl overflow-hidden">
           <iframe
             src={sede.mapEmbedSrc}
             width="100%"
