@@ -36,6 +36,8 @@ const parseIds = (input) => {
   )];
 };
 
+
+
 // GET todos
 async function getTodosProductosAdmin() {
   const [rows] = await adminPool.query(`
