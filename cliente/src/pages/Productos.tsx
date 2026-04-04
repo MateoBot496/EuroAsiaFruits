@@ -5,7 +5,7 @@ import ProductoCard from "../components/ProductoCard";
 import { Link } from "react-router-dom";
 
 const LABELS: Record<string, string> = {
-  "aromatico":  "VAromático",
+  "aromatico":  "Aromático",
   "citrico":    "Cítrico",
   "melon":      "Melón",
   "hueso":      "Frutas de hueso",
