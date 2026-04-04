@@ -5,6 +5,8 @@ export default function useProductos() {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  
+
   const fetchProductos = async () => {
     try {
       setLoading(true);
@@ -15,6 +17,9 @@ export default function useProductos() {
         throw new Error(`Error del servidor: ${res.status}`);
       }
       const data: Producto[] = await res.json();
+
+      console.log("Primer producto:", data[0]); 
+      
       setProductos(data);
     } catch (err) {
       console.error(err);
