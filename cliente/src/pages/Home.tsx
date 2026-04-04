@@ -13,16 +13,16 @@ function Home(): JSX.Element {
   const { productos: productosDestacados, loading: loadingDestacados } =
     useProductosDestacados();
 
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const [muted, setMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
 
-    const toggleMute = () => {
-      if (videoRef.current) {
-        const newMuted = !muted;
-        videoRef.current.muted = newMuted;
-        setMuted(newMuted);
-      }
-    };
+  const toggleMute = () => {
+    if (videoRef.current) {
+      const newMuted = !muted;
+      videoRef.current.muted = newMuted;
+      setMuted(newMuted);
+    }
+  };
 
   useEffect(() => {
     // Garantiza que el vídeo arranca silenciado
@@ -55,7 +55,7 @@ function Home(): JSX.Element {
           </video>
           {/* Botón unmute — esquina inferior derecha del hero */}
           <button className="homeHero__muteBtn" onClick={toggleMute} aria-label={muted ? "Activar sonido" : "Silenciar"}>
-          {muted ? "🔇" : "🔊"}
+            {muted ? "🔇" : "🔊"}
           </button>
           {/* Overlay oscuro para legibilidad del texto */}
           <div className="homeHero__overlay" />
@@ -70,7 +70,9 @@ function Home(): JSX.Element {
               <Link to="/about">
                 <button className="saberMasButton">Saber más</button>
               </Link>
-              <button className="saberMasButton negro">Otro botón</button>
+              <Link to="/contacto">
+                <button className="saberMasButton negro">Contáctanos</button>
+              </Link>
             </div>
           </div>
 
@@ -139,18 +141,18 @@ function Home(): JSX.Element {
               internacionales, garantizando la satisfacción de nuestros clientes
               y el bienestar de nuestros productores.
             </p>
-            
+
             <div className="flex gap-5 flex-col xl:flex-row justify-center items-center">
               {productosDestacados.slice(0, 2).map((producto, index) => (
-              <Link
-                to={`/producto/${producto.id_producto}`}
-                key={producto.id_producto}
-                className="destacadosCard__wrapper block"
-    >
-              <div className="destacadosCard__badge">✦ Destacado</div>
-              <ProductoCard key={index} producto={producto} simple />
-              </Link>
-))}
+                <Link
+                  to={`/producto/${producto.id_producto}`}
+                  key={producto.id_producto}
+                  className="destacadosCard__wrapper block"
+                >
+                  <div className="destacadosCard__badge">✦ Destacado</div>
+                  <ProductoCard key={index} producto={producto} simple />
+                </Link>
+              ))}
             </div>
           </div>
         </div>
