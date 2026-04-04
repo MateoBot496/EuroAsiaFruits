@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const LABELS: Record<string, string> = {
   "aromatico":  "Aromático",
-  "citrico":    "Cítrico",
+  "citrica":    "Cítrico",
   "melon":      "Melón",
   "hueso":      "Frutas de hueso",
   "raiz":       "Verduras de raíz",
