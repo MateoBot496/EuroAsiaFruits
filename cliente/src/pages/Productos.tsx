@@ -4,15 +4,38 @@ import useProductos from "../hooks/useProductos";
 import ProductoCard from "../components/ProductoCard";
 import { Link } from "react-router-dom";
 
+const LABELS: Record<string, string> = {
+  "aromatico":  "Verduras y hierbas aromáticas",
+  "citrico":    "Cítrico",
+  "melon":      "Melón",
+  "hueso":      "Frutas de hueso",
+  "raiz":       "Verduras de raíz",
+  "tuberculo":  "Tubérculo",
+  "marron":     "Setas marrones",
+  "blanco":     "Setas blancas",
+  "pepita":     "Fruta de pepita",
+  "tallo":      "Verduras de tallo",
+};
+
+const formatearCategoria = (cat: string) => {
+  const key = cat.toLowerCase();
+  if (LABELS[key]) return LABELS[key];
+  return cat
+    .split("_")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 function Productos(): JSX.Element {
   const { productos, loading } = useProductos();
 
   const [grupoActivo, setGrupoActivo]         = useState<string | null>(null);
   const [categoriaActiva, setCategoriaActiva] = useState<string | null>(null);
+  const [soloAereo, setSoloAereo]             = useState(false);
+  const [soloAsiatico, setSoloAsiatico]       = useState(false);
   const [desplegableOpen, setDesplegableOpen] = useState(false);
   const desplegableRef = useRef<HTMLDivElement>(null);
 
-  // Cierra el desplegable al hacer click fuera
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (desplegableRef.current && !desplegableRef.current.contains(e.target as Node)) {
@@ -23,30 +46,28 @@ function Productos(): JSX.Element {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Grupos únicos presentes en los productos
   const grupos = useMemo(() => {
     const set = new Set<string>();
     productos.forEach((p) => { if (p.grupo) set.add(p.grupo); });
     return Array.from(set).sort();
   }, [productos]);
 
-  // Categorías únicas presentes en los productos
   const categorias = useMemo(() => {
     const set = new Set<string>();
     productos.forEach((p) => { if (p.categoria) set.add(p.categoria); });
     return Array.from(set).sort();
   }, [productos]);
 
-  // Filtrado acumulativo: grupo AND categoría (cada uno independiente)
   const productosFiltrados = useMemo(() => {
     return productos.filter((p) => {
       const passGrupo     = !grupoActivo     || p.grupo     === grupoActivo;
       const passCategoria = !categoriaActiva || p.categoria === categoriaActiva;
-      return passGrupo && passCategoria;
+      const passAereo     = !soloAereo       || p.origen    === "importado_aereo";
+      const passAsiatico  = !soloAsiatico    || (p.etiquetas && p.etiquetas.split(" || ").includes("asiatico"));
+      return passGrupo && passCategoria && passAereo && passAsiatico;
     });
-  }, [productos, grupoActivo, categoriaActiva]);
+  }, [productos, grupoActivo, categoriaActiva, soloAereo, soloAsiatico]);
 
-  // Toggle grupo: segundo click en el mismo botón lo desactiva
   const handleGrupo = (grupo: string) => {
     setGrupoActivo(prev => prev === grupo ? null : grupo);
   };
@@ -54,6 +75,15 @@ function Productos(): JSX.Element {
   const handleCategoria = (cat: string | null) => {
     setCategoriaActiva(cat);
     setDesplegableOpen(false);
+  };
+
+  const hayFiltros = grupoActivo || categoriaActiva || soloAereo || soloAsiatico;
+
+  const limpiarFiltros = () => {
+    setGrupoActivo(null);
+    setCategoriaActiva(null);
+    setSoloAereo(false);
+    setSoloAsiatico(false);
   };
 
   if (loading) {
@@ -71,24 +101,24 @@ function Productos(): JSX.Element {
 
         <div className="filtros w-full flex gap-3 mb-3 justify-center flex-wrap items-center">
 
-          {/* ── Botones de GRUPO (fijos, con colores) ── */}
+          {/* Botones de GRUPO */}
           {grupos.map((grupo) => (
             <button
               key={grupo}
               onClick={() => handleGrupo(grupo)}
               className={`filtroBtn ${grupoActivo === grupo ? "filtroBtn--activo" : "filtroBtn--inactivo"}`}
             >
-              {grupo}
+              {formatearCategoria(grupo)}
             </button>
           ))}
 
-          {/* ── Desplegable de CATEGORÍA ── */}
+          {/* Desplegable de CATEGORIA */}
           <div className="filtroDesplegable" ref={desplegableRef}>
             <button
               className={`filtroBtn filtroDesplegable__trigger ${categoriaActiva ? "filtroBtn--activo" : "filtroBtn--inactivo"}`}
               onClick={() => setDesplegableOpen(prev => !prev)}
             >
-              {categoriaActiva ?? "Categoría"}
+              {categoriaActiva ? formatearCategoria(categoriaActiva) : "Categoría"}
               <span className={`filtroDesplegable__arrow ${desplegableOpen ? "filtroDesplegable__arrow--open" : ""}`}>▾</span>
             </button>
 
@@ -106,20 +136,36 @@ function Productos(): JSX.Element {
                     className={`filtroDesplegable__item ${categoriaActiva === cat ? "filtroDesplegable__item--activo" : ""}`}
                     onClick={() => handleCategoria(cat)}
                   >
-                    {cat}
+                    {formatearCategoria(cat)}
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* ── Limpiar filtros (solo visible si hay alguno activo) ── */}
-          {(grupoActivo || categoriaActiva) && (
+          {/* Boton recien llegado en avion */}
+          <button
+            onClick={() => setSoloAereo(prev => !prev)}
+            className={`filtroBtn ${soloAereo ? "filtroBtn--activo" : "filtroBtn--inactivo"}`}
+          >
+            Recién llegado en avión
+          </button>
+
+          {/* Boton asiatico */}
+          <button
+            onClick={() => setSoloAsiatico(prev => !prev)}
+            className={`filtroBtn ${soloAsiatico ? "filtroBtn--activo" : "filtroBtn--inactivo"}`}
+          >
+            Sabor de Asia
+          </button>
+
+          {/* Limpiar filtros */}
+          {hayFiltros && (
             <button
               className="filtroBtn filtroBtn--limpiar"
-              onClick={() => { setGrupoActivo(null); setCategoriaActiva(null); }}
+              onClick={limpiarFiltros}
             >
-              × Limpiar filtros
+              x Limpiar filtros
             </button>
           )}
 
@@ -129,8 +175,10 @@ function Productos(): JSX.Element {
         <p className="text-sm text-gray-500 mb-3">
           {productosFiltrados.length}{" "}
           {productosFiltrados.length === 1 ? "producto" : "productos"}
-          {grupoActivo && ` · ${grupoActivo}`}
-          {categoriaActiva && ` · ${categoriaActiva}`}
+          {grupoActivo     && ` · ${formatearCategoria(grupoActivo)}`}
+          {categoriaActiva && ` · ${formatearCategoria(categoriaActiva)}`}
+          {soloAereo       && ` · Recién llegado en avión`}
+          {soloAsiatico    && ` · Un mordisco de Asia`}
         </p>
       </div>
 
