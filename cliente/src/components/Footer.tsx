@@ -33,9 +33,9 @@ export default function Footer() {
         <div className="footer__col">
           <h4 className="footer__heading">Productos</h4>
           <nav className="footer__nav">
-            <Link to="/productos?categoria=frutas-exoticas" className="footer__link">Frutas Exóticas</Link>
-            <Link to="/productos?categoria=verduras" className="footer__link">Verduras</Link>
-            <Link to="/productos?categoria=temporada" className="footer__link">De Temporada</Link>
+            <Link to="/productos?grupo=fruta" className="footer__link">Frutas Exóticas</Link>
+            <Link to="/productos?grupo=verdura" className="footer__link">Verduras</Link>
+            <Link to="/productos?grupo=seta" className="footer__link">Setas</Link>
           </nav>
         </div>
 

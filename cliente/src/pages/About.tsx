@@ -41,14 +41,14 @@ function About(): JSX.Element {
         <div className="about">
             {/* 1. SECCIÓN HERO: SOBRE NOSOTROS */}
             <div className="about1" style={{ backgroundColor: 'rgba(37, 143, 150)', color: 'white' }}>
-                <div className="w-2/5 gap-5">
+                <div className="w-full md:w-2/5 gap-5">
                     <h1 className="text-4xl font-bold mb-4">Sobre Nosotros</h1>
-                    <p className="text-lg mb-4 text-justify w-4/5">
+                    <p className="text-lg mb-4 text-justify w-full md:w-4/5">
                         EURO ASIA nació con la misión de facilitar el acceso a productos asiáticos auténticos dentro del mercado europeo.
                         Lo que comenzó como un pequeño proyecto de importación se ha transformado en una empresa en constante crecimiento,
                         impulsada por la confianza de nuestros clientes y por un equipo dedicado que comparte la misma visión: llevar lo mejor de Asia a Europa.
                     </p>
-                    <p className="text-lg mb-6 text-justify w-4/5">
+                    <p className="text-lg mb-6 text-justify w-full md:w-4/5">
                         Gracias a nuestra red de colaboradores en China, Japón, Corea, Tailandia y Vietnam, introducimos productos tradicionales e innovadores que representan la riqueza culinaria asiática.
                     </p>
                 </div>

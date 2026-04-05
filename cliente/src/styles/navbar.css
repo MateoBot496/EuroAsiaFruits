@@ -1,0 +1,210 @@
+/* ===========================
+   NAVBAR
+   =========================== */
+
+.navbar {
+    width: 100%;
+    border-bottom: 2px solid rgb(255, 244, 220);
+    background-color: var(--color-crema);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    z-index: 50;
+}
+
+.adminNavbar {
+    width: 100%;
+    border-bottom: 2px solid rgb(0, 0, 0);
+    background-color: white;
+    height: 7vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+/* Fila principal */
+.navbar__bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+    align-items: center;
+    padding: 0 4%;
+    height: 7vh;
+    min-height: 56px;
+}
+
+/* Links desktop: ocultos en movil */
+.navbar__links {
+    display: none;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Hamburguesa: visible solo en movil */
+.navbar__hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.navbar__hamburger-icon,
+.navbar__hamburger-icon::before,
+.navbar__hamburger-icon::after {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: black;
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+    position: relative;
+}
+
+.navbar__hamburger-icon::before,
+.navbar__hamburger-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+}
+
+.navbar__hamburger-icon::before { top: -7px; }
+.navbar__hamburger-icon::after  { top:  7px; }
+
+/* Estado abierto: X */
+.navbar__hamburger-icon--open {
+    background-color: transparent;
+}
+.navbar__hamburger-icon--open::before {
+    transform: translateY(7px) rotate(45deg);
+}
+.navbar__hamburger-icon--open::after {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Menu movil */
+.navbar__mobile-menu {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-crema);
+    border-top: 1px solid var(--color-crema-oscuro);
+    padding: 1.5vh 4%;
+    gap: 0.5vh;
+}
+
+.navbar__mobile-link {
+    display: block;
+    padding: 1.2vh 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(245, 209, 172, 0.5);
+}
+
+.navbar__mobile-link:last-of-type {
+    border-bottom: none;
+}
+
+.navbar__mobile-search {
+    padding-top: 1.5vh;
+}
+
+/* ===========================
+   NAVLINK
+   =========================== */
+
+.navLink {
+    text-decoration: none;
+    color: black;
+}
+
+.navLink:hover {
+    color: red;
+    transition: all 0.1s ease-in-out;
+}
+
+.logo {
+    width: 14vh;
+    height: auto;
+}
+
+/* ===========================
+   SEARCHBAR
+   =========================== */
+
+.searchbar {
+    width: 250px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.5vh 1vh;
+    background: gray;
+    border-radius: 999px;
+    color: white;
+}
+
+.searchbar__input {
+    border: none;
+    background: transparent;
+    outline: none;
+    color: white;
+    font-size: 1rem;
+    padding-left: 0.6rem;
+    flex: 1;
+}
+
+.searchbar__input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.searchbar-results {
+    width: 250px;
+    max-height: 200px;
+    overflow-y: auto;
+    background: rgb(63, 63, 63);
+    border-radius: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: white transparent;
+}
+
+.searchbar-results::-webkit-scrollbar {
+    width: 8px;
+}
+
+.searchbar-results::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 4px;
+}
+
+.searchbar-results::-webkit-scrollbar-track {
+    background: rgb(63, 63, 63);
+}
+
+.searchbar-result-item {
+    padding: 1vh;
+    color: white;
+    border: 1px solid white;
+}
+
+/* ===========================
+   NAVBAR RESPONSIVE — desktop
+   =========================== */
+
+@media (min-width: 768px) {
+    .navbar__links {
+        display: flex;
+    }
+
+    .navbar__hamburger {
+        display: none;
+    }
+
+    .navbar__mobile-menu {
+        display: none !important;
+    }
+}

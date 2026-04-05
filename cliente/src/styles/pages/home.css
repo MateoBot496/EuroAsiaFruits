@@ -1,0 +1,176 @@
+/* ===========================
+   HOME PAGE
+   =========================== */
+
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ── Hero vídeo ─────────────────────────────────── */
+
+.homeHero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.homeHero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+}
+
+.homeHero__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.42);
+    z-index: 1;
+}
+
+.homeHero__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 2vh;
+    padding: 0 5%;
+    color: white;
+}
+
+.homeHero__title {
+    font-weight: bold;
+    font-size: 2em;
+    font-family: 'Baloo';
+    color: white;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    margin: 0;
+}
+
+.homeHero__subtitle {
+    font-size: 1.2rem;
+    opacity: 0.92;
+    max-width: 520px;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+    margin: 0;
+}
+
+.homeHero__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    margin-top: 1vh;
+}
+
+.homeHero__muteBtn {
+    position: absolute;
+    bottom: 2vh;
+    right: 2vh;
+    z-index: 3;
+    background-color: rgba(0,0,0,0.45);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 999px;
+    padding: 0.6vh 1.4vh;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.homeHero__muteBtn:hover {
+    background-color: rgba(0,0,0,0.7);
+}
+
+/* ── Company Brief ──────────────────────────────── */
+
+.companyBrief {
+    background-color: var(--color-crema);
+    color: var(--color-verde-oscuro);
+    font-family: 'Baloo';
+    display: flex;
+    flex-direction: column;
+    padding: 5%;
+    gap: 5vh;
+}
+
+.companyBriefContainer {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 5vh;
+}
+
+.companyBrief_cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.companyBrief_card {
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: var(--color-crema-oscuro);
+    padding: 1vh;
+    text-align: center;
+}
+
+.textoCard {
+    font-size: 1.2rem;
+}
+
+/* ── Home Final ─────────────────────────────────── */
+
+.homeFinal {
+    background-color: var(--color-verde-azulado);
+    color: white;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2vh;
+    text-align: center;
+    min-height: 60vh;
+}
+
+/* ===========================
+   HOME RESPONSIVE
+   =========================== */
+
+@media (min-width: 480px) {
+    .homeHero__title {
+        font-size: 2.4em;
+    }
+}
+
+@media (min-width: 640px) {
+    .homeHero__title {
+        font-size: 3.5em;
+    }
+    .homeHero__buttons {
+        flex-direction: row;
+    }
+    .companyBrief_cards {
+        flex-direction: row;
+        gap: 2vh;
+    }
+}
+
+@media (min-width: 1280px) {
+    .companyBriefContainer {
+        width: 80%;
+    }
+}

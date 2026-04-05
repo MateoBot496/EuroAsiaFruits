@@ -1,5 +1,22 @@
+/* ===========================
+   MÓDULOS CSS — deben ir ANTES de Tailwind
+   =========================== */
+
+@import "./styles/navbar.css";
+@import "./styles/footer.css";
+@import "./styles/cards.css";
+@import "./styles/filters.css";
+@import "./styles/pages/home.css";
+@import "./styles/pages/about.css";
+@import "./styles/pages/productos.css";
+@import "./styles/pages/contacto.css";
+
+/* ===========================
+   TAILWIND — siempre al final
+   =========================== */
+
 @import "tailwindcss";
 
-#root{
-  width: 100%;
+#root {
+    width: 100%;
 }

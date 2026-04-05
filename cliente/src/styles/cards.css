@@ -1,0 +1,49 @@
+/* ===========================
+   PRODUCTO CARD
+   =========================== */
+
+.producto-card {
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    color: black !important;
+    overflow: hidden;
+    text-align: left;
+    width: 300px;
+    transition: all 0.3s ease-in-out;
+}
+
+.producto-card:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+}
+
+.producto-card p {
+    font-size: 1.1rem;
+}
+
+/* ===========================
+   DESTACADOS CARD
+   =========================== */
+
+.destacadosCard__wrapper {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+
+.destacadosCard__badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    background-color: var(--color-crema-oscuro);
+    color: var(--color-verde-oscuro);
+    font-size: 0.72rem;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    padding: 0.3vh 1.2vh;
+    border-radius: 999px;
+    pointer-events: none;
+}
