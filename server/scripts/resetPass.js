@@ -3,7 +3,7 @@ const pool = require("./../src/config/db.js");
 
 (async () => {
   try {
-    const newPassword = "admin123"; // 👈 contraseña nueva
+    const newPassword = "admin123"; // contraseña nueva
     const email = "admin@mail.com";
 
     const hash = await bcrypt.hash(newPassword, 10);
