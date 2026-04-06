@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import { useMemo, useState, useRef, useEffect } from "react";
 import useProductos from "../hooks/useProductos";
 import ProductoCard from "../components/ProductoCard";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const LABELS: Record<string, string> = {
   "aromatico":  "Aromático",
@@ -29,11 +29,18 @@ const formatearCategoria = (cat: string) => {
 function Productos(): JSX.Element {
   const { productos, loading } = useProductos();
 
-  const [grupoActivo, setGrupoActivo]         = useState<string | null>(null);
-  const [categoriaActiva, setCategoriaActiva] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+
+  const [grupoActivo, setGrupoActivo]         = useState<string | null>(searchParams.get("grupo"));
+  const [categoriaActiva, setCategoriaActiva] = useState<string | null>(searchParams.get("categoria"));
   const [soloAereo, setSoloAereo]             = useState(false);
   const [soloAsiatico, setSoloAsiatico]       = useState(false);
   const [desplegableOpen, setDesplegableOpen] = useState(false);
+
+  useEffect(() => {
+    setGrupoActivo(searchParams.get("grupo"));
+    setCategoriaActiva(searchParams.get("categoria"));
+  }, [searchParams]);
   const desplegableRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

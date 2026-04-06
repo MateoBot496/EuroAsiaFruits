@@ -1,0 +1,120 @@
+/* ===========================
+   PRODUCTOS PAGE
+   =========================== */
+
+.productos {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.productos-content {
+    width: 100%;
+    padding: 5vh 3vw;
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 300px));
+    gap: 4vh 3vw;
+    justify-content: center;
+}
+
+@media (min-width: 640px) {
+    .productos-content {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 300px));
+        padding: 5vh;
+        gap: 5vh;
+    }
+}
+
+/* ===========================
+   PRODUCTOS DESTACADOS PAGE
+   =========================== */
+
+.destacadosHero {
+    width: 100%;
+    background-color: var(--color-verde-oscuro);
+    color: var(--color-crema);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6vh 5%;
+    gap: 1.5vh;
+}
+
+.destacadosHero__badge {
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background-color: var(--color-crema-oscuro);
+    color: var(--color-verde-oscuro);
+    padding: 0.4vh 2vh;
+    border-radius: 999px;
+}
+
+.destacadosHero__title {
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: 'Baloo';
+    margin: 0;
+    color: var(--color-crema);
+}
+
+.destacadosHero__subtitle {
+    font-size: 1rem;
+    opacity: 0.85;
+    max-width: 520px;
+    margin: 0;
+    line-height: 1.6;
+}
+
+@media (min-width: 640px) {
+    .destacadosHero__title {
+        font-size: 2.6rem;
+    }
+}
+
+.destacadosSubheader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5vh 5%;
+    border-bottom: 2px solid var(--color-crema-oscuro);
+    background-color: var(--color-crema);
+}
+
+.destacadosSubheader__count {
+    font-size: 0.95rem;
+    color: var(--color-verde-oscuro);
+    font-weight: bold;
+    margin: 0;
+}
+
+.destacadosSubheader__link {
+    font-size: 0.9rem;
+    color: var(--color-verde-azulado);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.15s ease;
+}
+
+.destacadosSubheader__link:hover {
+    color: var(--color-verde-oscuro);
+}
+
+.destacadosEmpty {
+    width: 100%;
+    min-height: 30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-verde-oscuro);
+    font-size: 1.1rem;
+    padding: 5vh;
+    text-align: center;
+}
