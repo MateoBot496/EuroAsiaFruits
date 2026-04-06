@@ -3,6 +3,9 @@ import { useCatalogos } from "../../hooks/useCatalogos";
 import { useActiveCatalogos } from "../../hooks/useActiveCatalogos";
 
 export default function AdminCrearProducto() {
+  const [imagenFile, setImagenFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string>("");
+
   const { catalogos } = useActiveCatalogos();
   const [form, setForm] = useState({
     referencia: "",
@@ -32,45 +35,61 @@ export default function AdminCrearProducto() {
     });
   };
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     setMsg("");
 
     try {
+      let filename = form.url_imagen; // si no suben imagen nueva, se queda vacío
 
+      // PASO 1: subir imagen si hay una seleccionada
+      if (imagenFile) {
+        const formData = new FormData();
+        formData.append("imagen", imagenFile);
+        formData.append("nombre", form.nombre || "producto");
+
+        const resImg = await fetch("http://localhost:3000/api/admin/images/producto", {
+          method: "POST",
+          credentials: "include",
+          body: formData, // NO pongas Content-Type, el browser lo pone solo con el boundary
+        });
+
+        const dataImg = await resImg.json();
+        if (!resImg.ok) throw new Error(dataImg.message);
+        filename = dataImg.filename;
+      }
+
+      // PASO 2: crear producto con el filename
       const res = await fetch("http://localhost:3000/api/admin/productos", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // 🔥 cookies
-        body: JSON.stringify(form),
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ ...form, url_imagen: filename }),
       });
 
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.message);
 
       setMsg("✅ Producto creado!");
-      setForm({
-        referencia: "",
-        nombre: "", 
-        nombre_ingles: "",
-        descripcion: "",
-        id_grupo: "",
-        id_categoria: "",
-        id_origen: "",
-        url_imagen: "",
-        disponible: 1,
-        destacado: 0,
-      });
+      setForm({ referencia: "", nombre: "", nombre_ingles: "", descripcion: "",
+        id_grupo: "", id_categoria: "", id_origen: "", url_imagen: "",
+        disponible: 1, destacado: 0 });
+      setImagenFile(null);
+      setPreview("");
 
-    } catch (err:any) {
+    } catch (err: any) {
       setMsg("❌ " + err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleImagenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImagenFile(file);
+    setPreview(URL.createObjectURL(file));
   };
 
   return (
@@ -117,13 +136,16 @@ export default function AdminCrearProducto() {
           className="border p-2 rounded"
         />
 
+        <label className="font-medium">Imagen del producto</label>
         <input
-          name="url_imagen"
-          placeholder="URL imagen"
-          value={form.url_imagen}
-          onChange={handleChange}
+          type="file"
+          accept="image/*"
+          onChange={handleImagenChange}
           className="border p-2 rounded"
         />
+        {preview && (
+          <img src={preview} alt="Preview" className="h-40 object-contain rounded border" />
+        )}
 
         {/* ===== GRUPO ===== */}
         <label className="font-medium">Grupo</label>
