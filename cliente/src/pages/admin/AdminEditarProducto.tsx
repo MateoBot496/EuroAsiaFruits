@@ -11,7 +11,8 @@ export default function AdminEditarProducto() {
 
   const { id_producto } = useParams();
   const { producto, loading } = useProductoPorId(id_producto);
-
+  const [imagenFile, setImagenFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string>("");
   const [form, setForm] = useState({
     referencia: "",
     nombre: "",
@@ -43,6 +44,13 @@ export default function AdminEditarProducto() {
     };
   }, [form]);
 
+  const handleImagenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImagenFile(file);
+    setPreview(URL.createObjectURL(file));
+  };
+
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
 
@@ -56,6 +64,22 @@ export default function AdminEditarProducto() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    // PASO 1: subir imagen si hay una nueva seleccionada
+    let filename = form.url_imagen; 
+    if (imagenFile) {
+      const formData = new FormData();
+      formData.append("imagen", imagenFile);
+      formData.append("nombre", form.nombre || "producto");
+
+      const resImg = await fetch("http://localhost:3000/api/admin/images/producto", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+      const dataImg = await resImg.json();
+      if (!resImg.ok) throw new Error(dataImg.message);
+      filename = dataImg.filename;
+    }
     setMsg("");
 
     try {
@@ -67,7 +91,7 @@ export default function AdminEditarProducto() {
             "Content-Type": "application/json",
           },
           credentials: "include", // 🔥 cookies
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ ...payload, url_imagen: filename }),
         },
       );
 
@@ -202,13 +226,25 @@ export default function AdminEditarProducto() {
           className="border p-2 rounded"
         />
 
-        <label> URL imagen </label>
+        <label className="font-medium">Imagen del producto</label>
+
+        {/* Imagen actual (si no hay preview de nueva) */}
+        {form.url_imagen && !preview && (
+          <img
+            src={`http://localhost:3000/images/${form.url_imagen}`}
+            alt="Imagen actual"
+            className="h-40 object-contain rounded border"
+          />
+        )}
+        {/* Preview de la nueva imagen seleccionada */}
+        {preview && (
+          <img src={preview} alt="Nueva imagen" className="h-40 object-contain rounded border" />
+        )}
 
         <input
-          name="url_imagen"
-          placeholder="URL imagen"
-          value={form.url_imagen}
-          onChange={handleChange}
+          type="file"
+          accept="image/*"
+          onChange={handleImagenChange}
           className="border p-2 rounded"
         />
 
