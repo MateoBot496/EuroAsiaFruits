@@ -5,17 +5,17 @@ require("dotenv").config(); // si usas .env para DB
 
 (async () => {
   try {
-    // 🔹 Datos del superadmin
+    // Datos del superadmin
     const id = uuidv4();
     const email = "superadmin@mail.com";
     const password = "super123"; // contraseña de prueba
     const role = 1; // 0=ADMIN, 1=SUPERADMIN
     const isActive = 1;
 
-    // 🔹 Hash de la contraseña
+    // Hash de la contraseña
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // 🔹 Conexión a la DB
+    // Conexión a la DB
     const connection = await mysql.createConnection({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
@@ -24,7 +24,7 @@ require("dotenv").config(); // si usas .env para DB
       port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306,
     });
 
-    // 🔹 Insertar superadmin
+    //  Insertar superadmin
     await connection.execute(
       `INSERT INTO admin_users (id, email, password_hash, role, is_active)
        VALUES (?, ?, ?, ?, ?)`,
